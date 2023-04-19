@@ -31,7 +31,6 @@ import org.junit.runner.RunWith;
 
 @RunWith(GdxTestRunner.class)
 public class MapLoaderTest {
-
   @Test
   public void buildFromObjectsTest(){
     World world = new World(new Vector2(0, 0), true);
@@ -39,6 +38,7 @@ public class MapLoaderTest {
     AssetManager manager = new AssetManager();
     manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
     PiazzaPanic.loadAssets(manager);
+    manager.load("v2/mapTest.tmx", TiledMap.class);
     manager.finishLoading();
 
     EntityFactory factory = new EntityFactory(engine, world, manager);
@@ -61,6 +61,9 @@ public class MapLoaderTest {
     World world = new World(new Vector2(0, 0), true);
     PooledEngine engine = new PooledEngine();
     AssetManager manager = new AssetManager();
+    manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+    manager.load("v2/mapTest.tmx", TiledMap.class);
+    manager.finishLoading();
     EntityFactory factory = new EntityFactory(engine, world, manager);
     MapLoader mapLoader = new MapLoader("v2/mapTest.tmx", null, factory, manager);
     mapLoader.buildStations();

@@ -26,7 +26,7 @@ public class SavableCustomerAISystem {
     savableSystem.patienceModifier = system.getPatienceModifier();
     savableSystem.incomeModifier = system.getIncomeModifier();
 
-    ArrayList<ArrayList<Entity>> customers = system.getCustomers();
+    ArrayList<ArrayList<Entity>> customers = system.getCustomerGroups();
     savableSystem.customers = new ArrayList<>(customers.size());
     for (ArrayList<Entity> group : customers) {
       ArrayList<SavableCustomer> savableGroup = new ArrayList<>(3);

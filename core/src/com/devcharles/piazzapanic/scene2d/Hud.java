@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.devcharles.piazzapanic.BaseGameScreen;
+import com.devcharles.piazzapanic.EndlessGameScreen;
 import com.devcharles.piazzapanic.MainMenuScreen;
 import com.devcharles.piazzapanic.PiazzaPanic;
 import com.devcharles.piazzapanic.components.FoodComponent.FoodType;
@@ -50,7 +51,7 @@ public class Hud extends ApplicationAdapter {
   Label reputationLabel;
   Label reputationNameLabel;
   Label pausedNameLabel;
-  TextButton saveButton, shopButton, pauseButton;
+  TextButton exitButton, shopButton, pauseButton;
   final TextButton movementSpeed, prepSpeed, chopSpeed, customerPatience, salePrice;
   BitmapFont uiFont, uiTitleFont;
   // an image used as the background of recipe book and tutorial
@@ -90,7 +91,7 @@ public class Hud extends ApplicationAdapter {
 
     // Import the custom skin with different fonts
     uiFont = game.assetManager.get("craftacular/raw/font-export.fnt", BitmapFont.class);
-    uiTitleFont = game.assetManager.get("craftacular/raw/font-title-export.fnt");
+    uiTitleFont = game.assetManager.get("craftacular/raw/font-title-export.fnt", BitmapFont.class);
 
     // Create generic style for labels with the different fonts
     hudLabelStyle = new Label.LabelStyle();
@@ -116,7 +117,7 @@ public class Hud extends ApplicationAdapter {
         } else if (keycode == Keys.TAB) {
           if (isShopOpen) {
             hideShop();
-          } else {
+          } else if (!paused){
             showShop();
           }
           // sets game to go bigscreen if F11 is pressed or sets it to go small screen
@@ -145,6 +146,10 @@ public class Hud extends ApplicationAdapter {
 
     state.setReputation(reputationAndMoney[0]);
     state.setMoney(reputationAndMoney[1]);
+
+    if (gameScreen instanceof EndlessGameScreen) {
+      state.setDifficulty(((EndlessGameScreen) gameScreen).getDifficulty());
+    }
 
     FileHandle saveFile = Gdx.files.local(GameState.SAVE_LOCATION);
 
@@ -235,7 +240,7 @@ public class Hud extends ApplicationAdapter {
     TextButton resumeButton = new TextButton("Resume", game.skin);
     TextButton recipeBookButton = new TextButton("Recipe Book", game.skin);
     TextButton tutorialButton = new TextButton("Tutorial", game.skin);
-    saveButton = new TextButton("Exit", game.skin);
+    exitButton = new TextButton("Exit", game.skin);
 
     resumeButton.addListener(new ClickListener() {
       public void clicked(InputEvent event, float x, float y) {
@@ -246,12 +251,8 @@ public class Hud extends ApplicationAdapter {
         createListener(new Slideshow(game, Slideshow.Type.recipe, gameScreen)));
     tutorialButton.addListener(
         createListener(new Slideshow(game, Slideshow.Type.tutorial, gameScreen)));
-    saveButton.addListener(new ClickListener() {
+    exitButton.addListener(new ClickListener() {
       public void clicked(InputEvent event, float x, float y) {
-        if (isEndless) {
-          saveGame();
-        }
-        Gdx.app.log("save", "Game is saved!");
         game.setScreen(new MainMenuScreen(game));
         dispose();
         gameScreen.dispose();
@@ -264,7 +265,8 @@ public class Hud extends ApplicationAdapter {
     tablePause.row();
     tablePause.add(tutorialButton).width(260).height(70).padBottom(30);
     tablePause.row();
-    tablePause.add(saveButton).width(260).height(70);
+    tablePause.add(exitButton).width(260).height(70).padBottom(30);
+    tablePause.row();
 
     this.tableRight = new Table();
     this.shopTable = new Table();
@@ -620,7 +622,6 @@ public class Hud extends ApplicationAdapter {
     return new ClickListener() {
       public void clicked(InputEvent event, float x, float y) {
         game.setScreen(screen);
-        gameScreen.dispose();
       }
     };
   }
@@ -629,7 +630,21 @@ public class Hud extends ApplicationAdapter {
     isEndless = endless;
     moneyNameLabel.setVisible(isEndless);
     moneyLabel.setVisible(isEndless);
-    saveButton.setText(isEndless ? "Save and Exit" : "Exit");
     shopButton.setVisible(isEndless);
+
+    TextButton saveButton = new TextButton("Save and Exit", game.skin);
+    saveButton.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        if (isEndless) {
+          saveGame();
+        }
+        Gdx.app.log("save", "Game is saved!");
+        game.setScreen(new MainMenuScreen(game));
+        dispose();
+        gameScreen.dispose();
+      }
+    });
+    tablePause.add(saveButton).width(260).height(70);
   }
 }

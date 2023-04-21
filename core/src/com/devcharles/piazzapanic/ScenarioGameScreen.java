@@ -22,7 +22,7 @@ public class ScenarioGameScreen extends BaseGameScreen {
     engine.addSystem(
         new CustomerAISystem(mapLoader.getObjectives(), world, factory, hud,
             reputationPointsAndMoney,
-            false, 1));
+            false));
     engine.addSystem(new CarryItemsSystem());
     engine.addSystem(new InventoryUpdateSystem(hud));
   }

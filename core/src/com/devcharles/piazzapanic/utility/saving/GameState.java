@@ -8,6 +8,7 @@ import com.devcharles.piazzapanic.components.StationComponent;
 import com.devcharles.piazzapanic.components.TransformComponent;
 import com.devcharles.piazzapanic.componentsystems.CustomerAISystem;
 import com.devcharles.piazzapanic.componentsystems.PowerUpSystem;
+import com.devcharles.piazzapanic.utility.Difficulty;
 import com.devcharles.piazzapanic.utility.Mappers;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ public class GameState {
   private SavableCustomerAISystem customerAISystem;
 
   private SavablePowerUpSystem powerUpSystem;
+  private Difficulty difficulty;
 
   public Integer getCustomerTimer() {
     return customerTimer;
@@ -92,5 +94,13 @@ public class GameState {
 
   public void setMoney(int money) {
     reputationAndMoney[1] = money;
+  }
+
+  public Difficulty getDifficulty() {
+    return difficulty;
+  }
+
+  public void setDifficulty(Difficulty difficulty) {
+    this.difficulty = difficulty;
   }
 }

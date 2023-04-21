@@ -18,6 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.devcharles.piazzapanic.scene2d.Slideshow;
+import com.devcharles.piazzapanic.utility.Difficulty;
+import com.devcharles.piazzapanic.utility.Difficulty.Level;
 
 /**
  * Main menu of the game, transitions the player to the Tutorial {@link Slideshow} on button press
@@ -42,14 +44,62 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
 
     stage = new Stage(new ScreenViewport());
 
-    Label.LabelStyle menuLabelStyle = new Label.LabelStyle();
-    menuLabelStyle.font = game.assetManager.get("craftacular/raw/font-title-export.fnt", BitmapFont.class);
+    Label.LabelStyle menuTitleStyle = new Label.LabelStyle();
+    menuTitleStyle.font = game.assetManager.get("craftacular/raw/font-title-export.fnt",
+        BitmapFont.class);
 
-    Label title = new Label("Piazza Panic", menuLabelStyle);
+    Label title = new Label("Piazza Panic", menuTitleStyle);
 
-    Table root = new Table();
+    final Table root = new Table();
     root.setFillParent(true);
     stage.addActor(root);
+
+    final Table content = new Table();
+    content.center();
+    content.setFillParent(true);
+    Label difficultyLabel = new Label("Difficulty", menuTitleStyle);
+    TextButton easyBtn = new TextButton("Easy", game.skin);
+    TextButton mediumBtn = new TextButton("Medium", game.skin);
+    TextButton hardBtn = new TextButton("Hard", game.skin);
+    TextButton backBtn = new TextButton("Back", game.skin);
+    easyBtn.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        startEndless(Level.EASY);
+      }
+    });
+
+    mediumBtn.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        startEndless(Level.MEDIUM);
+      }
+    });
+
+    hardBtn.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        startEndless(Level.HARD);
+      }
+    });
+
+    backBtn.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        content.remove();
+        stage.addActor(root);
+      }
+    });
+
+    content.add(difficultyLabel).padBottom(60);
+    content.row();
+    content.add(easyBtn).padBottom(30);
+    content.row();
+    content.add(mediumBtn).padBottom(30);
+    content.row();
+    content.add(hardBtn).padBottom(60);
+    content.row();
+    content.add(backBtn);
 
     TextButton startScenarioModeBtn = new TextButton("Start scenario mode", game.skin);
     TextButton startEndlessModeBtn = new TextButton("Start endless mode", game.skin);
@@ -69,9 +119,8 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
     startEndlessModeBtn.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
-        game.setScreen(
-            new Slideshow(game, Slideshow.Type.tutorial, new EndlessGameScreen(game, null, false)));
-        dispose();
+        root.remove();
+        stage.addActor(content);
       }
     });
     // Checks if button is clicked and if clicked goes onto the tutorial
@@ -79,7 +128,8 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
       @Override
       public void clicked(InputEvent event, float x, float y) {
         game.setScreen(
-            new Slideshow(game, Slideshow.Type.tutorial, new EndlessGameScreen(game, null, true)));
+            new Slideshow(game, Slideshow.Type.tutorial, new EndlessGameScreen(game, null, true,
+                null)));
         dispose();
       }
     });
@@ -101,6 +151,13 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
     root.row();
     root.add(exitBtn);
 
+  }
+
+  public void startEndless(Difficulty.Level difficultyLevel) {
+    game.setScreen(
+        new Slideshow(game, Slideshow.Type.tutorial,
+            new EndlessGameScreen(game, null, false, new Difficulty(difficultyLevel))));
+    dispose();
   }
 
   @Override

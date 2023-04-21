@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.devcharles.piazzapanic.components.ControllableComponent;
+import com.devcharles.piazzapanic.components.ItemComponent;
 import com.devcharles.piazzapanic.components.PlayerComponent;
 import com.devcharles.piazzapanic.components.TransformComponent;
 import com.devcharles.piazzapanic.componentsystems.CarryItemsSystem;
@@ -14,6 +15,7 @@ import com.devcharles.piazzapanic.componentsystems.InventoryUpdateSystem;
 import com.devcharles.piazzapanic.componentsystems.LightingSystem;
 import com.devcharles.piazzapanic.componentsystems.PhysicsSystem;
 import com.devcharles.piazzapanic.componentsystems.PlayerControlSystem;
+import com.devcharles.piazzapanic.componentsystems.PowerUpSystem;
 import com.devcharles.piazzapanic.componentsystems.RenderingSystem;
 import com.devcharles.piazzapanic.componentsystems.StationSystem;
 import com.devcharles.piazzapanic.utility.Mappers;
@@ -34,11 +36,15 @@ public class EndlessGameScreen extends BaseGameScreen {
     engine.addSystem(new PlayerControlSystem(kbInput));
     engine.addSystem(new StationSystem(kbInput, factory));
     CustomerAISystem aiSystem =
-        new CustomerAISystem(mapLoader.getObjectives(), world, factory, hud, reputationPoints,
+        new CustomerAISystem(mapLoader.getObjectives(), world, factory, hud,
+            reputationPointsAndMoney,
             true, 3);
     engine.addSystem(aiSystem);
     engine.addSystem(new CarryItemsSystem());
     engine.addSystem(new InventoryUpdateSystem(hud));
+    PowerUpSystem powerUpSystem = new PowerUpSystem();
+    engine.addSystem(powerUpSystem);
+    hud.initShop(powerUpSystem);
 
     if (loadSave) {
       FileHandle saveFile = Gdx.files.local(GameState.SAVE_LOCATION);
@@ -61,15 +67,26 @@ public class EndlessGameScreen extends BaseGameScreen {
 
         ControllableComponent controllableComponent = Mappers.controllable.get(cook);
         for (SavableFood savableFood : gameSave.getCooks().get(i).foodStack) {
-          controllableComponent.currentFood.push(savableFood.toEntity(factory));
+          Entity foodEntity = savableFood.toEntity(factory);
+          ItemComponent itemComponent = engine.createComponent(ItemComponent.class);
+          itemComponent.holderTransform = Mappers.transform.get(cook);
+          foodEntity.add(itemComponent);
+          controllableComponent.currentFood.push(foodEntity);
         }
+        controllableComponent.speedModifier = savedCook.speedModifier;
         if (i == 0) {
           cook.add(engine.createComponent(PlayerComponent.class));
         }
       }
 
+      reputationPointsAndMoney[0] = gameSave.getReputation();
+      reputationPointsAndMoney[1] = gameSave.getMoney();
+
       // Load customerAISystem
       aiSystem.loadFromSave(gameSave.getCustomerAISystem());
+
+      // Load powerUpSystem
+      powerUpSystem.loadFromSave(gameSave.getPowerUpSystem());
 
       // Load hud save details
       hud.loadFromSave(gameSave);

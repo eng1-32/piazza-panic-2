@@ -7,6 +7,7 @@ import com.devcharles.piazzapanic.components.ControllableComponent;
 import com.devcharles.piazzapanic.components.StationComponent;
 import com.devcharles.piazzapanic.components.TransformComponent;
 import com.devcharles.piazzapanic.componentsystems.CustomerAISystem;
+import com.devcharles.piazzapanic.componentsystems.PowerUpSystem;
 import com.devcharles.piazzapanic.utility.Mappers;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,11 +16,14 @@ public class GameState {
 
   public static String SAVE_LOCATION = "save.json";
 
+  private final Integer[] reputationAndMoney = {0, 0};
   private Integer customerTimer = 0;
   private int numCustomersServed = 0;
   private final HashMap<String, SavableStation> stations = new HashMap<>();
   private final ArrayList<SavableCook> cooks = new ArrayList<>();
   private SavableCustomerAISystem customerAISystem;
+
+  private SavablePowerUpSystem powerUpSystem;
 
   public Integer getCustomerTimer() {
     return customerTimer;
@@ -45,6 +49,9 @@ public class GameState {
 
     // Save customers
     customerAISystem = SavableCustomerAISystem.from(engine.getSystem(CustomerAISystem.class));
+
+    // Save power ups
+    powerUpSystem = SavablePowerUpSystem.from(engine.getSystem(PowerUpSystem.class));
   }
 
   public HashMap<String, SavableStation> getStations() {
@@ -65,5 +72,25 @@ public class GameState {
 
   public void setNumCustomersServed(int numCustomersServed) {
     this.numCustomersServed = numCustomersServed;
+  }
+
+  public SavablePowerUpSystem getPowerUpSystem() {
+    return powerUpSystem;
+  }
+
+  public Integer getReputation() {
+    return reputationAndMoney[0];
+  }
+
+  public Integer getMoney() {
+    return reputationAndMoney[1];
+  }
+
+  public void setReputation(int reputation) {
+    reputationAndMoney[0] = reputation;
+  }
+
+  public void setMoney(int money) {
+    reputationAndMoney[1] = money;
   }
 }

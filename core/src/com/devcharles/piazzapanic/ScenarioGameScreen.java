@@ -10,7 +10,8 @@ import com.devcharles.piazzapanic.componentsystems.PlayerControlSystem;
 import com.devcharles.piazzapanic.componentsystems.RenderingSystem;
 
 public class ScenarioGameScreen extends BaseGameScreen {
-  public ScenarioGameScreen(PiazzaPanic game, String mapPath) {
+
+  public ScenarioGameScreen(PiazzaPanic game, String mapPath, int maxCustomers) {
     super(game, mapPath);
     engine.addSystem(new PhysicsSystem(world));
     engine.addSystem(new RenderingSystem(mapLoader.map, game.batch, camera));
@@ -19,10 +20,10 @@ public class ScenarioGameScreen extends BaseGameScreen {
     // engine.addSystem(new DebugRendererSystem(world, camera));
     engine.addSystem(new PlayerControlSystem(kbInput));
     engine.addSystem(new StationSystem(kbInput, factory));
-    engine.addSystem(
-        new CustomerAISystem(mapLoader.getObjectives(), world, factory, hud,
-            reputationPointsAndMoney,
-            false));
+    CustomerAISystem aiSystem = new CustomerAISystem(mapLoader.getObjectives(), world, factory, hud,
+        reputationPointsAndMoney, false);
+    aiSystem.setMaxScenarioCustomers(maxCustomers);
+    engine.addSystem(aiSystem);
     engine.addSystem(new CarryItemsSystem());
     engine.addSystem(new InventoryUpdateSystem(hud));
   }

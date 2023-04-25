@@ -10,11 +10,14 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.devcharles.piazzapanic.scene2d.Slideshow;
@@ -54,9 +57,48 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
     root.setFillParent(true);
     stage.addActor(root);
 
-    final Table content = new Table();
-    content.center();
-    content.setFillParent(true);
+    final Table scenarioTable = new Table();
+    scenarioTable.center();
+    scenarioTable.setFillParent(true);
+    final Label customerLabel = new Label("Customers: 5", menuTitleStyle);
+    final Slider customerSlider = new Slider(1, 9, 1, false, game.skin);
+    customerSlider.setValue(5);
+    TextButton startScenarioButton = new TextButton("Start", game.skin);
+    TextButton scenarioBackBtn = new TextButton("Back", game.skin);
+    customerSlider.addListener(new ChangeListener() {
+      @Override
+      public void changed(ChangeEvent event, Actor actor) {
+        customerLabel.setText(
+            String.format("Customers: %d", (int) customerSlider.getValue()));
+      }
+    });
+    startScenarioButton.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        game.setScreen(new Slideshow(game, Slideshow.Type.tutorial,
+            new ScenarioGameScreen(game, null, (int) customerSlider.getValue())));
+        dispose();
+      }
+    });
+    scenarioBackBtn.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        scenarioTable.remove();
+        stage.addActor(root);
+      }
+    });
+    scenarioTable.add(customerLabel).padBottom(60);
+    scenarioTable.row();
+    scenarioTable.add(customerSlider).width(370).padBottom(30);
+    scenarioTable.row();
+    scenarioTable.add(startScenarioButton).padBottom(60);
+    scenarioTable.row();
+    scenarioTable.add(scenarioBackBtn);
+    scenarioTable.row();
+
+    final Table endlessDifficulty = new Table();
+    endlessDifficulty.center();
+    endlessDifficulty.setFillParent(true);
     Label difficultyLabel = new Label("Difficulty", menuTitleStyle);
     TextButton easyBtn = new TextButton("Easy", game.skin);
     TextButton mediumBtn = new TextButton("Medium", game.skin);
@@ -86,20 +128,20 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
     backBtn.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
-        content.remove();
+        endlessDifficulty.remove();
         stage.addActor(root);
       }
     });
 
-    content.add(difficultyLabel).padBottom(60);
-    content.row();
-    content.add(easyBtn).padBottom(30);
-    content.row();
-    content.add(mediumBtn).padBottom(30);
-    content.row();
-    content.add(hardBtn).padBottom(60);
-    content.row();
-    content.add(backBtn);
+    endlessDifficulty.add(difficultyLabel).padBottom(60);
+    endlessDifficulty.row();
+    endlessDifficulty.add(easyBtn).padBottom(30);
+    endlessDifficulty.row();
+    endlessDifficulty.add(mediumBtn).padBottom(30);
+    endlessDifficulty.row();
+    endlessDifficulty.add(hardBtn).padBottom(60);
+    endlessDifficulty.row();
+    endlessDifficulty.add(backBtn);
 
     TextButton startScenarioModeBtn = new TextButton("Start scenario mode", game.skin);
     TextButton startEndlessModeBtn = new TextButton("Start endless mode", game.skin);
@@ -110,9 +152,8 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
     startScenarioModeBtn.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
-        game.setScreen(
-            new Slideshow(game, Slideshow.Type.tutorial, new ScenarioGameScreen(game, null)));
-        dispose();
+        root.remove();
+        stage.addActor(scenarioTable);
       }
     });
     // Checks if button is clicked and if clicked goes onto the tutorial
@@ -120,16 +161,15 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
       @Override
       public void clicked(InputEvent event, float x, float y) {
         root.remove();
-        stage.addActor(content);
+        stage.addActor(endlessDifficulty);
       }
     });
     // Checks if button is clicked and if clicked goes onto the tutorial
     loadEndlessModeBtn.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
-        game.setScreen(
-            new Slideshow(game, Slideshow.Type.tutorial, new EndlessGameScreen(game, null, true,
-                null)));
+        game.setScreen(new Slideshow(game, Slideshow.Type.tutorial,
+            new EndlessGameScreen(game, null, true, null)));
         dispose();
       }
     });
@@ -154,9 +194,8 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
   }
 
   public void startEndless(Difficulty.Level difficultyLevel) {
-    game.setScreen(
-        new Slideshow(game, Slideshow.Type.tutorial,
-            new EndlessGameScreen(game, null, false, new Difficulty(difficultyLevel))));
+    game.setScreen(new Slideshow(game, Slideshow.Type.tutorial,
+        new EndlessGameScreen(game, null, false, new Difficulty(difficultyLevel))));
     dispose();
   }
 

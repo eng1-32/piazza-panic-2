@@ -1,5 +1,6 @@
 package com.devcharles.piazzapanic.scene2d;
 
+import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
@@ -22,6 +23,7 @@ import com.devcharles.piazzapanic.BaseGameScreen;
 import com.devcharles.piazzapanic.EndlessGameScreen;
 import com.devcharles.piazzapanic.MainMenuScreen;
 import com.devcharles.piazzapanic.PiazzaPanic;
+import com.devcharles.piazzapanic.components.ControllableComponent;
 import com.devcharles.piazzapanic.components.FoodComponent.FoodType;
 import com.devcharles.piazzapanic.componentsystems.PowerUpSystem;
 import com.devcharles.piazzapanic.utility.EntityFactory;
@@ -52,13 +54,14 @@ public class Hud extends ApplicationAdapter {
   Label reputationNameLabel;
   Label pausedNameLabel;
   TextButton exitButton, shopButton, pauseButton;
-  final TextButton movementSpeed, prepSpeed, chopSpeed, customerPatience, salePrice;
+  final TextButton movementSpeedBtn, prepSpeedBtn, chopSpeedBtn, customerPatienceBtn, salePriceBtn, newCookBtn;
   BitmapFont uiFont, uiTitleFont;
   // an image used as the background of recipe book and tutorial
   private Image photo;
 
   private final PiazzaPanic game;
   private Table tableBottom, tableRight, shopTable, tableTop, tablePause, tableBottomLabel;
+  private Label shopSpeedUpLabel, shopPrepSpeedLabel, shopChopSpeedLabel, shopSalePriceLabel, shopPatienceLabel, shopCooksLabel;
 
   private boolean pauseToggled = false;
   public boolean paused = false;
@@ -99,11 +102,12 @@ public class Hud extends ApplicationAdapter {
     titleLabelStyle = new Label.LabelStyle();
     titleLabelStyle.font = uiTitleFont;
 
-    movementSpeed = new TextButton("$20 - Movement Speed", game.skin);
-    prepSpeed = new TextButton("$20 - Preparation Speed", game.skin);
-    chopSpeed = new TextButton("$20 - Chopping Speed", game.skin);
-    salePrice = new TextButton("$20 - Order Income", game.skin);
-    customerPatience = new TextButton("$20 - Customer Patience", game.skin);
+    movementSpeedBtn = new TextButton("$20 - Movement Speed", game.skin);
+    prepSpeedBtn = new TextButton("$20 - Preparation Speed", game.skin);
+    chopSpeedBtn = new TextButton("$20 - Chopping Speed", game.skin);
+    salePriceBtn = new TextButton("$20 - Order Income", game.skin);
+    customerPatienceBtn = new TextButton("$20 - Customer Patience", game.skin);
+    newCookBtn = new TextButton("$50 - New Cook", game.skin);
 
     stage.addListener(new InputListener() {
       @Override
@@ -292,75 +296,76 @@ public class Hud extends ApplicationAdapter {
     shopTable.center();
     shopTable.setFillParent(true);
 
+    shopSpeedUpLabel = new Label("0", hudLabelStyle);
+    shopPrepSpeedLabel = new Label("0", hudLabelStyle);
+    shopChopSpeedLabel = new Label("0", hudLabelStyle);
+    shopSalePriceLabel = new Label("0", hudLabelStyle);
+    shopPatienceLabel = new Label("0", hudLabelStyle);
+    shopCooksLabel = new Label(String.valueOf(
+        gameScreen.getEngine().getEntitiesFor(Family.all(ControllableComponent.class).get())
+            .size()), hudLabelStyle);
+
     TextButton resumeButton = new TextButton("Resume", game.skin);
 
-    movementSpeed.addListener(new ClickListener() {
+    movementSpeedBtn.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
         if (reputationAndMoney[1] < 20) {
-          updateShopButtons();
           return;
         }
         reputationAndMoney[1] -= 20;
-        moneyLabel.setText(String.format("$%d", reputationAndMoney[1]));
         powerUpSystem.addSpeedUp();
-        updateShopButtons();
       }
     });
 
-    prepSpeed.addListener(new ClickListener() {
+    prepSpeedBtn.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
         if (reputationAndMoney[1] < 20) {
-          updateShopButtons();
           return;
         }
         reputationAndMoney[1] -= 20;
-        moneyLabel.setText(String.format("$%d", reputationAndMoney[1]));
         powerUpSystem.addPrepSpeed();
-        updateShopButtons();
       }
     });
 
-    chopSpeed.addListener(new ClickListener() {
+    chopSpeedBtn.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
         if (reputationAndMoney[1] < 20) {
-          updateShopButtons();
           return;
         }
         reputationAndMoney[1] -= 20;
-        moneyLabel.setText(String.format("$%d", reputationAndMoney[1]));
         powerUpSystem.addChopSpeed();
-        updateShopButtons();
       }
     });
 
-    salePrice.addListener(new ClickListener() {
+    salePriceBtn.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
         if (reputationAndMoney[1] < 20) {
-          updateShopButtons();
           return;
         }
         reputationAndMoney[1] -= 20;
-        moneyLabel.setText(String.format("$%d", reputationAndMoney[1]));
         powerUpSystem.addSalePrice();
-        updateShopButtons();
       }
     });
 
-    customerPatience.addListener(new ClickListener() {
+    customerPatienceBtn.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
         if (reputationAndMoney[1] < 20) {
-          updateShopButtons();
           return;
         }
         reputationAndMoney[1] -= 20;
-        moneyLabel.setText(String.format("$%d", reputationAndMoney[1]));
         powerUpSystem.addPatience();
-        updateShopButtons();
+      }
+    });
+
+    newCookBtn.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        // TODO: add new cook!
       }
     });
 
@@ -371,37 +376,49 @@ public class Hud extends ApplicationAdapter {
       }
     });
 
-    shopTable.add(movementSpeed).width(500).padBottom(30);
-    shopTable.row();
-    shopTable.add(prepSpeed).width(500).padBottom(30);
-    shopTable.row();
-    shopTable.add(chopSpeed).width(500).padBottom(30);
-    shopTable.row();
-    shopTable.add(salePrice).width(500).padBottom(30);
-    shopTable.row();
-    shopTable.add(customerPatience).width(500).padBottom(30);
-    shopTable.row();
+    addShopItem(movementSpeedBtn, shopSpeedUpLabel);
+    addShopItem(prepSpeedBtn, shopPrepSpeedLabel);
+    addShopItem(chopSpeedBtn, shopChopSpeedLabel);
+    addShopItem(salePriceBtn, shopSalePriceLabel);
+    addShopItem(customerPatienceBtn, shopPatienceLabel);
+    addShopItem(newCookBtn, shopCooksLabel);
     shopTable.add(resumeButton).width(500);
   }
 
-  private void updateShopButtons() {
+  private void addShopItem(TextButton shopButton, Label shopLabel) {
+    shopTable.add(shopButton).width(500).padBottom(30);
+    shopTable.add(shopLabel).height(50).padLeft(20).padBottom(30);
+    shopTable.row();
+  }
+
+  private void updateShop() {
     boolean hasInsufficientFunds = reputationAndMoney[1] < 20;
-    movementSpeed.setDisabled(hasInsufficientFunds);
-    prepSpeed.setDisabled(hasInsufficientFunds);
-    chopSpeed.setDisabled(hasInsufficientFunds);
-    salePrice.setDisabled(hasInsufficientFunds);
-    customerPatience.setDisabled(hasInsufficientFunds);
-    if (hasInsufficientFunds) {
-      return;
+    movementSpeedBtn.setDisabled(hasInsufficientFunds);
+    prepSpeedBtn.setDisabled(hasInsufficientFunds);
+    chopSpeedBtn.setDisabled(hasInsufficientFunds);
+    salePriceBtn.setDisabled(hasInsufficientFunds);
+    customerPatienceBtn.setDisabled(hasInsufficientFunds);
+
+    if (!moneyLabel.getText().toString().equals(String.format("$%d", reputationAndMoney[1]))) {
+      moneyLabel.setText(String.format("$%d", reputationAndMoney[1]));
     }
-    if (powerUpSystem == null) {
-      return;
+    shopSpeedUpLabel.setText(powerUpSystem.getNumSpeedUp());
+    shopPrepSpeedLabel.setText(powerUpSystem.getNumPrepSpeed());
+    shopChopSpeedLabel.setText(powerUpSystem.getNumChopSpeed());
+    shopSalePriceLabel.setText(powerUpSystem.getNumSalePrice());
+    shopPatienceLabel.setText(powerUpSystem.getNumPatienceIncrease());
+    shopCooksLabel.setText(0);
+
+    if (!hasInsufficientFunds) {
+      if (powerUpSystem == null) {
+        return;
+      }
+      movementSpeedBtn.setDisabled(powerUpSystem.isMaxSpeedUp());
+      prepSpeedBtn.setDisabled(powerUpSystem.isMaxPrepSpeed());
+      chopSpeedBtn.setDisabled(powerUpSystem.isMaxChopSpeed());
+      salePriceBtn.setDisabled(powerUpSystem.isMaxSalePrice());
+      customerPatienceBtn.setDisabled(powerUpSystem.isMaxPatience());
     }
-    movementSpeed.setDisabled(powerUpSystem.isMaxSpeedUp());
-    prepSpeed.setDisabled(powerUpSystem.isMaxPrepSpeed());
-    chopSpeed.setDisabled(powerUpSystem.isMaxChopSpeed());
-    salePrice.setDisabled(powerUpSystem.isMaxSalePrice());
-    customerPatience.setDisabled(powerUpSystem.isMaxPatience());
   }
 
   /**
@@ -466,6 +483,9 @@ public class Hud extends ApplicationAdapter {
    * @param deltaTime the time elapsed since last frame.
    */
   public void update(float deltaTime) {
+    if (isShopOpen) {
+      updateShop();
+    }
     if (paused) {
       if (pauseToggled) {
         pauseToggled = false;
@@ -522,7 +542,7 @@ public class Hud extends ApplicationAdapter {
     }
     isShopOpen = true;
     pause();
-    updateShopButtons();
+    updateShop();
     tablePause.setVisible(false);
     shopTable.setVisible(true);
   }
@@ -575,8 +595,7 @@ public class Hud extends ApplicationAdapter {
       congrats = new Label("The End!", titleLabelStyle);
       congratsSubtitle = new Label(
           String.format("You served %d customers and lasted %03d seconds!", numCustomersServed,
-              customerTimer),
-          hudLabelStyle);
+              customerTimer), hudLabelStyle);
     } else {
       congrats = new Label("Congratulations!", titleLabelStyle);
       congratsSubtitle = new Label("You won!", hudLabelStyle);

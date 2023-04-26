@@ -195,7 +195,7 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
 
   public void startEndless(Difficulty.Level difficultyLevel) {
     game.setScreen(new Slideshow(game, Slideshow.Type.tutorial,
-        new EndlessGameScreen(game, null, false, new Difficulty(difficultyLevel))));
+        new EndlessGameScreen(game, null, false, Difficulty.createDifficulty(difficultyLevel))));
     dispose();
   }
 

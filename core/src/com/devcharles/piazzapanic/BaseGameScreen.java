@@ -129,7 +129,6 @@ public abstract class BaseGameScreen implements Screen {
 
   @Override
   public void dispose() {
-    // TODO Figure out what to dispose
     world.dispose();
   }
 }

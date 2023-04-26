@@ -103,7 +103,7 @@ public class EndlessGameScreen extends BaseGameScreen {
     }
 
     if (this.difficulty == null) {
-      this.difficulty = new Difficulty(Level.MEDIUM);
+      this.difficulty = Difficulty.createDifficulty(Level.MEDIUM);
     }
     aiSystem.setDifficulty(this.difficulty);
   }

@@ -18,6 +18,8 @@ import com.devcharles.piazzapanic.componentsystems.PlayerControlSystem;
 import com.devcharles.piazzapanic.componentsystems.PowerUpSystem;
 import com.devcharles.piazzapanic.componentsystems.RenderingSystem;
 import com.devcharles.piazzapanic.componentsystems.StationSystem;
+import com.devcharles.piazzapanic.utility.Difficulty;
+import com.devcharles.piazzapanic.utility.Difficulty.Level;
 import com.devcharles.piazzapanic.utility.Mappers;
 import com.devcharles.piazzapanic.utility.saving.GameState;
 import com.devcharles.piazzapanic.utility.saving.SavableCook;
@@ -25,7 +27,10 @@ import com.devcharles.piazzapanic.utility.saving.SavableFood;
 
 public class EndlessGameScreen extends BaseGameScreen {
 
-  public EndlessGameScreen(PiazzaPanic game, String mapPath, boolean loadSave) {
+  private Difficulty difficulty;
+
+  public EndlessGameScreen(PiazzaPanic game, String mapPath, boolean loadSave,
+      Difficulty difficulty) {
     super(game, mapPath);
     hud.setEndless(true);
     engine.addSystem(new PhysicsSystem(world));
@@ -38,13 +43,15 @@ public class EndlessGameScreen extends BaseGameScreen {
     CustomerAISystem aiSystem =
         new CustomerAISystem(mapLoader.getObjectives(), world, factory, hud,
             reputationPointsAndMoney,
-            true, 3);
+            true);
     engine.addSystem(aiSystem);
     engine.addSystem(new CarryItemsSystem());
     engine.addSystem(new InventoryUpdateSystem(hud));
     PowerUpSystem powerUpSystem = new PowerUpSystem();
     engine.addSystem(powerUpSystem);
     hud.initShop(powerUpSystem);
+
+    this.difficulty = difficulty;
 
     if (loadSave) {
       FileHandle saveFile = Gdx.files.local(GameState.SAVE_LOCATION);
@@ -88,8 +95,20 @@ public class EndlessGameScreen extends BaseGameScreen {
       // Load powerUpSystem
       powerUpSystem.loadFromSave(gameSave.getPowerUpSystem());
 
+      // Load difficulty
+      this.difficulty = gameSave.getDifficulty();
+
       // Load hud save details
       hud.loadFromSave(gameSave);
     }
+
+    if (this.difficulty == null) {
+      this.difficulty = Difficulty.createDifficulty(Level.MEDIUM);
+    }
+    aiSystem.setDifficulty(this.difficulty);
+  }
+
+  public Difficulty getDifficulty() {
+    return difficulty;
   }
 }

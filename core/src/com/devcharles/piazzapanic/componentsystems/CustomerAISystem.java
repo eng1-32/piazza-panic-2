@@ -1,6 +1,7 @@
 package com.devcharles.piazzapanic.componentsystems;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.devcharles.piazzapanic.utility.Difficulty;
 import com.devcharles.piazzapanic.utility.saving.SavableCustomer;
 import com.devcharles.piazzapanic.utility.saving.SavableCustomerAISystem;
 import java.util.ArrayList;
@@ -53,7 +54,11 @@ public class CustomerAISystem extends IteratingSystem {
   private boolean firstSpawn = true;
   private final boolean isEndless;
   private int numQueuedCustomers = 0;
-  private final int maxGroupSize;
+  private int maxGroupSize;
+
+  private int maxScenarioCustomers;
+
+  private int customerPatience = 90000;
 
   // List of customer groups, on removal we move the other customers up a place (queueing).
   protected final ArrayList<ArrayList<Entity>> customers = new ArrayList<ArrayList<Entity>>(
@@ -93,11 +98,10 @@ public class CustomerAISystem extends IteratingSystem {
    * @param reputationPointsAndMoney array-wrapped integer reputation and money passed by-reference
    *                                 See {@link Hud}
    * @param isEndless                a boolean flag to decide whether there is a limit on customers
-   * @param maxGroupSize             the maximum size of a single group of customers
    */
   public CustomerAISystem(Map<Integer, Map<Integer, Box2dLocation>> objectives, World world,
       EntityFactory factory, Hud hud,
-      Integer[] reputationPointsAndMoney, boolean isEndless, int maxGroupSize) {
+      Integer[] reputationPointsAndMoney, boolean isEndless) {
     super(Family.all(AIAgentComponent.class, CustomerComponent.class).get());
 
     this.hud = hud;
@@ -105,7 +109,8 @@ public class CustomerAISystem extends IteratingSystem {
     this.objectiveTaken = new HashMap<>();
     this.reputationPointsAndMoney = reputationPointsAndMoney;
     this.isEndless = isEndless;
-    this.maxGroupSize = maxGroupSize;
+    this.maxGroupSize = isEndless ? 3 : 1;
+    this.maxScenarioCustomers = 5;
 
     // Use a reference to the world to destroy box2d bodies when despawning
     // customers
@@ -164,31 +169,21 @@ public class CustomerAISystem extends IteratingSystem {
   public void update(float deltaTime) {
     // Ensure timer actually ticks, and is not short-circuited by firstSpawn being true
     boolean timerComplete = spawnTimer.tick(deltaTime);
-    if (timerComplete) {
+    if (timerComplete && (isEndless
+        || totalCustomers + numQueuedCustomers < maxScenarioCustomers)) {
       numQueuedCustomers++;
     }
     int numCustomers = isEndless ? customers.size() : totalCustomers;
-    if (firstSpawn || (numQueuedCustomers > 0 && numCustomers < MAX_CUSTOMERS)) {
-      if (!firstSpawn) {
-        numQueuedCustomers--;
-        if (isEndless) {
-          spawnTimer.setDelay((int) (spawnTimer.getDelay() * 0.98f));
-          Gdx.app.log("Spawn Timer", String.valueOf(spawnTimer.getDelay()));
-        }
-      }
+    if (firstSpawn) {
       firstSpawn = false;
-
-      ArrayList<Entity> group = new ArrayList<>();
-      for (int i = 0; i < MathUtils.random(1, maxGroupSize); i++) {
-        Entity newCustomer = factory.createCustomer(objectives.get(-2).get(0).getPosition(), null);
-        Mappers.aiAgent.get(newCustomer).slot = i;
-        group.add(newCustomer);
-        GdxTimer timer =Mappers.customer.get(newCustomer).timer;
-        timer.setDelay((int) (timer.getDelay() * patienceModifier));
-        timer.start();
+      spawnCustomerGroup();
+    } else if (numQueuedCustomers > 0 && numCustomers < MAX_CUSTOMERS) {
+      numQueuedCustomers--;
+      if (isEndless) {
+        spawnTimer.setDelay((int) (spawnTimer.getDelay() * 0.98f));
       }
-      customers.add(group);
-      totalCustomers++;
+
+      spawnCustomerGroup();
     }
 
     ArrayList<FoodType> orders = new ArrayList<>(customers.size() * maxGroupSize);
@@ -198,7 +193,7 @@ public class CustomerAISystem extends IteratingSystem {
       }
     }
 
-    if (!isEndless && !hud.won && customers.size() == 0 && totalCustomers == MAX_CUSTOMERS) {
+    if (!isEndless && !hud.won && customers.size() == 0 && totalCustomers == maxScenarioCustomers) {
       hud.triggerWin = true;
     } else if (isEndless && !hud.won && reputationPointsAndMoney[0] == 0) {
       hud.triggerWin = true;
@@ -207,6 +202,20 @@ public class CustomerAISystem extends IteratingSystem {
     super.update(deltaTime);
 
     hud.updateOrders(orders);
+  }
+
+  private void spawnCustomerGroup() {
+    ArrayList<Entity> group = new ArrayList<>();
+    for (int i = 0; i < MathUtils.random(1, maxGroupSize); i++) {
+      Entity newCustomer = factory.createCustomer(objectives.get(-2).get(0).getPosition(), null);
+      Mappers.aiAgent.get(newCustomer).slot = i;
+      group.add(newCustomer);
+      GdxTimer timer = Mappers.customer.get(newCustomer).timer;
+      timer.setDelay((int) (customerPatience * patienceModifier));
+      timer.start();
+    }
+    customers.add(group);
+    totalCustomers++;
   }
 
   @Override
@@ -365,7 +374,7 @@ public class CustomerAISystem extends IteratingSystem {
     return numQueuedCustomers;
   }
 
-  public ArrayList<ArrayList<Entity>> getCustomers() {
+  public ArrayList<ArrayList<Entity>> getCustomerGroups() {
     return customers;
   }
 
@@ -383,5 +392,20 @@ public class CustomerAISystem extends IteratingSystem {
 
   public void setIncomeModifier(int incomeModifier) {
     this.incomeModifier = incomeModifier;
+  }
+
+  public void setDifficulty(Difficulty difficulty) {
+    customerPatience = difficulty.customerPatience;
+    spawnTimer.setDelay(difficulty.customerDelay);
+    maxGroupSize = difficulty.maxGroupSize;
+    for (ArrayList<Entity> customerGroup : getCustomerGroups()) {
+      for (Entity customer : customerGroup) {
+        Mappers.customer.get(customer).timer.setDelay((int) (customerPatience * patienceModifier));
+      }
+    }
+  }
+
+  public void setMaxScenarioCustomers(int maxScenarioCustomers) {
+    this.maxScenarioCustomers = maxScenarioCustomers;
   }
 }

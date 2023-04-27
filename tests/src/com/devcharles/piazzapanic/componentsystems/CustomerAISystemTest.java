@@ -74,7 +74,7 @@ public class CustomerAISystemTest {
   @Test
   public void testUpdate() {
     CustomerAISystem system = new CustomerAISystem(objectives, world, factory, mock(Hud.class),
-        new Integer[]{3}, false, 1);
+        new Integer[]{3}, false);
     engine.addSystem(system);
 
     assertEquals("There should be no customers to start with.", 0, system.customers.size());
@@ -91,7 +91,7 @@ public class CustomerAISystemTest {
   @Test
   public void testEndlessQuickerSpawns() {
     CustomerAISystem system = new CustomerAISystem(objectives, world, factory, mock(Hud.class),
-        new Integer[]{3}, true, 1);
+        new Integer[]{3}, true);
     engine.addSystem(system);
 
     int initialDelay = system.spawnTimer.getDelay();
@@ -106,7 +106,7 @@ public class CustomerAISystemTest {
   @Test
   public void testProcessEntityLoseReputation() {
     CustomerAISystem system = new CustomerAISystem(objectives, world, factory, mock(Hud.class),
-        reputationPoints, false, 1);
+        reputationPoints, false);
     engine.addSystem(system);
 
     engine.update(1f);
@@ -118,7 +118,7 @@ public class CustomerAISystemTest {
   @Test
   public void testProcessEntityExitsWithFood() {
     CustomerAISystem system = new CustomerAISystem(objectives, world, factory, mock(Hud.class),
-        reputationPoints, false, 1);
+        reputationPoints, false);
     engine.addSystem(system);
 
     engine.update(1f);
@@ -136,7 +136,7 @@ public class CustomerAISystemTest {
   @Test
   public void testProcessEntityChefInteractValidFood() {
     CustomerAISystem system = new CustomerAISystem(objectives, world, factory, mock(Hud.class),
-        reputationPoints, false, 1);
+        reputationPoints, false);
     engine.addSystem(system);
 
     engine.update(1f);
@@ -163,7 +163,7 @@ public class CustomerAISystemTest {
   @Test
   public void testProcessEntityChefInteractNoPlayerComponent() {
     CustomerAISystem system = new CustomerAISystem(objectives, world, factory, mock(Hud.class),
-        reputationPoints, false, 1);
+        reputationPoints, false);
     engine.addSystem(system);
 
     engine.update(1f);
@@ -184,7 +184,7 @@ public class CustomerAISystemTest {
   @Test
   public void testProcessEntityChefInteractInvalidFood() {
     CustomerAISystem system = new CustomerAISystem(objectives, world, factory, mock(Hud.class),
-        reputationPoints, false, 1);
+        reputationPoints, false);
     engine.addSystem(system);
 
     engine.update(1f);
@@ -210,7 +210,7 @@ public class CustomerAISystemTest {
   @Test
   public void testDestroyCustomerValid() {
     CustomerAISystem system = new CustomerAISystem(objectives, world,
-        factory, mock(Hud.class), new Integer[]{}, false, 1);
+        factory, mock(Hud.class), new Integer[]{}, false);
     engine.addSystem(system);
     Entity customer = factory.createCustomer(Vector2.Zero, null);
     Entity food = factory.createFood(FoodType.from(1));
@@ -233,7 +233,7 @@ public class CustomerAISystemTest {
   @Test(expected = NullPointerException.class)
   public void testDestroyCustomerInvalidEntity() {
     CustomerAISystem system = new CustomerAISystem(objectives, world,
-        factory, mock(Hud.class), new Integer[]{}, false, 1);
+        factory, mock(Hud.class), new Integer[]{}, false);
     engine.addSystem(system);
     Entity customer = new Entity();
 
@@ -243,7 +243,7 @@ public class CustomerAISystemTest {
   @Test(expected = NullPointerException.class)
   public void testDestroyCustomerNull() {
     CustomerAISystem system = new CustomerAISystem(objectives, world,
-        factory, mock(Hud.class), new Integer[]{}, false, 1);
+        factory, mock(Hud.class), new Integer[]{}, false);
     engine.addSystem(system);
 
     system.destroyCustomer(null);
@@ -252,7 +252,7 @@ public class CustomerAISystemTest {
   @Test
   public void testMakeItGoThere() {
     CustomerAISystem system = new CustomerAISystem(objectives, world,
-        factory, mock(Hud.class), new Integer[]{}, false, 1);
+        factory, mock(Hud.class), new Integer[]{}, false);
     engine.addSystem(system);
     Entity customer = factory.createCustomer(Vector2.Zero, null);
     AIAgentComponent aiAgentComponent = Mappers.aiAgent.get(customer);
@@ -272,7 +272,7 @@ public class CustomerAISystemTest {
   @Test
   public void testFulfillOrder() {
     CustomerAISystem system = new CustomerAISystem(objectives, world,
-        factory, mock(Hud.class), reputationPoints, false, 1);
+        factory, mock(Hud.class), reputationPoints, false);
     engine.addSystem(system);
     Entity customer = factory.createCustomer(Vector2.Zero, null);
     Entity food = factory.createFood(FoodType.from(1));

@@ -3,6 +3,7 @@ package com.devcharles.piazzapanic;
 
 import box2dLight.RayHandler;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -12,6 +13,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.devcharles.piazzapanic.componentsystems.LightingSystem;
+import com.devcharles.piazzapanic.componentsystems.RenderingSystem;
 import com.devcharles.piazzapanic.input.KeyboardInput;
 import com.devcharles.piazzapanic.scene2d.Hud;
 import com.devcharles.piazzapanic.utility.EntityFactory;
@@ -87,14 +90,12 @@ public abstract class BaseGameScreen implements Screen {
 
   @Override
   public void render(float delta) {
-    if (!hud.paused) {
-      Gdx.gl.glClearColor(0, 0, 0, 1);
-      Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-      Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    Gdx.gl.glClearColor(0, 0, 0, 1);
+    Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-      engine.update(delta);
-      game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-    }
+    engine.update(hud.paused ? 0 : delta);
+    game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
 
     if (!kbInput.disableHud) {
       hud.update(delta);
@@ -113,12 +114,22 @@ public abstract class BaseGameScreen implements Screen {
 
   @Override
   public void pause() {
+    for (EntitySystem system : engine.getSystems()) {
+      if (!(system instanceof RenderingSystem) && !(system instanceof LightingSystem)) {
+        system.setProcessing(false);
+      }
+    }
     kbInput.clearInputs();
     Gdx.input.setInputProcessor(hud.stage);
   }
 
   @Override
   public void resume() {
+    for (EntitySystem system : engine.getSystems()) {
+      if (!(system instanceof RenderingSystem)) {
+        system.setProcessing(true);
+      }
+    }
     kbInput.clearInputs();
     Gdx.input.setInputProcessor(multiplexer);
   }

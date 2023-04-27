@@ -296,6 +296,8 @@ public class Hud extends ApplicationAdapter {
     shopTable.center();
     shopTable.setFillParent(true);
 
+    Label shopMainLabel = new Label("Shop", titleLabelStyle);
+
     shopSpeedUpLabel = new Label("0", hudLabelStyle);
     shopPrepSpeedLabel = new Label("0", hudLabelStyle);
     shopChopSpeedLabel = new Label("0", hudLabelStyle);
@@ -315,6 +317,7 @@ public class Hud extends ApplicationAdapter {
         }
         reputationAndMoney[1] -= 20;
         powerUpSystem.addSpeedUp();
+        updateShop();
       }
     });
 
@@ -326,6 +329,7 @@ public class Hud extends ApplicationAdapter {
         }
         reputationAndMoney[1] -= 20;
         powerUpSystem.addPrepSpeed();
+        updateShop();
       }
     });
 
@@ -337,6 +341,7 @@ public class Hud extends ApplicationAdapter {
         }
         reputationAndMoney[1] -= 20;
         powerUpSystem.addChopSpeed();
+        updateShop();
       }
     });
 
@@ -348,6 +353,7 @@ public class Hud extends ApplicationAdapter {
         }
         reputationAndMoney[1] -= 20;
         powerUpSystem.addSalePrice();
+        updateShop();
       }
     });
 
@@ -359,6 +365,7 @@ public class Hud extends ApplicationAdapter {
         }
         reputationAndMoney[1] -= 20;
         powerUpSystem.addPatience();
+        updateShop();
       }
     });
 
@@ -376,6 +383,8 @@ public class Hud extends ApplicationAdapter {
       }
     });
 
+    shopTable.add(shopMainLabel).padBottom(60);
+    shopTable.row();
     addShopItem(movementSpeedBtn, shopSpeedUpLabel);
     addShopItem(prepSpeedBtn, shopPrepSpeedLabel);
     addShopItem(chopSpeedBtn, shopChopSpeedLabel);
@@ -402,6 +411,9 @@ public class Hud extends ApplicationAdapter {
     if (!moneyLabel.getText().toString().equals(String.format("$%d", reputationAndMoney[1]))) {
       moneyLabel.setText(String.format("$%d", reputationAndMoney[1]));
     }
+    if (powerUpSystem == null) {
+      return;
+    }
     shopSpeedUpLabel.setText(powerUpSystem.getNumSpeedUp());
     shopPrepSpeedLabel.setText(powerUpSystem.getNumPrepSpeed());
     shopChopSpeedLabel.setText(powerUpSystem.getNumChopSpeed());
@@ -410,9 +422,6 @@ public class Hud extends ApplicationAdapter {
     shopCooksLabel.setText(0);
 
     if (!hasInsufficientFunds) {
-      if (powerUpSystem == null) {
-        return;
-      }
       movementSpeedBtn.setDisabled(powerUpSystem.isMaxSpeedUp());
       prepSpeedBtn.setDisabled(powerUpSystem.isMaxPrepSpeed());
       chopSpeedBtn.setDisabled(powerUpSystem.isMaxChopSpeed());
@@ -483,9 +492,6 @@ public class Hud extends ApplicationAdapter {
    * @param deltaTime the time elapsed since last frame.
    */
   public void update(float deltaTime) {
-    if (isShopOpen) {
-      updateShop();
-    }
     if (paused) {
       if (pauseToggled) {
         pauseToggled = false;

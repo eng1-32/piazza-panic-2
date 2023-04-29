@@ -12,14 +12,14 @@ import com.devcharles.piazzapanic.utility.Mappers;
 
 public class SavableCustomer {
 
-  TransformComponent transformComponent;
+  public TransformComponent transformComponent;
 
   public int currentObjective = 0;
-  int slot = 0;
+  public int slot = 0;
 
-  FoodType order;
-  SavableFood food;
-  SavableTimer timer;
+  public FoodType order;
+  public SavableFood food;
+  public SavableTimer timer;
 
   public static SavableCustomer from(Entity entity) {
     if (entity == null) {

@@ -126,7 +126,11 @@ public class CustomerAISystem extends IteratingSystem {
     // Event though objectiveTaken has a key of type Integer, the JSON loader loads it as a String,
     // so type casting is necessary.
     for (Object key : savedSystem.objectiveTaken.keySet()) {
-      objectiveTaken.put(Integer.valueOf((String) key), savedSystem.objectiveTaken.get(key));
+      if (key instanceof Integer) {
+        objectiveTaken.put((Integer) key, savedSystem.objectiveTaken.get(key));
+      } else if (key instanceof String) {
+        objectiveTaken.put(Integer.valueOf((String) key), savedSystem.objectiveTaken.get(key));
+      }
     }
 
     // Set spawn timer

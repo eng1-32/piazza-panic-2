@@ -11,6 +11,9 @@ public class SavablePowerUpSystem {
   public int numPatienceIncrease = 0;
 
   public static SavablePowerUpSystem from(PowerUpSystem system) {
+    if (system == null) {
+      return null;
+    }
     SavablePowerUpSystem savableSystem = new SavablePowerUpSystem();
     savableSystem.numSpeedUp = system.getNumSpeedUp();
     savableSystem.numPrepSpeed = system.getNumPrepSpeed();

@@ -121,7 +121,7 @@ public class Hud extends ApplicationAdapter {
         } else if (keycode == Keys.TAB) {
           if (isShopOpen) {
             hideShop();
-          } else if (!paused){
+          } else if (!paused) {
             showShop();
           }
           // sets game to go bigscreen if F11 is pressed or sets it to go small screen
@@ -543,7 +543,7 @@ public class Hud extends ApplicationAdapter {
   }
 
   public void showShop() {
-    if (isShopOpen) {
+    if (isShopOpen || !isEndless) {
       return;
     }
     isShopOpen = true;
@@ -554,7 +554,7 @@ public class Hud extends ApplicationAdapter {
   }
 
   public void hideShop() {
-    if (!isShopOpen) {
+    if (!isShopOpen || !isEndless) {
       return;
     }
     isShopOpen = false;
@@ -571,7 +571,9 @@ public class Hud extends ApplicationAdapter {
     tableBottom.setVisible(true);
     tableRight.setVisible(true);
     pauseButton.setVisible(true);
-    shopButton.setVisible(true);
+    if (isEndless) {
+      shopButton.setVisible(true);
+    }
     tableBottomLabel.setVisible(true);
 
     // Hide the pause hud

@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class SavableCustomerAISystem {
 
-  public Map<Integer,Boolean> objectiveTaken;
+  public Map<Integer, Boolean> objectiveTaken;
   public SavableTimer spawnTimer;
   public int totalCustomers;
   public boolean firstSpawn = false;
@@ -17,6 +17,9 @@ public class SavableCustomerAISystem {
   public ArrayList<ArrayList<SavableCustomer>> customers;
 
   public static SavableCustomerAISystem from(CustomerAISystem system) {
+    if (system == null) {
+      return null;
+    }
     SavableCustomerAISystem savableSystem = new SavableCustomerAISystem();
     savableSystem.objectiveTaken = system.getObjectiveTaken();
     savableSystem.spawnTimer = SavableTimer.from(system.getSpawnTimer());

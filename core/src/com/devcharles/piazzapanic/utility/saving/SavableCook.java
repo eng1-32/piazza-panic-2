@@ -22,7 +22,7 @@ public class SavableCook {
     return cook;
   }
 
-  public void setSavableFoodStackFromEntities(FoodStack stack) {
+  private void setSavableFoodStackFromEntities(FoodStack stack) {
     for (Entity foodEntity : stack) {
       foodStack.push(SavableFood.from(foodEntity));
     }

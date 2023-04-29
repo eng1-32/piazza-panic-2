@@ -177,7 +177,8 @@ public class CustomerAISystem extends IteratingSystem {
     if (firstSpawn) {
       firstSpawn = false;
       spawnCustomerGroup();
-    } else if (numQueuedCustomers > 0 && numCustomers < MAX_CUSTOMERS) {
+    }
+    if (numQueuedCustomers > 0 && numCustomers < MAX_CUSTOMERS) {
       numQueuedCustomers--;
       if (isEndless) {
         spawnTimer.setDelay((int) (spawnTimer.getDelay() * 0.98f));
@@ -213,7 +214,9 @@ public class CustomerAISystem extends IteratingSystem {
       GdxTimer timer = Mappers.customer.get(newCustomer).timer;
       timer.setDelay((int) (customerPatience * patienceModifier));
       timer.start();
+      makeItGoThere(Mappers.aiAgent.get(newCustomer), customers.size());
     }
+    objectiveTaken.put(customers.size(), true);
     customers.add(group);
     totalCustomers++;
   }
@@ -228,10 +231,6 @@ public class CustomerAISystem extends IteratingSystem {
         transform.position.x >= (objectives.get(-1).get(0).getPosition().x - 2)) {
       destroyCustomer(entity);
       return;
-    }
-
-    if (aiAgent.steeringBody.getSteeringBehavior() == null) {
-      makeItGoThere(aiAgent, customers.size() - 1);
     }
 
     aiAgent.steeringBody.update(deltaTime);

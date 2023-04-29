@@ -42,7 +42,7 @@ public class SavableCustomerAISystemTest {
 
 
   @Test
-  public void from() {
+  public void testFrom() {
     Map<Integer, Map<Integer, Box2dLocation>> objectives = new HashMap<>();
     HashMap<Integer, Box2dLocation> destination = new HashMap<>();
     destination.put(0, new Box2dLocation());

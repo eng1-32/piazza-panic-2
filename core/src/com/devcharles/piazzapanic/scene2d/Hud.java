@@ -60,7 +60,7 @@ public class Hud extends ApplicationAdapter {
   private Image photo;
 
   private final PiazzaPanic game;
-  private Table tableBottom, tableRight, shopTable, tableTop, tablePause, tableBottomLabel;
+  private Table tableBottom, tableRight, shopTable, tablePause, tableBottomLabel;
   private Label shopSpeedUpLabel, shopPrepSpeedLabel, shopChopSpeedLabel, shopSalePriceLabel, shopPatienceLabel, shopCooksLabel;
 
   private boolean pauseToggled = false;
@@ -207,7 +207,7 @@ public class Hud extends ApplicationAdapter {
     moneyNameLabel.setVisible(false);
 
     // lays out timer and reputation
-    tableTop = new Table();
+    Table tableTop = new Table();
     tableTop.top();
     tableTop.setFillParent(true);
 
@@ -223,6 +223,32 @@ public class Hud extends ApplicationAdapter {
     tableTop.add(moneyLabel).expandX();
     tableTop.add(reputationLabel).expandX();
     tableTop.add().width(120).padRight(10);
+
+    Table tableLeft = new Table();
+    tableLeft.left();
+    tableLeft.bottom();
+    tableLeft.setFillParent(true);
+
+    Label wasdLabel = new Label("WASD: Movement", hudLabelStyle);
+    wasdLabel.setFontScale(0.8f);
+    Label putDownLabel = new Label("F: Put Down Item", hudLabelStyle);
+    putDownLabel.setFontScale(0.8f);
+    Label interactLabel = new Label("Q: Interact With Station", hudLabelStyle);
+    interactLabel.setFontScale(0.8f);
+    Label pickUpLabel = new Label("R: Pick Up Item", hudLabelStyle);
+    pickUpLabel.setFontScale(0.8f);
+    Label itemLabel = new Label("1-9: Move Item to Top", hudLabelStyle);
+    itemLabel.setFontScale(0.8f);
+
+    tableLeft.add(wasdLabel).padBottom(30).left().padLeft(20);
+    tableLeft.row();
+    tableLeft.add(putDownLabel).padBottom(30).left().padLeft(20);
+    tableLeft.row();
+    tableLeft.add(interactLabel).padBottom(30).left().padLeft(20);
+    tableLeft.row();
+    tableLeft.add(pickUpLabel).padBottom(30).left().padLeft(20);
+    tableLeft.row();
+    tableLeft.add(itemLabel).padBottom(30).left().padLeft(20);
 
     tableBottomLabel = new Table();
     tableBottomLabel.bottom();
@@ -279,6 +305,7 @@ public class Hud extends ApplicationAdapter {
     stage.addActor(tablePause);
     stage.addActor(shopTable);
     stage.addActor(tableTop);
+    stage.addActor(tableLeft);
     stage.addActor(tableRight);
     stage.addActor(tableBottom);
     stage.addActor(tableBottomLabel);

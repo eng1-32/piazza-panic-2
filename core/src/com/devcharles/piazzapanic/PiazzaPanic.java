@@ -13,6 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 /**
  * This class wraps the spritebatch.
+ *
+ * @author Andrey Samoilov
+ * @author Alistair Foggin
  */
 public class PiazzaPanic extends Game {
 

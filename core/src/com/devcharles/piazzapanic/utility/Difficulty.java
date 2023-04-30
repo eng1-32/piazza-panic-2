@@ -1,5 +1,8 @@
 package com.devcharles.piazzapanic.utility;
 
+/**
+ * @author Alistair Foggin
+ */
 public class Difficulty {
 
   public enum Level {
@@ -8,6 +11,12 @@ public class Difficulty {
     HARD,
   }
 
+  /**
+   * Create a difficulty level without needing constructor parameters, so it is serializable
+   *
+   * @param difficultyLevel The difficulty level
+   * @return the difficulty settings for the specified level
+   */
   public static Difficulty createDifficulty(Level difficultyLevel) {
     Difficulty difficulty = new Difficulty();
     switch (difficultyLevel) {

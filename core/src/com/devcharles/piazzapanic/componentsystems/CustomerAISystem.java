@@ -35,6 +35,9 @@ import com.devcharles.piazzapanic.utility.box2d.Box2dRadiusProximity;
 
 /**
  * Controls the AI Customers, creates orders.
+ *
+ * @author Andrey Samoilov
+ * @author Alistair Foggin
  */
 public class CustomerAISystem extends IteratingSystem {
 
@@ -120,6 +123,12 @@ public class CustomerAISystem extends IteratingSystem {
     spawnTimer.start();
   }
 
+  /**
+   * Load state from the saved ai system
+   *
+   * @param savedSystem the saved state to load in
+   * @author Alistair Foggin
+   */
   public void loadFromSave(SavableCustomerAISystem savedSystem) {
     // Set objective taken.
     objectiveTaken.clear();

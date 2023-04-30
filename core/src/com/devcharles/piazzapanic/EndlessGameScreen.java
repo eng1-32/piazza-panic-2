@@ -25,6 +25,9 @@ import com.devcharles.piazzapanic.utility.saving.GameState;
 import com.devcharles.piazzapanic.utility.saving.SavableCook;
 import com.devcharles.piazzapanic.utility.saving.SavableFood;
 
+/**
+ * @author Alistair Foggin
+ */
 public class EndlessGameScreen extends BaseGameScreen {
 
   private Difficulty difficulty;

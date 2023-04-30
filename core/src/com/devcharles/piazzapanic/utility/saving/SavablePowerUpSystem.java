@@ -2,6 +2,9 @@ package com.devcharles.piazzapanic.utility.saving;
 
 import com.devcharles.piazzapanic.componentsystems.PowerUpSystem;
 
+/**
+ * @author Alistair Foggin
+ */
 public class SavablePowerUpSystem {
 
   public int numSpeedUp = 0;
@@ -10,6 +13,12 @@ public class SavablePowerUpSystem {
   public int numSalePrice = 0;
   public int numPatienceIncrease = 0;
 
+  /**
+   * Save parameters from the PowerUpSystem into a serializable form
+   *
+   * @param system the system to copy parameters from
+   * @return the savable power up system
+   */
   public static SavablePowerUpSystem from(PowerUpSystem system) {
     if (system == null) {
       return null;

@@ -9,6 +9,9 @@ import com.devcharles.piazzapanic.componentsystems.PhysicsSystem;
 import com.devcharles.piazzapanic.componentsystems.PlayerControlSystem;
 import com.devcharles.piazzapanic.componentsystems.RenderingSystem;
 
+/**
+ * @author Alistair Foggin
+ */
 public class ScenarioGameScreen extends BaseGameScreen {
 
   public ScenarioGameScreen(PiazzaPanic game, String mapPath, int maxCustomers) {

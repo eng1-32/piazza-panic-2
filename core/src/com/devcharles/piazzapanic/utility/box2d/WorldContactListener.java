@@ -12,6 +12,8 @@ import com.devcharles.piazzapanic.utility.Pair;
 
 /**
  * Handles collision events, allows interactivity between the player and other objects.
+ *
+ * @author Andrey Samoilov
  */
 public class WorldContactListener implements ContactListener {
 

@@ -32,6 +32,10 @@ import java.util.ArrayList;
 
 /**
  * HUD user interface rendering for the game, also includes the win screen.
+ *
+ * @author Andrey Samoilov
+ * @author Louis Warren
+ * @author Alistair Foggin
  */
 public class Hud extends ApplicationAdapter {
 

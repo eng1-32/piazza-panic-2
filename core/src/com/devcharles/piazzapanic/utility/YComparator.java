@@ -5,21 +5,24 @@ import java.util.Comparator;
 import com.badlogic.ashley.core.Entity;
 
 /**
- * Compares entities by their Y coordinate, so entities that are lower on the
- * screen appear in front for a consistent perspective.
+ * Compares entities by their Y coordinate, so entities that are lower on the screen appear in front
+ * for a consistent perspective.
+ *
+ * @author Andrey Samoilov
  */
 public class YComparator implements Comparator<Entity> {
-    /* (non-Javadoc)
-     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-     */
-    @Override
-    public int compare(Entity entityA, Entity entityB) {
 
-        float az, bz;
+  /* (non-Javadoc)
+   * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+   */
+  @Override
+  public int compare(Entity entityA, Entity entityB) {
 
-        az = Mappers.transform.get(entityA).position.y;
-        bz = Mappers.transform.get(entityB).position.y;
+    float az, bz;
 
-        return Double.compare(bz, az);
-    }
+    az = Mappers.transform.get(entityA).position.y;
+    bz = Mappers.transform.get(entityB).position.y;
+
+    return Double.compare(bz, az);
+  }
 }

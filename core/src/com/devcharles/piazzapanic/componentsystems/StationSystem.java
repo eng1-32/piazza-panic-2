@@ -25,6 +25,10 @@ import com.devcharles.piazzapanic.utility.Station.StationType;
 
 /**
  * This system manages player-station interaction and station food processing.
+ *
+ * @author Andrey Samoilov
+ * @author Alistair Foggin
+ * @author Matthew Fitzpatrick
  */
 public class StationSystem extends IteratingSystem {
 

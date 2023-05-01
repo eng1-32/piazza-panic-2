@@ -1,8 +1,5 @@
 package com.devcharles.piazzapanic.utility;
 
-import com.devcharles.piazzapanic.components.FoodComponent.FoodType;
-import java.util.ArrayDeque;
-
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.devcharles.piazzapanic.components.ItemComponent;
@@ -43,7 +40,7 @@ public class FoodStack extends ArrayList<Entity> {
   /**
    * Used internally, please use {@code FoodStack.pushItem(Entity food)} instead.
    */
-  private void push(Entity food) {
+  public void push(Entity food) {
     this.add(0, food);
     setVisibility(this.size(), null);
   }

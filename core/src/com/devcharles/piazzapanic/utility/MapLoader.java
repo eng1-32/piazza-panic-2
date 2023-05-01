@@ -13,8 +13,6 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
@@ -179,34 +177,34 @@ public class MapLoader {
     //TiledMapTileLayer stations = (TiledMapTileLayer) (map.getLayers().get(stationLayer));
     //TiledMapTileLayer stations_f = (TiledMapTileLayer) (map.getLayers().get(stationLayer + "_f"));
     MapObjects stations = map.getLayers().get("StationObjects").getObjects();
-    MapObjects stations_f = map.getLayers().get("StationObjects_f").getObjects();
+//    MapObjects stations_f = map.getLayers().get("StationObjects_f").getObjects();
     Map<Integer, Entity> stationsMap = new HashMap<>();
 
     int id = 0;
 
-    for (MapObject mapObject : stations){
+    for (MapObject mapObject : stations) {
       MapProperties properties = mapObject.getProperties();
       TiledMapTileMapObject point = (TiledMapTileMapObject) mapObject;
 
       Vector2 pos = new Vector2(point.getX() / ppt, point.getY() / ppt);
       Integer object = properties.get(stationIdProperty, Integer.class);
-      if (object == null){
+      if (object == null) {
         continue;
       }
       StationType stationType = StationType.from(object);
       FoodType ingredientType = null;
 
-      if(stationType == StationType.ingredient){
+      if (stationType == StationType.ingredient) {
         ingredientType = FoodType.from((Integer) properties.get(ingredientTypeProperty));
       }
       Boolean isLocked = properties.get("locked", Boolean.class);
-      if(properties.get("locked", Boolean.class) == null){
+      if (properties.get("locked", Boolean.class) == null) {
         isLocked = false;
       }
       stationsMap.put(id,
           factory.createStation(id, stationType, pos, ingredientType, isLocked));
       id++;
-      }
+    }
     return stationsMap;
   }
 }

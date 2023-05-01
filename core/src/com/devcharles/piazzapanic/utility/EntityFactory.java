@@ -272,7 +272,7 @@ public class EntityFactory {
       System.arraycopy(tmp[i], 0, frames, i * cols, cols);
     }
 
-    for (int i = 1; i < 14; i++) {
+    for (int i = 1; i < 26; i++) {
       foodTextures.put(FoodType.from(i), frames[i]);
     }
   }
@@ -329,6 +329,8 @@ public class EntityFactory {
 
     FoodType[] s = new FoodType[Station.serveRecipes.values().size()];
     s = Station.serveRecipes.values().toArray(s);
+    //This is to prevent customers asking for uncooked pizzas
+    s[3] = FoodType.pizza;
 
     int orderIndex = ThreadLocalRandom.current().nextInt(0, s.length);
 

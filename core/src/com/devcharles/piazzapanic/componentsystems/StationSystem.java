@@ -54,7 +54,7 @@ public class StationSystem extends IteratingSystem {
   protected void processEntity(Entity entity, float deltaTime) {
     StationComponent station = Mappers.station.get(entity);
 
-    stationTick(station, deltaTime);
+    stationTick(entity, station, deltaTime);
 
     if (station.interactingCook != null) {
 
@@ -149,10 +149,10 @@ public class StationSystem extends IteratingSystem {
     // success
 
     CookingComponent cooking = getEngine().createComponent(CookingComponent.class);
-    if (food.type == FoodType.unformedPatty) {
+    if (food.type == FoodType.unformedPatty || food.type == FoodType.unformedDough) {
       cooking.timer.setDelay((int) (cooking.timer.getDelay() / station.prepModifier));
     } else if (food.type == FoodType.onion || food.type == FoodType.lettuce
-        || food.type == FoodType.tomato) {
+        || food.type == FoodType.tomato || food.type == FoodType.cheese) {
       cooking.timer.setDelay((int) (cooking.timer.getDelay() / station.chopModifier));
     }
 
@@ -273,15 +273,15 @@ public class StationSystem extends IteratingSystem {
    * Cook the food in the station. This progresses the timer in the food being cooked in the
    * station.
    *
-   * @param station
+   * @param stationComponent
    * @param deltaTime
    */
-  void stationTick(StationComponent station, float deltaTime) {
-    if (station.type == StationType.cutting_board && station.interactingCook == null) {
+  void stationTick(Entity station, StationComponent stationComponent, float deltaTime) {
+    if (stationComponent.type == StationType.cutting_board && stationComponent.interactingCook == null) {
       return;
     }
 
-    for (Entity foodEntity : station.food) {
+    for (Entity foodEntity : stationComponent.food) {
 
       if (foodEntity == null || !Mappers.cooking.has(foodEntity)) {
         continue;
@@ -297,7 +297,7 @@ public class StationSystem extends IteratingSystem {
 
         FoodComponent food = Mappers.food.get(foodEntity);
         // Process the food into it's next form
-        food.type = Station.recipeMap.get(station.type).get(food.type);
+        food.type = Station.recipeMap.get(stationComponent.type).get(food.type);
         Mappers.texture.get(foodEntity).region = EntityFactory.getFoodTexture(food.type);
         foodEntity.remove(CookingComponent.class);
         Gdx.app.log("Food ready", food.type.name());
@@ -309,6 +309,14 @@ public class StationSystem extends IteratingSystem {
             foodEntity.add(readyTint);
           } else {
             foodEntity.remove(TintComponent.class);
+          }
+          //TODO: Find out why the tint is not applying
+          if (stationComponent.type == StationType.oven){
+            if(!Mappers.tint.has(station)){
+              station.add(readyTint);
+            }else {
+              station.remove(TintComponent.class);
+            }
           }
         }
 

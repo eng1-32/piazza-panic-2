@@ -6,4 +6,6 @@ public class PlayerComponent implements Component {
     public boolean putDown = false;
     public boolean pickUp = false;
     public boolean interact = false;
+    public boolean swap = false;
+    public int swapNum = 0;
 }

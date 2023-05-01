@@ -1,12 +1,14 @@
 package com.devcharles.piazzapanic.utility;
 
+import com.devcharles.piazzapanic.components.FoodComponent.FoodType;
 import java.util.ArrayDeque;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.devcharles.piazzapanic.components.ItemComponent;
+import java.util.ArrayList;
 
-public class FoodStack extends ArrayDeque<Entity> {
+public class FoodStack extends ArrayList<Entity> {
 
   private Engine engine;
 
@@ -38,19 +40,19 @@ public class FoodStack extends ArrayDeque<Entity> {
   /**
    * Used internally, please use {@code FoodStack.pushItem(Entity food)} instead.
    */
-  @Override
   public void push(Entity food) {
-    super.push(food);
+    this.add(0, food);
     setVisibility(this.size(), null);
   }
 
 
   /* (non-Javadoc)
+   * Recreation of the pop function
    * @see java.util.ArrayDeque#pop()
    */
-  @Override
   public Entity pop() {
-    Entity e = super.pop();
+    Entity e = this.get(0);
+    this.remove(0);
     e.remove(ItemComponent.class);
     setVisibility(this.size(), e);
     return e;
@@ -69,4 +71,17 @@ public class FoodStack extends ArrayDeque<Entity> {
       Mappers.transform.get(e).isHidden = false;
     }
   }
+
+  public Entity peek(){
+    return this.get(0);
+  }
+
+  public void move(int index){
+    if(this.size() > 1 && index < this.size()){
+      Entity temp = this.get(index);
+      this.remove(index);
+      this.add(0, temp);
+    }
+  }
+
 }

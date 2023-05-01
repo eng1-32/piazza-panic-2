@@ -228,20 +228,30 @@ public class StationSystem extends IteratingSystem {
   }
 
   /**
-   * Attempt to create a food.
+   * Attempt to create food from a set of ingredients.
    *
    * @param count number of ingredients to combine
    */
   FoodType tryServe(ControllableComponent controllable, int count) {
     Set<FoodType> ingredients = new HashSet<FoodType>();
+    FoodType[] twoIngredients = {FoodType.grilledPatty, FoodType.toastedBuns,
+        FoodType.cookedPotato, FoodType.slicedCheese};
+    FoodType[] threeIngredients = {FoodType.slicedLettuce, FoodType.slicedTomato,
+        FoodType.slicedOnion, FoodType.formedDough, FoodType.tomato, FoodType.cheese};
     int i = 0;
     for (Entity foodEntity : controllable.currentFood) {
       if (i > count - 1) {
         break;
       }
-      Boolean checkBurnt = Mappers.food.get(foodEntity).getIsBurned();
-      if(!checkBurnt){
-        ingredients.add(Mappers.food.get(foodEntity).type);
+      FoodComponent check = Mappers.food.get(foodEntity);
+      if(count == 2){
+        if(!check.getIsBurned() && Arrays.asList(twoIngredients).contains(check.type)){
+          ingredients.add(Mappers.food.get(foodEntity).type);
+        }
+      } else if (count == 3) {
+        if(!check.getIsBurned() && Arrays.asList(threeIngredients).contains(check.type)) {
+          ingredients.add(Mappers.food.get(foodEntity).type);
+        }
       }
 
       i++;

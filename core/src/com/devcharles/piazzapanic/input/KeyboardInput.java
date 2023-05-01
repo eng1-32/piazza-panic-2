@@ -16,6 +16,8 @@ public class KeyboardInput implements InputProcessor {
   public boolean interact;
 
   public boolean disableHud;
+  public boolean swap;
+  public int swapNum;
 
   public void clearInputs() {
     left = false;
@@ -27,6 +29,8 @@ public class KeyboardInput implements InputProcessor {
     pickUp = false;
     interact = false;
     disableHud = false;
+    swap = false;
+    swapNum = 0;
   }
 
   @Override
@@ -63,6 +67,46 @@ public class KeyboardInput implements InputProcessor {
         break;
       case Keys.H:
         disableHud = true;
+        break;
+      case Keys.NUM_1:
+        swap = true;
+        swapNum = 0;
+        break;
+      case Keys.NUM_2:
+        swap = true;
+        swapNum = 1;
+        break;
+      case Keys.NUM_3:
+        swap = true;
+        swapNum = 2;
+        break;
+      case Keys.NUM_4:
+        swap = true;
+        swapNum = 3;
+        break;
+      case Keys.NUM_5:
+        swap = true;
+        swapNum = 4;
+        break;
+      case Keys.NUM_6:
+        swap = true;
+        swapNum = 5;
+        break;
+      case Keys.NUM_7:
+        swap = true;
+        swapNum = 6;
+        break;
+      case Keys.NUM_8:
+        swap = true;
+        swapNum = 7;
+        break;
+      case Keys.NUM_9:
+        swap = true;
+        swapNum = 8;
+        break;
+      case Keys.NUM_0:
+        swap = true;
+        swapNum = 9;
         break;
       default:
         processed = false;

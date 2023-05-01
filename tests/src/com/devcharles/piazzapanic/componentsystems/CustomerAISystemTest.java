@@ -212,7 +212,7 @@ public class CustomerAISystemTest {
     CustomerAISystem system = new CustomerAISystem(objectives, world,
         factory, mock(Hud.class), new Integer[]{}, false);
     engine.addSystem(system);
-    Entity customer = factory.createCustomer(Vector2.Zero, null);
+    Entity customer = factory.createCustomer(Vector2.Zero, null, false);
     Entity food = factory.createFood(FoodType.from(1));
     customer.getComponent(CustomerComponent.class).food = food;
 
@@ -254,7 +254,7 @@ public class CustomerAISystemTest {
     CustomerAISystem system = new CustomerAISystem(objectives, world,
         factory, mock(Hud.class), new Integer[]{}, false);
     engine.addSystem(system);
-    Entity customer = factory.createCustomer(Vector2.Zero, null);
+    Entity customer = factory.createCustomer(Vector2.Zero, null, false);
     AIAgentComponent aiAgentComponent = Mappers.aiAgent.get(customer);
 
     assertNull("There should be no steering behaviour.",
@@ -274,7 +274,7 @@ public class CustomerAISystemTest {
     CustomerAISystem system = new CustomerAISystem(objectives, world,
         factory, mock(Hud.class), reputationPoints, false);
     engine.addSystem(system);
-    Entity customer = factory.createCustomer(Vector2.Zero, null);
+    Entity customer = factory.createCustomer(Vector2.Zero, null, false);
     Entity food = factory.createFood(FoodType.from(1));
     CustomerComponent customerComponent = Mappers.customer.get(customer);
     customerComponent.order = FoodType.burger;

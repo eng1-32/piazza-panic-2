@@ -41,7 +41,7 @@ public class SavableCustomer {
 
   public Entity toEntity(EntityFactory factory) {
     Entity customer = factory.createCustomer(
-        new Vector2(transformComponent.position.x, transformComponent.position.y), order);
+        new Vector2(transformComponent.position.x, transformComponent.position.y), order, true);
     Mappers.transform.get(customer).copyValues(transformComponent);
 
     AIAgentComponent aiAgentComponent = Mappers.aiAgent.get(customer);

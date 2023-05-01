@@ -165,7 +165,7 @@ public class EntityFactoryTest {
 
   @Test
   public void testCreateCustomer() {
-    Entity customer = factory.createCustomer(Vector2.Zero, null);
+    Entity customer = factory.createCustomer(Vector2.Zero, null, false);
     ImmutableArray<Entity> entities = engine.getEntitiesFor(
         Family.all(B2dBodyComponent.class, TransformComponent.class,
             CustomerComponent.class, TextureComponent.class, AnimationComponent.class,

@@ -7,6 +7,7 @@ import com.badlogic.ashley.core.Component;
 
 public class FoodComponent implements Component {
     public FoodType type;
+    Boolean isBurned = false;
 
     public enum FoodType {
         // These ids correspond to the order of the food in the sprite!
@@ -64,4 +65,8 @@ public class FoodComponent implements Component {
             return _map.get(value);
         }
     }
+
+    public void setBurned(Boolean value){isBurned = value;}
+    public Boolean getIsBurned(){return isBurned;}
+
 }

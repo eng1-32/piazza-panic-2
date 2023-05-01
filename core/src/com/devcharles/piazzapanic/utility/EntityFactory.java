@@ -1,6 +1,7 @@
 package com.devcharles.piazzapanic.utility;
 
 import com.badlogic.gdx.assets.AssetManager;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.HashMap;
@@ -294,7 +295,7 @@ public class EntityFactory {
    * @param foodType the type of food that the customer wants
    * @return reference to the entity.
    */
-  public Entity createCustomer(Vector2 position, FoodType foodType) {
+  public Entity createCustomer(Vector2 position, FoodType foodType, Boolean isEndless) {
     Entity entity = engine.createEntity();
 
     B2dBodyComponent b2dBody = engine.createComponent(B2dBodyComponent.class);
@@ -326,11 +327,12 @@ public class EntityFactory {
 
     // Create a steering body with no behaviour (to be set later)
     aiAgent.steeringBody = new Box2dSteeringBody(b2dBody.body, true, 0.5f);
-
-    FoodType[] s = new FoodType[Station.serveRecipes.values().size()];
-    s = Station.serveRecipes.values().toArray(s);
-    //This is to prevent customers asking for uncooked pizzas
-    s[3] = FoodType.pizza;
+    FoodType[] s;
+    if(!isEndless){
+      s = new FoodType[]{FoodType.burger, FoodType.salad};
+    }else{
+      s = new FoodType[]{FoodType.burger, FoodType.salad, FoodType.pizza, FoodType.jacketPotato};
+    }
 
     int orderIndex = ThreadLocalRandom.current().nextInt(0, s.length);
 

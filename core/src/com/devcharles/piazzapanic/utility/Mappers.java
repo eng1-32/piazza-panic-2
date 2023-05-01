@@ -19,6 +19,8 @@ import com.devcharles.piazzapanic.components.WalkingAnimationComponent;
 /**
  * Static class, holds all the {@link ComponentMapper} instances we need, as there is no reason to
  * have multiple instaces of a {@link ComponentMapper}.
+ *
+ * @author Andrey Samoilov
  */
 public class Mappers {
   public static final ComponentMapper<B2dBodyComponent> b2body = ComponentMapper.getFor(

@@ -9,6 +9,11 @@ import com.badlogic.ashley.core.Entity;
 import com.devcharles.piazzapanic.components.FoodComponent.FoodType;
 import com.devcharles.piazzapanic.utility.Station.StationType;
 
+/**
+ * @author Andrey Samoilov
+ * @author Ross Holmes
+ * @author Alistair Foggin
+ */
 public class StationComponent implements Component {
 
   public int id = 0;
@@ -21,6 +26,13 @@ public class StationComponent implements Component {
   public FoodType ingredient = null;
   public Boolean isLocked;
 
+  /**
+   * Copy values from another station component into this one
+   *
+   * @param otherStation the station to copy the parameters from
+   * @param engine       the engine that contains the entities within this component
+   * @author Alistair Foggin
+   */
   public void copyValues(StationComponent otherStation, Engine engine) {
     id = otherStation.id;
     interactingCook = otherStation.interactingCook;

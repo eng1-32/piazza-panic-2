@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 /**
  * Abstract class that helps with setting up animations for characters in the game. To use,
  * initialise  each directional animation.
+ *
+ * @author Andrey Samoilov
  */
 public abstract class WalkAnimator {
 

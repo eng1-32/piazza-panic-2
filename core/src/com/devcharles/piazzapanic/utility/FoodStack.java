@@ -8,6 +8,9 @@ import com.badlogic.ashley.core.Entity;
 import com.devcharles.piazzapanic.components.ItemComponent;
 import java.util.ArrayList;
 
+/**
+ * @author Andrey Samoilov
+ */
 public class FoodStack extends ArrayList<Entity> {
 
   private Engine engine;
@@ -40,7 +43,7 @@ public class FoodStack extends ArrayList<Entity> {
   /**
    * Used internally, please use {@code FoodStack.pushItem(Entity food)} instead.
    */
-  public void push(Entity food) {
+  private void push(Entity food) {
     this.add(0, food);
     setVisibility(this.size(), null);
   }
@@ -72,12 +75,12 @@ public class FoodStack extends ArrayList<Entity> {
     }
   }
 
-  public Entity peek(){
+  public Entity peek() {
     return this.get(0);
   }
 
-  public void move(int index){
-    if(this.size() > 1 && index < this.size()){
+  public void move(int index) {
+    if (this.size() > 1 && index < this.size()) {
       Entity temp = this.get(index);
       this.remove(index);
       this.add(0, temp);

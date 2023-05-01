@@ -20,6 +20,9 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Matthew Fitzpatrick
+ */
 @RunWith(GdxTestRunner.class)
 public class MapBodyBuilderTest {
 
@@ -40,7 +43,7 @@ public class MapBodyBuilderTest {
     Vector2 actualVector = new Vector2(mapObjRect.getX() / 16, mapObjRect.getY() / 16);
     PolygonShape testPoly = getRectangle(testRectObj);
 
-    List<Vector2> actualOutput = new ArrayList<Vector2>();
+    List<Vector2> actualOutput = new ArrayList<>();
     for (int i = 0; i < 4; i++) {
       Vector2 testVector = new Vector2(0, 0);
       testPoly.getVertex(i, testVector);
@@ -95,7 +98,7 @@ public class MapBodyBuilderTest {
     assertEquals("Test that the shape has the correct number of vertices", polyVertices.length / 2,
         testPolygon.getVertexCount());
 
-    List<Vector2> actualOutput = new ArrayList<Vector2>();
+    List<Vector2> actualOutput = new ArrayList<>();
     for (int i = 0; i < testPolygon.getVertexCount(); i++) {
       Vector2 testVector = new Vector2(0, 0);
       testPolygon.getVertex(i, testVector);
@@ -127,7 +130,7 @@ public class MapBodyBuilderTest {
     assertEquals("Test that the ChainShape has the correct number of vertices",
         polyVertices.length / 2, testPolygon.getVertexCount());
 
-    List<Vector2> actualOutput = new ArrayList<Vector2>();
+    List<Vector2> actualOutput = new ArrayList<>();
     for (int i = 0; i < testPolygon.getVertexCount(); i++) {
       Vector2 testVector = new Vector2(0, 0);
       testPolygon.getVertex(i, testVector);

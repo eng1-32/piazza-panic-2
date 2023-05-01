@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
  * Animations specific to the customers.
+ * @author Andrey Samoilov
+ * @author Alistair Foggin
  */
 public class CustomerAnimator extends WalkAnimator {
 

@@ -11,6 +11,11 @@ import com.devcharles.piazzapanic.utility.GdxTimer;
 import com.devcharles.piazzapanic.utility.Mappers;
 import com.devcharles.piazzapanic.utility.saving.SavablePowerUpSystem;
 
+/**
+ * Handles adding specific power ups when bought in the shop
+ *
+ * @author Alistair Foggin
+ */
 public class PowerUpSystem extends EntitySystem {
 
   private static final int MAX_SINGLE_POWER_UP = 5;
@@ -28,6 +33,7 @@ public class PowerUpSystem extends EntitySystem {
   public boolean isMaxSpeedUp() {
     return numSpeedUp == MAX_SINGLE_POWER_UP;
   }
+
   public void addSpeedUp() {
     if (numSpeedUp >= MAX_SINGLE_POWER_UP) {
       return;
@@ -40,75 +46,42 @@ public class PowerUpSystem extends EntitySystem {
     }
   }
 
-  public void removeSpeedUp() {
-    if (numSpeedUp == 0) {
-      return;
-    }
-    numSpeedUp--;
-    ImmutableArray<Entity> cooks = getEngine().getEntitiesFor(
-        Family.all(ControllableComponent.class).get());
-    for (Entity cook : cooks) {
-      Mappers.controllable.get(cook).speedModifier /= speedUpModifier;
-    }
-  }
-
   public boolean isMaxPrepSpeed() {
     return numPrepSpeed == MAX_SINGLE_POWER_UP;
   }
+
   public void addPrepSpeed() {
     if (numPrepSpeed >= MAX_SINGLE_POWER_UP) {
       return;
     }
     numPrepSpeed++;
-    ImmutableArray<Entity> cooks = getEngine().getEntitiesFor(
+    ImmutableArray<Entity> stations = getEngine().getEntitiesFor(
         Family.all(StationComponent.class).get());
-    for (Entity cook : cooks) {
+    for (Entity cook : stations) {
       Mappers.station.get(cook).prepModifier *= prepSpeedModifier;
-    }
-  }
-
-  public void removePrepSpeed() {
-    if (numPrepSpeed == 0) {
-      return;
-    }
-    numPrepSpeed--;
-    ImmutableArray<Entity> cooks = getEngine().getEntitiesFor(
-        Family.all(StationComponent.class).get());
-    for (Entity cook : cooks) {
-      Mappers.station.get(cook).prepModifier /= prepSpeedModifier;
     }
   }
 
   public boolean isMaxChopSpeed() {
     return numChopSpeed == MAX_SINGLE_POWER_UP;
   }
+
   public void addChopSpeed() {
     if (numChopSpeed >= MAX_SINGLE_POWER_UP) {
       return;
     }
     numChopSpeed++;
-    ImmutableArray<Entity> cooks = getEngine().getEntitiesFor(
+    ImmutableArray<Entity> stations = getEngine().getEntitiesFor(
         Family.all(StationComponent.class).get());
-    for (Entity cook : cooks) {
+    for (Entity cook : stations) {
       Mappers.station.get(cook).chopModifier *= chopSpeedModifier;
-    }
-  }
-
-  public void removeChopSpeed() {
-    if (numChopSpeed == 0) {
-      return;
-    }
-    numChopSpeed--;
-    ImmutableArray<Entity> cooks = getEngine().getEntitiesFor(
-        Family.all(StationComponent.class).get());
-    for (Entity cook : cooks) {
-      Mappers.station.get(cook).chopModifier /= chopSpeedModifier;
     }
   }
 
   public boolean isMaxSalePrice() {
     return numSalePrice == MAX_SINGLE_POWER_UP;
   }
+
   public void addSalePrice() {
     if (numSalePrice >= MAX_SINGLE_POWER_UP) {
       return;
@@ -118,18 +91,10 @@ public class PowerUpSystem extends EntitySystem {
     numSalePrice++;
   }
 
-  public void removeSalePrice() {
-    if (numSalePrice == 0) {
-      return;
-    }
-    CustomerAISystem aiSystem = getEngine().getSystem(CustomerAISystem.class);
-    aiSystem.setIncomeModifier(aiSystem.getIncomeModifier() - 1);
-    numSalePrice--;
-  }
-
   public boolean isMaxPatience() {
     return numPatienceIncrease == MAX_SINGLE_POWER_UP;
   }
+
   public void addPatience() {
     if (numPatienceIncrease >= MAX_SINGLE_POWER_UP) {
       return;
@@ -146,25 +111,6 @@ public class PowerUpSystem extends EntitySystem {
     CustomerAISystem aiSystem = getEngine().getSystem(CustomerAISystem.class);
     if (aiSystem != null) {
       aiSystem.setPatienceModifier(aiSystem.getPatienceModifier() * patienceModifier);
-    }
-  }
-
-  public void removePatience() {
-    if (numPatienceIncrease == 0) {
-      return;
-    }
-
-    ImmutableArray<Entity> customers = getEngine().getEntitiesFor(
-        Family.all(CustomerComponent.class).get());
-    for (Entity customer : customers) {
-      GdxTimer timer = Mappers.customer.get(customer).timer;
-      timer.setDelay((int) (timer.getDelay() / patienceModifier));
-    }
-
-    numPatienceIncrease--;
-    CustomerAISystem aiSystem = getEngine().getSystem(CustomerAISystem.class);
-    if (aiSystem != null) {
-      aiSystem.setPatienceModifier(aiSystem.getPatienceModifier() / patienceModifier);
     }
   }
 

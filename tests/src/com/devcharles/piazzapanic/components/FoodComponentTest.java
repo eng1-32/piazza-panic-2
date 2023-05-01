@@ -7,6 +7,9 @@ import com.devcharles.piazzapanic.components.FoodComponent.FoodType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * @author James Wild
+ */
 @RunWith(GdxTestRunner.class)
 public class FoodComponentTest {
 

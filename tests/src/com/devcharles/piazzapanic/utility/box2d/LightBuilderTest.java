@@ -11,6 +11,9 @@ import com.devcharles.piazzapanic.GdxTestRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ *
+ */
 @RunWith(GdxTestRunner.class)
 public class LightBuilderTest {
 

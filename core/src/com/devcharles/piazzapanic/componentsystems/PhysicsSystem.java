@@ -14,6 +14,8 @@ import com.devcharles.piazzapanic.utility.Mappers;
 /**
  * Steps the Box2D world and maps the body positions to their TransformComponents to link physics
  * and rendering.
+ *
+ * @author Andrey Samoilov
  */
 public class PhysicsSystem extends IteratingSystem {
 

@@ -6,18 +6,22 @@ import com.badlogic.gdx.utils.Pool.Poolable;
 import com.devcharles.piazzapanic.components.FoodComponent.FoodType;
 import com.devcharles.piazzapanic.utility.GdxTimer;
 
+/**
+ * @author Andrey Samoilov
+ */
 public class CustomerComponent implements Component, Poolable {
-    public FoodType order = null;
-    public Entity interactingCook = null;
-    public Entity food = null;
-    public GdxTimer timer = new GdxTimer(90000, false, true);
 
-    @Override
-    public void reset() {
-        order = null;
-        interactingCook = null;
-        food = null;
-        timer.stop();
-        timer.reset();
-    }
+  public FoodType order = null;
+  public Entity interactingCook = null;
+  public Entity food = null;
+  public GdxTimer timer = new GdxTimer(90000, false, true);
+
+  @Override
+  public void reset() {
+    order = null;
+    interactingCook = null;
+    food = null;
+    timer.stop();
+    timer.reset();
+  }
 }

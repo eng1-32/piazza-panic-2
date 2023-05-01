@@ -12,6 +12,8 @@ import com.devcharles.piazzapanic.utility.Mappers;
 
 /**
  * Controls the one cook that has the PlayerComponent
+ * @author Andrey Samoilov
+ * @author Alistair Foggin
  */
 public class PlayerControlSystem extends IteratingSystem {
 

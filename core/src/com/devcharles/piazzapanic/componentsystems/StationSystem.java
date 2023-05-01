@@ -18,7 +18,6 @@ import com.devcharles.piazzapanic.components.StationComponent;
 import com.devcharles.piazzapanic.components.TintComponent;
 import com.devcharles.piazzapanic.components.CookingComponent;
 import com.devcharles.piazzapanic.components.FoodComponent.FoodType;
-import com.devcharles.piazzapanic.input.KeyboardInput;
 import com.devcharles.piazzapanic.utility.EntityFactory;
 import com.devcharles.piazzapanic.utility.Mappers;
 import com.devcharles.piazzapanic.utility.Station;
@@ -26,10 +25,13 @@ import com.devcharles.piazzapanic.utility.Station.StationType;
 
 /**
  * This system manages player-station interaction and station food processing.
+ *
+ * @author Andrey Samoilov
+ * @author Alistair Foggin
+ * @author Matthew Fitzpatrick
  */
 public class StationSystem extends IteratingSystem {
 
-  KeyboardInput input;
 
   EntityFactory factory;
 
@@ -38,9 +40,8 @@ public class StationSystem extends IteratingSystem {
   private float tickAccumulator = 0;
   private final Integer[] reputationAndMoney;
 
-  public StationSystem(KeyboardInput input, EntityFactory factory, Integer[] reputationAndMoney) {
+  public StationSystem(EntityFactory factory, Integer[] reputationAndMoney) {
     super(Family.all(StationComponent.class).get());
-    this.input = input;
     this.factory = factory;
     this.reputationAndMoney = reputationAndMoney;
   }
@@ -109,9 +110,9 @@ public class StationSystem extends IteratingSystem {
         }
       } else if (player.interact) {
         player.interact = false;
-        if(station.isLocked){
+        if (station.isLocked) {
           tryStationUnlock(station);
-        }else {
+        } else {
           interactStation(station);
         }
       }
@@ -164,7 +165,7 @@ public class StationSystem extends IteratingSystem {
       cooking.timer.setDelay((int) (cooking.timer.getDelay() / station.chopModifier));
     }
 
-    if(station.type == StationType.oven){
+    if (station.type == StationType.oven) {
       cooking.timer.setDelay(10000);
       cooking.processed = true;
     }
@@ -239,7 +240,7 @@ public class StationSystem extends IteratingSystem {
    * @param count number of ingredients to combine
    */
   FoodType tryServe(ControllableComponent controllable, int count) {
-    Set<FoodType> ingredients = new HashSet<FoodType>();
+    Set<FoodType> ingredients = new HashSet<>();
     FoodType[] twoIngredients = {FoodType.grilledPatty, FoodType.toastedBuns,
         FoodType.cookedPotato, FoodType.slicedCheese};
     FoodType[] threeIngredients = {FoodType.slicedLettuce, FoodType.slicedTomato,
@@ -250,12 +251,12 @@ public class StationSystem extends IteratingSystem {
         break;
       }
       FoodComponent check = Mappers.food.get(foodEntity);
-      if(count == 2){
-        if(!check.getIsBurned() && Arrays.asList(twoIngredients).contains(check.type)){
+      if (count == 2) {
+        if (!check.getIsBurned() && Arrays.asList(twoIngredients).contains(check.type)) {
           ingredients.add(Mappers.food.get(foodEntity).type);
         }
       } else if (count == 3) {
-        if(!check.getIsBurned() && Arrays.asList(threeIngredients).contains(check.type)) {
+        if (!check.getIsBurned() && Arrays.asList(threeIngredients).contains(check.type)) {
           ingredients.add(Mappers.food.get(foodEntity).type);
         }
       }
@@ -283,10 +284,10 @@ public class StationSystem extends IteratingSystem {
    */
   void stationPickup(StationComponent station, ControllableComponent controllable) {
     for (Entity foodEntity : station.food) {
-      if (foodEntity != null){
+      if (foodEntity != null) {
         FoodComponent foodComponent = Mappers.food.get(foodEntity);
         FoodType[] compare = Station.recipeMap.get(station.type).values().toArray(new FoodType[0]);
-        if(Arrays.asList(compare).contains(foodComponent.type) || foodComponent.getIsBurned() ){
+        if (Arrays.asList(compare).contains(foodComponent.type) || foodComponent.getIsBurned()) {
           if (controllable.currentFood.pushItem(foodEntity, station.interactingCook)) {
             station.food.set(station.food.indexOf(foodEntity), null);
             foodEntity.remove(CookingComponent.class);
@@ -307,7 +308,8 @@ public class StationSystem extends IteratingSystem {
    * @param deltaTime
    */
   void stationTick(Entity station, StationComponent stationComponent, float deltaTime) {
-    if (stationComponent.type == StationType.cutting_board && stationComponent.interactingCook == null) {
+    if (stationComponent.type == StationType.cutting_board
+        && stationComponent.interactingCook == null) {
       return;
     }
 
@@ -319,11 +321,12 @@ public class StationSystem extends IteratingSystem {
 
       CookingComponent cooking = Mappers.cooking.get(foodEntity);
       FoodComponent foodComponent = Mappers.food.get(foodEntity);
-      FoodType[] compare = Station.recipeMap.get(stationComponent.type).values().toArray(new FoodType[0]);
+      FoodType[] compare = Station.recipeMap.get(stationComponent.type).values()
+          .toArray(new FoodType[0]);
 
       boolean ready = cooking.timer.tick(deltaTime);
 
-      if (ready && cooking.processed && !Arrays.asList(compare).contains(foodComponent.type) ) {
+      if (ready && cooking.processed && !Arrays.asList(compare).contains(foodComponent.type)) {
         // Process the food into it's next form
         foodComponent.type = Station.recipeMap.get(stationComponent.type).get(foodComponent.type);
         Mappers.texture.get(foodEntity).region = EntityFactory.getFoodTexture(foodComponent.type);
@@ -338,24 +341,24 @@ public class StationSystem extends IteratingSystem {
             foodEntity.remove(TintComponent.class);
           }
           //TODO: Find out why the tint is not visible on the oven
-          if (stationComponent.type == StationType.oven){
-            if(!Mappers.tint.has(station)){
+          if (stationComponent.type == StationType.oven) {
+            if (!Mappers.tint.has(station)) {
               station.add(readyTint);
-            }else {
+            } else {
               station.remove(TintComponent.class);
             }
           }
         }
 
       }
-      if (stationComponent.type != StationType.cutting_board){
+      if (stationComponent.type != StationType.cutting_board) {
         hasBurned(foodEntity, cooking, foodComponent);
       }
     }
   }
 
-  void hasBurned(Entity foodEntity, CookingComponent cooking, FoodComponent food){
-    if(cooking.timer.getElapsed() > (cooking.timer.getDelay() * 2.5)){
+  void hasBurned(Entity foodEntity, CookingComponent cooking, FoodComponent food) {
+    if (cooking.timer.getElapsed() > (cooking.timer.getDelay() * 2.5)) {
       food.setBurned(true);
       cooking.timer.stop();
       cooking.timer.reset();
@@ -364,8 +367,8 @@ public class StationSystem extends IteratingSystem {
     }
   }
 
-  void tryStationUnlock(StationComponent stationComponent){
-    if(reputationAndMoney[1] >= 50){
+  void tryStationUnlock(StationComponent stationComponent) {
+    if (reputationAndMoney[1] >= 50) {
       stationComponent.isLocked = false;
       reputationAndMoney[1] -= 50;
     }

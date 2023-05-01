@@ -13,6 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 /**
  * This class wraps the spritebatch.
+ *
+ * @author Andrey Samoilov
+ * @author Alistair Foggin
  */
 public class PiazzaPanic extends Game {
 
@@ -59,11 +62,6 @@ public class PiazzaPanic extends Game {
     assetManager.load("v2/map.tmx", TiledMap.class);
     assetManager.load("v2/endlessMap.tmx", TiledMap.class);
     assetManager.load("v2/endlessMapTest.tmx", TiledMap.class);
-  }
-
-  public void render() {
-    // Renders the game, important.
-    super.render();
   }
 
   public void dispose() {

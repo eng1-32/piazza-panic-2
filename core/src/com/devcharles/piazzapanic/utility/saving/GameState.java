@@ -13,6 +13,11 @@ import com.devcharles.piazzapanic.utility.Mappers;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * The state of the game that can be saved to JSON
+ *
+ * @author Alistair Foggin
+ */
 public class GameState {
 
   public static String SAVE_LOCATION = "save.json";
@@ -35,6 +40,11 @@ public class GameState {
     this.customerTimer = customerTimer;
   }
 
+  /**
+   * Grab important state from the ECS engine and save it
+   *
+   * @param engine the engine to get state from
+   */
   public void setFromEngine(PooledEngine engine) {
     // Save stations
     for (Entity stationEntity : engine.getEntitiesFor(Family.all(StationComponent.class).get())) {

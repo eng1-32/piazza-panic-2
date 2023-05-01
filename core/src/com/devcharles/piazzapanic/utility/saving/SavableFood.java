@@ -8,6 +8,9 @@ import com.devcharles.piazzapanic.components.TransformComponent;
 import com.devcharles.piazzapanic.utility.EntityFactory;
 import com.devcharles.piazzapanic.utility.Mappers;
 
+/**
+ * @author Alistair Foggin
+ */
 public class SavableFood {
 
   TransformComponent transformComponent;
@@ -18,6 +21,12 @@ public class SavableFood {
   boolean processed = false;
 
 
+  /**
+   * Copy values from a food entity to be savable into JSON
+   *
+   * @param foodEntity the entity to copy values from
+   * @return the savable version of the food
+   */
   public static SavableFood from(Entity foodEntity) {
     if (foodEntity == null) {
       return null;
@@ -34,6 +43,12 @@ public class SavableFood {
     return food;
   }
 
+  /**
+   * Convert the saved form of the food back into an entity
+   *
+   * @param factory the factory which creates the food entity template
+   * @return The food entity
+   */
   public Entity toEntity(EntityFactory factory) {
     Entity food = factory.createFood(foodComponent.type);
     Mappers.transform.get(food).copyValues(transformComponent);

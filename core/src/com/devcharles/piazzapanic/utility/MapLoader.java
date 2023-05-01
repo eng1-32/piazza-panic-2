@@ -30,6 +30,9 @@ import box2dLight.RayHandler;
 
 /**
  * Loads and owns the {@link TiledMap} object. Creates entities from map metadata.
+ *
+ * @author Andrey Samoilov
+ * @author Alistair Foggin
  */
 public class MapLoader {
 

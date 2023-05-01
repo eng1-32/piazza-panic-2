@@ -22,6 +22,10 @@ import com.devcharles.piazzapanic.utility.MapLoader;
 import com.devcharles.piazzapanic.utility.box2d.WorldContactListener;
 import java.util.Map;
 
+/**
+ * @author Alistair Foggin
+ * @author Andrey Samoilov
+ */
 public abstract class BaseGameScreen implements Screen {
 
   protected final PooledEngine engine;

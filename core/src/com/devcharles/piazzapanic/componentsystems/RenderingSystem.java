@@ -22,6 +22,10 @@ import com.devcharles.piazzapanic.utility.YComparator;
 import com.devcharles.piazzapanic.utility.ZComparator;
 import com.devcharles.piazzapanic.utility.Station.StationType;
 
+/**
+ * @author Andrey Samoilov
+ * @author Alistair Foggin
+ */
 public class RenderingSystem extends IteratingSystem {
 
   private final SpriteBatch sb;

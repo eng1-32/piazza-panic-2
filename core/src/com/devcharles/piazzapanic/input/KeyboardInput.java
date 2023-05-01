@@ -3,6 +3,10 @@ package com.devcharles.piazzapanic.input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Keys;
 
+/**
+ * @author Andrey Samoilov
+ * @author Matthew Fitzpatrick
+ */
 public class KeyboardInput implements InputProcessor {
 
   public boolean left, right, up, down;

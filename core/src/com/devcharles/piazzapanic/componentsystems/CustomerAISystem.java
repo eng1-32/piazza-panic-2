@@ -35,6 +35,9 @@ import com.devcharles.piazzapanic.utility.box2d.Box2dRadiusProximity;
 
 /**
  * Controls the AI Customers, creates orders.
+ *
+ * @author Andrey Samoilov
+ * @author Alistair Foggin
  */
 public class CustomerAISystem extends IteratingSystem {
 
@@ -120,13 +123,23 @@ public class CustomerAISystem extends IteratingSystem {
     spawnTimer.start();
   }
 
+  /**
+   * Load state from the saved ai system
+   *
+   * @param savedSystem the saved state to load in
+   * @author Alistair Foggin
+   */
   public void loadFromSave(SavableCustomerAISystem savedSystem) {
     // Set objective taken.
     objectiveTaken.clear();
     // Event though objectiveTaken has a key of type Integer, the JSON loader loads it as a String,
     // so type casting is necessary.
     for (Object key : savedSystem.objectiveTaken.keySet()) {
-      objectiveTaken.put(Integer.valueOf((String) key), savedSystem.objectiveTaken.get(key));
+      if (key instanceof Integer) {
+        objectiveTaken.put((Integer) key, savedSystem.objectiveTaken.get(key));
+      } else if (key instanceof String) {
+        objectiveTaken.put(Integer.valueOf((String) key), savedSystem.objectiveTaken.get(key));
+      }
     }
 
     // Set spawn timer
@@ -177,7 +190,8 @@ public class CustomerAISystem extends IteratingSystem {
     if (firstSpawn) {
       firstSpawn = false;
       spawnCustomerGroup();
-    } else if (numQueuedCustomers > 0 && numCustomers < MAX_CUSTOMERS) {
+    }
+    if (numQueuedCustomers > 0 && numCustomers < MAX_CUSTOMERS) {
       numQueuedCustomers--;
       if (isEndless) {
         spawnTimer.setDelay((int) (spawnTimer.getDelay() * 0.98f));
@@ -213,7 +227,9 @@ public class CustomerAISystem extends IteratingSystem {
       GdxTimer timer = Mappers.customer.get(newCustomer).timer;
       timer.setDelay((int) (customerPatience * patienceModifier));
       timer.start();
+      makeItGoThere(Mappers.aiAgent.get(newCustomer), customers.size());
     }
+    objectiveTaken.put(customers.size(), true);
     customers.add(group);
     totalCustomers++;
   }
@@ -228,10 +244,6 @@ public class CustomerAISystem extends IteratingSystem {
         transform.position.x >= (objectives.get(-1).get(0).getPosition().x - 2)) {
       destroyCustomer(entity);
       return;
-    }
-
-    if (aiAgent.steeringBody.getSteeringBehavior() == null) {
-      makeItGoThere(aiAgent, customers.size() - 1);
     }
 
     aiAgent.steeringBody.update(deltaTime);

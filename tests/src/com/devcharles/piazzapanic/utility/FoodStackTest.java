@@ -12,9 +12,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 
+/**
+ * @author Isselmou Boye
+ */
 @RunWith(GdxTestRunner.class)
 public class FoodStackTest {
-
 
   @Test
   public void pushItemTest() {

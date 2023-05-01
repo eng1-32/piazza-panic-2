@@ -26,6 +26,8 @@ import com.devcharles.piazzapanic.utility.Difficulty.Level;
 
 /**
  * Main menu of the game, transitions the player to the Tutorial {@link Slideshow} on button press
+ * @author Alistair Foggin
+ * @author Andrey Samoilov
  */
 public class MainMenuScreen extends ApplicationAdapter implements Screen {
 

@@ -40,6 +40,7 @@ public class StationSystemTest {
   World world;
   PooledEngine engine = new PooledEngine();
   EntityFactory factory;
+  protected final Integer[] reputationPointsAndMoney = {3, 0};
 
   @Before
   public void setup() {
@@ -54,7 +55,7 @@ public class StationSystemTest {
 
   @Test
   public void testProcessStation() {
-    StationSystem system = new StationSystem(kbInput, factory);
+    StationSystem system = new StationSystem(kbInput, factory, reputationPointsAndMoney);
     engine.addSystem(system);
 
     //creating grill station
@@ -121,7 +122,7 @@ public class StationSystemTest {
 
   @Test
   public void testInteractStation() {
-    StationSystem system = new StationSystem(kbInput, factory);
+    StationSystem system = new StationSystem(kbInput, factory, reputationPointsAndMoney);
     engine.addSystem(system);
     engine.update(1f);
 
@@ -198,7 +199,7 @@ public class StationSystemTest {
   @Test
   public void testProcessServe() {
     //Creating necessary variables
-    StationSystem system = new StationSystem(kbInput, factory);
+    StationSystem system = new StationSystem(kbInput, factory, reputationPointsAndMoney);
     engine.addSystem(system);
     Entity cook = factory.createCook(0, 0);
     ControllableComponent controllable = Mappers.controllable.get(cook);
@@ -284,7 +285,7 @@ public class StationSystemTest {
   @Test
   public void testTryServe() {
     //Create test variables
-    StationSystem system = new StationSystem(kbInput, factory);
+    StationSystem system = new StationSystem(kbInput, factory, reputationPointsAndMoney);
     engine.addSystem(system);
     Entity cook = factory.createCook(0, 0);
     ControllableComponent controllable = Mappers.controllable.get(cook);
@@ -373,7 +374,7 @@ public class StationSystemTest {
   @Test
   public void processBinTest() {
     //Create test variables
-    StationSystem system = new StationSystem(kbInput, factory);
+    StationSystem system = new StationSystem(kbInput, factory, reputationPointsAndMoney);
     engine.addSystem(system);
     Entity cook = factory.createCook(0, 0);
     ControllableComponent controllable = Mappers.controllable.get(cook);
@@ -402,17 +403,17 @@ public class StationSystemTest {
   @Test
   public void stationPickupTest() {
     //Create test variables
-    StationSystem system = new StationSystem(kbInput, factory);
+    StationSystem system = new StationSystem(kbInput, factory, reputationPointsAndMoney);
     engine.addSystem(system);
     Entity cook = factory.createCook(0, 0);
     ControllableComponent controllable = Mappers.controllable.get(cook);
 
-    Entity grillStation = factory.createStation(0, StationType.grill, new Vector2(0, 0), null);
+    Entity grillStation = factory.createStation(0, StationType.grill, new Vector2(0, 0), null, false);
     StationComponent grillComponent = Mappers.station.get(grillStation);
     grillComponent.interactingCook = cook;
 
     Entity chopStation = factory.createStation(1, StationType.cutting_board, new Vector2(0, 0),
-        null);
+        null, false);
     StationComponent chopComponent = Mappers.station.get(chopStation);
     chopComponent.interactingCook = cook;
 
@@ -465,16 +466,16 @@ public class StationSystemTest {
   @Test
   public void stationTickTest() {
     //Creating test variables
-    StationSystem system = new StationSystem(kbInput, factory);
+    StationSystem system = new StationSystem(kbInput, factory, reputationPointsAndMoney);
     engine.addSystem(system);
     Entity cook = factory.createCook(0, 0);
     ControllableComponent controllable = Mappers.controllable.get(cook);
 
     Entity chopStation = factory.createStation(0, StationType.cutting_board, new Vector2(0, 0),
-        null);
+        null, false);
     StationComponent chopComponent = Mappers.station.get(chopStation);
 
-    Entity grillStation = factory.createStation(1, StationType.grill, new Vector2(0, 0), null);
+    Entity grillStation = factory.createStation(1, StationType.grill, new Vector2(0, 0), null, false);
     StationComponent grillComponent = Mappers.station.get(grillStation);
 
     Entity buns = factory.createFood(FoodType.buns);
@@ -573,7 +574,7 @@ public class StationSystemTest {
     //covered by the previous tests
 
     //Creating test variables
-    StationSystem system = new StationSystem(kbInput, factory);
+    StationSystem system = new StationSystem(kbInput, factory, reputationPointsAndMoney);
     engine.addSystem(system);
     Entity cook = factory.createCook(0, 0);
     ControllableComponent controllable = Mappers.controllable.get(cook);
@@ -581,7 +582,7 @@ public class StationSystemTest {
     cook.add(player);
 
     Entity ingredientStation = factory.createStation(0, StationType.ingredient, new Vector2(0, 0),
-        FoodType.buns);
+        FoodType.buns, false);
     StationComponent ingredientComponent = Mappers.station.get(ingredientStation);
     ingredientComponent.interactingCook = cook;
 

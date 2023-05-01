@@ -3,6 +3,7 @@
  <image source="stations_chef_padded.png" width="216" height="252"/>
  <tile id="0">
   <properties>
+   <property name="locked" type="bool" value="false"/>
    <property name="stationID" type="int" value="1"/>
   </properties>
  </tile>
@@ -28,6 +29,7 @@
  </tile>
  <tile id="16">
   <properties>
+   <property name="locked" type="bool" value="false"/>
    <property name="stationID" type="int" value="2"/>
   </properties>
  </tile>
@@ -43,11 +45,13 @@
  </tile>
  <tile id="19">
   <properties>
+   <property name="locked" type="bool" value="false"/>
    <property name="stationID" type="int" value="3"/>
   </properties>
  </tile>
  <tile id="20">
   <properties>
+   <property name="locked" type="bool" value="false"/>
    <property name="stationID" type="int" value="4"/>
   </properties>
  </tile>
@@ -68,6 +72,7 @@
  </tile>
  <tile id="24">
   <properties>
+   <property name="locked" type="bool" value="false"/>
    <property name="stationID" type="int" value="5"/>
   </properties>
  </tile>

@@ -87,7 +87,7 @@ public class EntityFactoryTest {
   @Test
   public void testCreateIngredientStation() {
     Entity station = factory.createStation(0, StationType.ingredient, Vector2.Zero,
-        FoodType.tomato);
+        FoodType.tomato, false);
     ImmutableArray<Entity> entities = engine.getEntitiesFor(
         Family.all(B2dBodyComponent.class, TransformComponent.class,
             TextureComponent.class, StationComponent.class).get());
@@ -113,7 +113,7 @@ public class EntityFactoryTest {
 
   @Test
   public void testCreateOtherStation() {
-    Entity station = factory.createStation(0, StationType.grill, Vector2.Zero, null);
+    Entity station = factory.createStation(0, StationType.grill, Vector2.Zero, null, false);
     ImmutableArray<Entity> entities = engine.getEntitiesFor(
         Family.all(B2dBodyComponent.class, TransformComponent.class,
             TextureComponent.class, StationComponent.class).get());

@@ -19,7 +19,7 @@ public class ScenarioGameScreen extends BaseGameScreen {
     // This can be commented in during debugging.
     // engine.addSystem(new DebugRendererSystem(world, camera));
     engine.addSystem(new PlayerControlSystem(kbInput));
-    engine.addSystem(new StationSystem(kbInput, factory));
+    engine.addSystem(new StationSystem(kbInput, factory, reputationPointsAndMoney));
     CustomerAISystem aiSystem = new CustomerAISystem(mapLoader.getObjectives(), world, factory, hud,
         reputationPointsAndMoney, false);
     aiSystem.setMaxScenarioCustomers(maxCustomers);

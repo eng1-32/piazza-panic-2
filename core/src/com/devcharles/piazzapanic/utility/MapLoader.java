@@ -1,6 +1,7 @@
 package com.devcharles.piazzapanic.utility;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -171,44 +172,38 @@ public class MapLoader {
    * Tile Properties.
    */
   public Map<Integer, Entity> buildStations() {
-    TiledMapTileLayer stations = (TiledMapTileLayer) (map.getLayers().get(stationLayer));
-    TiledMapTileLayer stations_f = (TiledMapTileLayer) (map.getLayers().get(stationLayer + "_f"));
-
-    int columns = stations.getWidth();
-    int rows = stations.getHeight();
-
-    Cell currentCell;
-
+    //TODO: FIX AND ADD LOOP FOR STATIONOBJECT_F LAYER
+    //TiledMapTileLayer stations = (TiledMapTileLayer) (map.getLayers().get(stationLayer));
+    //TiledMapTileLayer stations_f = (TiledMapTileLayer) (map.getLayers().get(stationLayer + "_f"));
+    MapObjects stations = map.getLayers().get("StationObjects").getObjects();
+    MapObjects stations_f = map.getLayers().get("StationObjects_f").getObjects();
     Map<Integer, Entity> stationsMap = new HashMap<>();
 
     int id = 0;
-    for (int i = 0; i < columns; i++) {
-      for (int j = 0; j < rows; j++) {
-        currentCell =
-            stations.getCell(i, j) != null ? stations.getCell(i, j) : stations_f.getCell(i, j);
-        if (currentCell == null) {
-          continue;
-        }
-        Integer object = currentCell.getTile().getProperties()
-            .get(stationIdProperty, Integer.class);
-        if (object == null) {
-          continue;
-        }
-        StationType stationType = StationType.from(object);
 
-        FoodType ingredientType = null;
+    for (MapObject mapObject : stations){
+      MapProperties properties = mapObject.getProperties();
+      TiledMapTileMapObject point = (TiledMapTileMapObject) mapObject;
 
-        if (stationType == StationType.ingredient) {
-          ingredientType = FoodType.from(
-              (Integer) currentCell.getTile().getProperties().get(ingredientTypeProperty));
-        }
+      Vector2 pos = new Vector2(point.getX() / ppt, point.getY() / ppt);
+      Integer object = properties.get(stationIdProperty, Integer.class);
+      if (object == null){
+        continue;
+      }
+      StationType stationType = StationType.from(object);
+      FoodType ingredientType = null;
 
-        stationsMap.put(id,
-            factory.createStation(id, stationType, new Vector2((i * 2) + 1, (j * 2) + 1),
-                ingredientType));
-        id++;
-      } // Rows Loop
-    } // Columns Loop
+      if(stationType == StationType.ingredient){
+        ingredientType = FoodType.from((Integer) properties.get(ingredientTypeProperty));
+      }
+      Boolean isLocked = properties.get("locked", Boolean.class);
+      if(properties.get("locked", Boolean.class) == null){
+        isLocked = false;
+      }
+      stationsMap.put(id,
+          factory.createStation(id, stationType, pos, ingredientType, isLocked));
+      id++;
+      }
     return stationsMap;
   }
 }

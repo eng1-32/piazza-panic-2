@@ -199,7 +199,7 @@ public class EntityFactory {
    *                       spawn.
    */
   public Entity createStation(int id, Station.StationType type, Vector2 position,
-      FoodType ingredientType) {
+      FoodType ingredientType, Boolean isLocked) {
     Entity entity = engine.createEntity();
 
     float[] size = {1f, 1f};
@@ -213,6 +213,7 @@ public class EntityFactory {
     StationComponent station = engine.createComponent(StationComponent.class);
     station.id = id;
     station.type = type;
+    station.isLocked = isLocked;
 
     if (type == Station.StationType.ingredient) {
       station.ingredient = ingredientType;

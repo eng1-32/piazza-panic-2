@@ -36,11 +36,13 @@ public class StationSystem extends IteratingSystem {
   private TintComponent readyTint;
   private TintComponent burnedTint;
   private float tickAccumulator = 0;
+  private final Integer[] reputationAndMoney;
 
-  public StationSystem(KeyboardInput input, EntityFactory factory) {
+  public StationSystem(KeyboardInput input, EntityFactory factory, Integer[] reputationAndMoney) {
     super(Family.all(StationComponent.class).get());
     this.input = input;
     this.factory = factory;
+    this.reputationAndMoney = reputationAndMoney;
   }
 
   @Override
@@ -66,7 +68,7 @@ public class StationSystem extends IteratingSystem {
         return;
       }
 
-      if (player.putDown) {
+      if (player.putDown && !station.isLocked) {
         player.putDown = false;
 
         ControllableComponent controllable = Mappers.controllable.get(station.interactingCook);
@@ -88,7 +90,7 @@ public class StationSystem extends IteratingSystem {
             processStation(controllable, station);
             break;
         }
-      } else if (player.pickUp) {
+      } else if (player.pickUp && !station.isLocked) {
         player.pickUp = false;
 
         ControllableComponent controllable = Mappers.controllable.get(station.interactingCook);
@@ -107,7 +109,11 @@ public class StationSystem extends IteratingSystem {
         }
       } else if (player.interact) {
         player.interact = false;
-        interactStation(station);
+        if(station.isLocked){
+          tryStationUnlock(station);
+        }else {
+          interactStation(station);
+        }
       }
     }
   }
@@ -355,6 +361,13 @@ public class StationSystem extends IteratingSystem {
       cooking.timer.reset();
       foodEntity.remove(CookingComponent.class);
       foodEntity.add(burnedTint);
+    }
+  }
+
+  void tryStationUnlock(StationComponent stationComponent){
+    if(reputationAndMoney[1] >= 50){
+      stationComponent.isLocked = false;
+      reputationAndMoney[1] -= 50;
     }
   }
 

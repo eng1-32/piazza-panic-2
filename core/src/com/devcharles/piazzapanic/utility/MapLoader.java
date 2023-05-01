@@ -173,38 +173,52 @@ public class MapLoader {
    * Tile Properties.
    */
   public Map<Integer, Entity> buildStations() {
-    //TODO: FIX AND ADD LOOP FOR STATIONOBJECT_F LAYER
-    //TiledMapTileLayer stations = (TiledMapTileLayer) (map.getLayers().get(stationLayer));
-    //TiledMapTileLayer stations_f = (TiledMapTileLayer) (map.getLayers().get(stationLayer + "_f"));
     MapObjects stations = map.getLayers().get("StationObjects").getObjects();
-//    MapObjects stations_f = map.getLayers().get("StationObjects_f").getObjects();
+    MapObjects stations_f = map.getLayers().get("StationObjects_f").getObjects();
     Map<Integer, Entity> stationsMap = new HashMap<>();
 
     int id = 0;
 
     for (MapObject mapObject : stations) {
-      MapProperties properties = mapObject.getProperties();
-      TiledMapTileMapObject point = (TiledMapTileMapObject) mapObject;
+      MapProperties tileProperties = mapObject.getProperties();
+      TiledMapTileMapObject stationObject = (TiledMapTileMapObject) mapObject;
 
-      Vector2 pos = new Vector2(point.getX() / ppt, point.getY() / ppt);
-      Integer object = properties.get(stationIdProperty, Integer.class);
+      Integer object = tileProperties.get(stationIdProperty, Integer.class);
       if (object == null) {
         continue;
       }
-      StationType stationType = StationType.from(object);
-      FoodType ingredientType = null;
+      buildStation(stationsMap, id, tileProperties, stationObject, object);
+      id++;
+    }
+    for (MapObject mapObject : stations_f) {
+      MapProperties tileProperties = mapObject.getProperties();
+      TiledMapTileMapObject stationObject = (TiledMapTileMapObject) mapObject;
 
-      if (stationType == StationType.ingredient) {
-        ingredientType = FoodType.from((Integer) properties.get(ingredientTypeProperty));
+      Integer object = tileProperties.get(stationIdProperty, Integer.class);
+      if (object == null) {
+        continue;
       }
-      Boolean isLocked = properties.get("locked", Boolean.class);
-      if (properties.get("locked", Boolean.class) == null) {
-        isLocked = false;
-      }
-      stationsMap.put(id,
-          factory.createStation(id, stationType, pos, ingredientType, isLocked));
+      buildStation(stationsMap, id, tileProperties, stationObject, object);
       id++;
     }
     return stationsMap;
+  }
+
+  private void buildStation(Map<Integer, Entity> stationsMap, int id, MapProperties tileProperties,
+      TiledMapTileMapObject stationObject, Integer object) {
+    Vector2 pos = new Vector2(stationObject.getX() / ppt + 1, stationObject.getY() / ppt + 1);
+    StationType stationType = StationType.from(object);
+    FoodType ingredientType = null;
+
+    if (stationType == StationType.ingredient) {
+      ingredientType = FoodType.from((Integer) tileProperties.get(ingredientTypeProperty));
+    }
+    Boolean isLocked = stationObject.getProperties().get("locked", Boolean.class);
+    if (tileProperties.get("locked", Boolean.class) == null) {
+      isLocked = false;
+    }
+
+    Entity station = factory.createStation(id, stationType, pos, ingredientType, isLocked);
+    stationsMap.put(id, station);
   }
 }

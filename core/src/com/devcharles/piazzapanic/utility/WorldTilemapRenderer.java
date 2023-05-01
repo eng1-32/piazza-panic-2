@@ -2,7 +2,6 @@ package com.devcharles.piazzapanic.utility;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -29,12 +28,12 @@ public class WorldTilemapRenderer {
 
   private final TiledMapTileLayer floor;
   private final TiledMapTileLayer front_wall;
-  private final MapLayer station;
+  private final TiledMapTileLayer station;
+  private final TiledMapTileLayer station_f;
   private final TiledMapTileLayer countertop;
   private final TiledMapTileLayer back_wall;
 
   private final TiledMapTileLayer countertop_f;
-  //private final TiledMapTileLayer station_f;
 
   /**
    * Create a new renderer with existing {@link TiledMap}, camera and {@link SpriteBatch}. The
@@ -55,8 +54,8 @@ public class WorldTilemapRenderer {
     back_wall = (TiledMapTileLayer) map.getLayers().get("wall_b");
 
     // Station-related layers
-    station = (MapLayer) map.getLayers().get("StationObjects");
-    //station_f = (TiledMapTileLayer) map.getLayers().get("station_f");
+    station = (TiledMapTileLayer) map.getLayers().get("station");
+    station_f = (TiledMapTileLayer) map.getLayers().get("station_f");
     countertop = (TiledMapTileLayer) map.getLayers().get("countertop");
     countertop_f = (TiledMapTileLayer) map.getLayers().get("countertop_f");
 
@@ -70,7 +69,7 @@ public class WorldTilemapRenderer {
     renderer.renderTileLayer(floor);
     renderer.renderTileLayer(back_wall);
     renderer.renderTileLayer(countertop);
-    renderer.renderObjects(station);
+    renderer.renderTileLayer(station);
   }
 
   /**
@@ -79,8 +78,8 @@ public class WorldTilemapRenderer {
   public void renderForeground() {
     renderer.setView(camera);
     renderer.renderTileLayer(countertop_f);
-    //renderer.renderTileLayer(station_f);
     renderer.renderTileLayer(front_wall);
+    renderer.renderTileLayer(station_f);
   }
 
   public void dispose() {

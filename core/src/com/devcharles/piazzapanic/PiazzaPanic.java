@@ -61,7 +61,6 @@ public class PiazzaPanic extends Game {
     assetManager.load("v2/food.png", Texture.class);
     assetManager.load("v2/map.tmx", TiledMap.class);
     assetManager.load("v2/endlessMap.tmx", TiledMap.class);
-    assetManager.load("v2/endlessMapTest.tmx", TiledMap.class);
   }
 
   public void dispose() {

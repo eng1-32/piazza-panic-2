@@ -10,64 +10,65 @@ import com.devcharles.piazzapanic.GdxTestRunner;
 import com.devcharles.piazzapanic.components.TransformComponent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import sun.font.TrueTypeFont;
 
 import static org.junit.Assert.*;
 
+/**
+ * @author Isselmou Boye
+ */
 @RunWith(GdxTestRunner.class)
 public class ZComparatorTest {
-    @Test
-    public void EqualityTest(){
 
-        World world = new World(new Vector2(0,0), true);
-        PooledEngine engine = new PooledEngine();
-        TransformComponent transform = engine.createComponent(TransformComponent.class);
+  @Test
+  public void EqualityTest() {
 
-        Entity a = new Entity();
-        Entity b = new Entity();
+    World world = new World(new Vector2(0, 0), true);
+    PooledEngine engine = new PooledEngine();
+    TransformComponent transform = engine.createComponent(TransformComponent.class);
 
-        transform.position.set(new Vector3(0,0,1.0f));
-        a.add(transform);
-        b.add(transform);
+    Entity a = new Entity();
+    Entity b = new Entity();
 
-        ZComparator ZComparator = new ZComparator();
+    transform.position.set(new Vector3(0, 0, 1.0f));
+    a.add(transform);
+    b.add(transform);
 
-        assertEquals("Checks that the Z coordinates are equal", Math.round(Mappers.transform.get(a).position.z),
-                Math.round(Mappers.transform.get(b).position.z));
+    ZComparator ZComparator = new ZComparator();
 
-        assertEquals("Checks that the ZComparator returns a 0 when the coordinates are equal",
-                0, ZComparator.compare(a,b));
+    assertEquals("Checks that the Z coordinates are equal",
+        Mappers.transform.get(a).position.z,
+        Mappers.transform.get(b).position.z, 0.001f);
 
-    }
+    assertEquals("Checks that the ZComparator returns a 0 when the coordinates are equal",
+        0, ZComparator.compare(a, b));
 
-    @Test
-    public void NotEqualTest(){
-        World world = new World(new Vector2(0,0), true);
-        PooledEngine engine = new PooledEngine();
-        TransformComponent transform1 = engine.createComponent(TransformComponent.class);
-        TransformComponent transform2 = engine.createComponent(TransformComponent.class);
+  }
 
-        Entity a = new Entity();
-        Entity b = new Entity();
-        Entity c = new Entity();
-        Entity d = new Entity();
+  @Test
+  public void NotEqualTest() {
+    World world = new World(new Vector2(0, 0), true);
+    PooledEngine engine = new PooledEngine();
+    TransformComponent transform1 = engine.createComponent(TransformComponent.class);
+    TransformComponent transform2 = engine.createComponent(TransformComponent.class);
 
-        transform1.position.set(new Vector3(0,0,1));
-        transform2.position.set(new Vector3(0,0,2));
+    Entity a = new Entity();
+    Entity b = new Entity();
+    Entity c = new Entity();
+    Entity d = new Entity();
 
-        a.add(transform1);
-        b.add(transform2);
-        c.add(transform2);
-        d.add(transform1);
+    transform1.position.set(new Vector3(0, 0, 1));
+    transform2.position.set(new Vector3(0, 0, 2));
 
-        ZComparator ZComparator = new ZComparator();
+    a.add(transform1);
+    b.add(transform2);
+    c.add(transform2);
+    d.add(transform1);
 
-        assertEquals("A 1 should be returned if an entity's Z coordinate is less than the other's",
-                1, ZComparator.compare(a,b));
-        assertEquals("A -1 is returned otherwise", -1, ZComparator.compare(c,d));
+    ZComparator ZComparator = new ZComparator();
 
-
-
-    }
+    assertEquals("A 1 should be returned if an entity's Z coordinate is less than the other's",
+        1, ZComparator.compare(a, b));
+    assertEquals("A -1 is returned otherwise", -1, ZComparator.compare(c, d));
+  }
 }
 

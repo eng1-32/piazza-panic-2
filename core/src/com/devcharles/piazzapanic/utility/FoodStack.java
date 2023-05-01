@@ -6,6 +6,9 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.devcharles.piazzapanic.components.ItemComponent;
 
+/**
+ * @author Andrey Samoilov
+ */
 public class FoodStack extends ArrayDeque<Entity> {
 
   private Engine engine;

@@ -6,6 +6,9 @@ import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
 
+/**
+ * @author Alistair Foggin
+ */
 @RunWith(GdxTestRunner.class)
 public class AssetTest {
 

@@ -10,17 +10,26 @@ import com.devcharles.piazzapanic.components.TransformComponent;
 import com.devcharles.piazzapanic.utility.EntityFactory;
 import com.devcharles.piazzapanic.utility.Mappers;
 
+/**
+ * @author Alistair Foggin
+ */
 public class SavableCustomer {
 
-  TransformComponent transformComponent;
+  public TransformComponent transformComponent;
 
   public int currentObjective = 0;
-  int slot = 0;
+  public int slot = 0;
 
-  FoodType order;
-  SavableFood food;
-  SavableTimer timer;
+  public FoodType order;
+  public SavableFood food;
+  public SavableTimer timer;
 
+  /**
+   * Extract the necessary details from a cook entity
+   *
+   * @param entity the entity to grab the information from
+   * @return the new customer that is savable to json
+   */
   public static SavableCustomer from(Entity entity) {
     if (entity == null) {
       return null;
@@ -39,6 +48,11 @@ public class SavableCustomer {
     return customer;
   }
 
+  /**
+   * Convert the customer back to an entity that exists in the engine
+   * @param factory the entity factory to create the template for a customer entity
+   * @return the new customer entity with the copied values
+   */
   public Entity toEntity(EntityFactory factory) {
     Entity customer = factory.createCustomer(
         new Vector2(transformComponent.position.x, transformComponent.position.y), order);

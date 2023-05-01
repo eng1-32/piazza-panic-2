@@ -7,6 +7,9 @@ import com.devcharles.piazzapanic.utility.Station.StationType;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * @author Alistair Foggin
+ */
 public class SavableStation {
 
   int id;
@@ -17,6 +20,12 @@ public class SavableStation {
   public float prepModifier = 1f;
   public float chopModifier = 1f;
 
+  /**
+   * Copy values from the station component so that it does not need any entities
+   *
+   * @param station the station component to copy values from
+   * @return the serializable station
+   */
   public static SavableStation from(StationComponent station) {
     SavableStation savableStation = new SavableStation();
     savableStation.id = station.id;
@@ -30,6 +39,12 @@ public class SavableStation {
     return savableStation;
   }
 
+  /**
+   * Copy values back into a station component
+   *
+   * @param factory the factory to create the template for the food entities on the station
+   * @return the station component to be used in the engine
+   */
   public StationComponent toStationComponent(EntityFactory factory) {
     StationComponent stationComponent = new StationComponent();
     stationComponent.id = id;

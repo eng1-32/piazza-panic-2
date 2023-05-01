@@ -33,6 +33,9 @@ import com.devcharles.piazzapanic.utility.box2d.CollisionCategory;
 
 /**
  * Factory pattern class that creates entities used in the game.
+ * @author Andrey Samoilov
+ * @author Ross Holmes
+ * @author Alistair Foggin
  */
 public class EntityFactory {
 

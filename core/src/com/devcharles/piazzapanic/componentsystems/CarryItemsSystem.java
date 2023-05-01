@@ -13,31 +13,34 @@ import com.devcharles.piazzapanic.utility.Mappers;
 import com.devcharles.piazzapanic.utility.WalkAnimator;
 import com.devcharles.piazzapanic.utility.WalkAnimator.Direction;
 
+/**
+ * @author Andrey Samoilov
+ */
 public class CarryItemsSystem extends IteratingSystem {
 
-    public CarryItemsSystem() {
-        super(Family.all(ItemComponent.class, TransformComponent.class).get());
+  public CarryItemsSystem() {
+    super(Family.all(ItemComponent.class, TransformComponent.class).get());
+  }
+
+  Map<Direction, Vector3> dirToVector = new HashMap<Direction, Vector3>() {
+    {
+      put(Direction.down, new Vector3(0, -0.5f, 0));
+      put(Direction.up, new Vector3(0, 0.5f, 1));
+      put(Direction.left, new Vector3(-1, 0, 1));
+      put(Direction.right, new Vector3(1, 0, 1));
     }
+  };
 
-    Map<Direction, Vector3> dirToVector = new HashMap<Direction, Vector3>() {
-        {
-            put(Direction.down, new Vector3(0, -0.5f, 0));
-            put(Direction.up, new Vector3(0, 0.5f, 1));
-            put(Direction.left, new Vector3(-1, 0, 1));
-            put(Direction.right, new Vector3(1, 0, 1));
-        }
-    };
+  @Override
+  protected void processEntity(Entity entity, float deltaTime) {
+    ItemComponent item = Mappers.item.get(entity);
+    TransformComponent transform = Mappers.transform.get(entity);
 
-    @Override
-    protected void processEntity(Entity entity, float deltaTime) {
-        ItemComponent item = Mappers.item.get(entity);
-        TransformComponent transform = Mappers.transform.get(entity);
+    Direction cookDirection = WalkAnimator.rotationToDirection(item.holderTransform.rotation);
 
-        Direction cookDirection = WalkAnimator.rotationToDirection(item.holderTransform.rotation);
+    Vector3 directionVector = dirToVector.get(cookDirection).cpy();
 
-        Vector3 directionVector = dirToVector.get(cookDirection).cpy();
-
-        transform.position.set(item.holderTransform.position.cpy().add(directionVector.scl(1)));
-    }
+    transform.position.set(item.holderTransform.position.cpy().add(directionVector.scl(1)));
+  }
 
 }

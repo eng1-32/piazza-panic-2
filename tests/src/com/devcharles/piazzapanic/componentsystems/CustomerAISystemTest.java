@@ -24,6 +24,9 @@ import com.devcharles.piazzapanic.scene2d.Hud;
 import com.devcharles.piazzapanic.utility.EntityFactory;
 import com.devcharles.piazzapanic.utility.Mappers;
 import com.devcharles.piazzapanic.utility.box2d.Box2dLocation;
+import com.devcharles.piazzapanic.utility.saving.SavableCustomer;
+import com.devcharles.piazzapanic.utility.saving.SavableCustomerAISystem;
+import com.devcharles.piazzapanic.utility.saving.SavableTimer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +34,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * @author Alistair Foggin
+ */
 @RunWith(GdxTestRunner.class)
 public class CustomerAISystemTest {
 
@@ -51,13 +57,16 @@ public class CustomerAISystemTest {
     start.put(0, new Box2dLocation());
     HashMap<Integer, Box2dLocation> queueStart = new HashMap<>();
     queueStart.put(0, new Box2dLocation());
+    HashMap<Integer, Box2dLocation> queueMid = new HashMap<>();
+    queueMid.put(0, new Box2dLocation());
     HashMap<Integer, Box2dLocation> queueEnd = new HashMap<>();
     queueEnd.put(0, new Box2dLocation());
 
     objectives.put(-2, start);
     objectives.put(-1, destination);
     objectives.put(0, queueStart);
-    objectives.put(1, queueEnd);
+    objectives.put(1, queueMid);
+    objectives.put(2, queueEnd);
 
     reputationPoints = new Integer[] {3, 0};
 
@@ -287,5 +296,85 @@ public class CustomerAISystemTest {
     assertFalse("Timer should be stopped.", customerComponent.timer.isRunning());
     assertEquals("Customer's food should be the same as the food above.", food,
         customerComponent.food);
+  }
+
+  @Test
+  public void loadFromSave() {
+
+    CustomerAISystem aiSystem = new CustomerAISystem(objectives, world, factory, mock(Hud.class),
+        reputationPoints, false);
+    engine.addSystem(aiSystem);
+
+    SavableCustomerAISystem savableCustomerAISystem = new SavableCustomerAISystem();
+    savableCustomerAISystem.objectiveTaken = new HashMap<>();
+    savableCustomerAISystem.objectiveTaken.put(0, true);
+    savableCustomerAISystem.objectiveTaken.put(1, true);
+
+    savableCustomerAISystem.spawnTimer = new SavableTimer();
+    savableCustomerAISystem.spawnTimer.delay = 25000;
+    savableCustomerAISystem.spawnTimer.elapsed = 5000;
+    savableCustomerAISystem.spawnTimer.running = true;
+
+    savableCustomerAISystem.totalCustomers = 2;
+    savableCustomerAISystem.firstSpawn = false;
+    savableCustomerAISystem.numQueuedCustomers = 1;
+    savableCustomerAISystem.patienceModifier = 1.1f;
+    savableCustomerAISystem.incomeModifier = 2;
+
+    savableCustomerAISystem.customers = new ArrayList<>();
+    ArrayList<SavableCustomer> firstGroup = new ArrayList<>();
+    SavableCustomer firstCustomer = new SavableCustomer();
+    firstCustomer.currentObjective = 0;
+    firstCustomer.order = FoodType.burger;
+    firstCustomer.transformComponent = new TransformComponent();
+    firstCustomer.timer = new SavableTimer();
+    firstCustomer.timer.delay = 25000;
+    firstGroup.add(firstCustomer);
+    savableCustomerAISystem.customers.add(firstGroup);
+    ArrayList<SavableCustomer> secondGroup = new ArrayList<>();
+    SavableCustomer secondCustomer = new SavableCustomer();
+    secondCustomer.currentObjective = 1;
+    secondCustomer.order = FoodType.salad;
+    secondCustomer.transformComponent = new TransformComponent();
+    secondCustomer.timer = new SavableTimer();
+    secondCustomer.timer.delay = 25000;
+    secondGroup.add(secondCustomer);
+    savableCustomerAISystem.customers.add(secondGroup);
+
+    aiSystem.loadFromSave(savableCustomerAISystem);
+
+    assertEquals("There should be 2 customer groups", 2, aiSystem.customers.size());
+    assertEquals("There should be 2 total customers", 2, aiSystem.getTotalCustomers());
+    assertEquals("There should be 1 customer in the first group", 1,
+        aiSystem.customers.get(0).size());
+    assertEquals("The first customer should want a burger", FoodType.burger,
+        Mappers.customer.get(aiSystem.customers.get(0).get(0)).order);
+    assertEquals("The first customer should go to objective 0", 0,
+        Mappers.aiAgent.get(aiSystem.customers.get(0).get(0)).currentObjective);
+    assertEquals("There should be 1 customer in the second group", 1,
+        aiSystem.customers.get(1).size());
+    assertEquals("The second customer should want a salad", FoodType.salad,
+        Mappers.customer.get(aiSystem.customers.get(1).get(0)).order);
+    assertEquals("The second customer should go to objective 1", 1,
+        Mappers.aiAgent.get(aiSystem.customers.get(1).get(0)).currentObjective);
+
+    assertEquals("The timer should be 25 seconds", 25000, aiSystem.getSpawnTimer().getDelay());
+    assertEquals("The timer should have 5 elapsed seconds", 5000, aiSystem.getSpawnTimer().getElapsed());
+
+    assertTrue("The first objective should be taken",
+        aiSystem.getObjectiveTaken().get(0));
+    assertTrue("The second objective should be taken",
+        aiSystem.getObjectiveTaken().get(0));
+
+    assertEquals("There should be one queued customers", 1,
+        aiSystem.getNumQueuedCustomers());
+    assertEquals("There should be patience modifier of 1.1", 1.1f,
+        aiSystem.getPatienceModifier(), 0.001f);
+    assertEquals("There should be income modifier of 2", 2,
+        aiSystem.getIncomeModifier());
+    assertFalse("It is no longer the first spawn", aiSystem.isFirstSpawn());
+
+    engine.update(0.1f);
+    assertEquals("There should be a third customer", 3, aiSystem.customers.size());
   }
 }

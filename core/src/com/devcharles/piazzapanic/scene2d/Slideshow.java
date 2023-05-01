@@ -21,6 +21,9 @@ import com.devcharles.piazzapanic.PiazzaPanic;
 
 /**
  * A screen that displays a slideshow of images.
+ *
+ * @author Aundrey Samoilov
+ * @author Alistair Foggin
  */
 public class Slideshow extends ApplicationAdapter implements Screen {
 

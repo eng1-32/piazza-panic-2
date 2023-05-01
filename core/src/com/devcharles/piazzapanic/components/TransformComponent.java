@@ -4,6 +4,10 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+/**
+ * @author Andrey Samoilov
+ * @author Alistair Foggin
+ */
 public class TransformComponent implements Component {
 
   public final Vector3 position = new Vector3();
@@ -12,6 +16,12 @@ public class TransformComponent implements Component {
   public boolean isHidden = false;
   public boolean isMoving = false;
 
+  /**
+   * Copy values from another transform component into this one
+   *
+   * @param otherTransform the transform to copy parameters from
+   * @author Alistair Foggin
+   */
   public void copyValues(TransformComponent otherTransform) {
     position.x = otherTransform.position.x;
     position.y = otherTransform.position.y;

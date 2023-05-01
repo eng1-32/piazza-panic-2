@@ -81,7 +81,6 @@ public class WorldTilemapRenderer {
   }
 
   public void dispose() {
-    map.dispose();
     renderer.dispose();
   }
 }

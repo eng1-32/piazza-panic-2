@@ -8,6 +8,9 @@ import com.devcharles.piazzapanic.components.FoodComponent.FoodType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * @author Alistair Foggin
+ */
 @RunWith(GdxTestRunner.class)
 public class CustomerComponentTest {
 

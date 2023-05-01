@@ -21,7 +21,6 @@ import com.devcharles.piazzapanic.components.FoodComponent;
 import com.devcharles.piazzapanic.components.FoodComponent.FoodType;
 import com.devcharles.piazzapanic.components.PlayerComponent;
 import com.devcharles.piazzapanic.components.StationComponent;
-import com.devcharles.piazzapanic.input.KeyboardInput;
 import com.devcharles.piazzapanic.utility.EntityFactory;
 import com.devcharles.piazzapanic.utility.FoodStack;
 import com.devcharles.piazzapanic.utility.Mappers;
@@ -32,10 +31,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * @author Matthew Fitzpatrick
+ */
 @RunWith(GdxTestRunner.class)
 public class StationSystemTest {
-
-  KeyboardInput kbInput = new KeyboardInput();
 
   World world;
   PooledEngine engine = new PooledEngine();
@@ -54,7 +54,7 @@ public class StationSystemTest {
 
   @Test
   public void testProcessStation() {
-    StationSystem system = new StationSystem(kbInput, factory);
+    StationSystem system = new StationSystem(factory);
     engine.addSystem(system);
 
     //creating grill station
@@ -121,7 +121,7 @@ public class StationSystemTest {
 
   @Test
   public void testInteractStation() {
-    StationSystem system = new StationSystem(kbInput, factory);
+    StationSystem system = new StationSystem(factory);
     engine.addSystem(system);
     engine.update(1f);
 
@@ -198,7 +198,7 @@ public class StationSystemTest {
   @Test
   public void testProcessServe() {
     //Creating necessary variables
-    StationSystem system = new StationSystem(kbInput, factory);
+    StationSystem system = new StationSystem(factory);
     engine.addSystem(system);
     Entity cook = factory.createCook(0, 0);
     ControllableComponent controllable = Mappers.controllable.get(cook);
@@ -284,7 +284,7 @@ public class StationSystemTest {
   @Test
   public void testTryServe() {
     //Create test variables
-    StationSystem system = new StationSystem(kbInput, factory);
+    StationSystem system = new StationSystem(factory);
     engine.addSystem(system);
     Entity cook = factory.createCook(0, 0);
     ControllableComponent controllable = Mappers.controllable.get(cook);
@@ -373,7 +373,7 @@ public class StationSystemTest {
   @Test
   public void processBinTest() {
     //Create test variables
-    StationSystem system = new StationSystem(kbInput, factory);
+    StationSystem system = new StationSystem(factory);
     engine.addSystem(system);
     Entity cook = factory.createCook(0, 0);
     ControllableComponent controllable = Mappers.controllable.get(cook);
@@ -402,7 +402,7 @@ public class StationSystemTest {
   @Test
   public void stationPickupTest() {
     //Create test variables
-    StationSystem system = new StationSystem(kbInput, factory);
+    StationSystem system = new StationSystem(factory);
     engine.addSystem(system);
     Entity cook = factory.createCook(0, 0);
     ControllableComponent controllable = Mappers.controllable.get(cook);
@@ -465,7 +465,7 @@ public class StationSystemTest {
   @Test
   public void stationTickTest() {
     //Creating test variables
-    StationSystem system = new StationSystem(kbInput, factory);
+    StationSystem system = new StationSystem(factory);
     engine.addSystem(system);
     Entity cook = factory.createCook(0, 0);
     ControllableComponent controllable = Mappers.controllable.get(cook);
@@ -573,7 +573,7 @@ public class StationSystemTest {
     //covered by the previous tests
 
     //Creating test variables
-    StationSystem system = new StationSystem(kbInput, factory);
+    StationSystem system = new StationSystem(factory);
     engine.addSystem(system);
     Entity cook = factory.createCook(0, 0);
     ControllableComponent controllable = Mappers.controllable.get(cook);

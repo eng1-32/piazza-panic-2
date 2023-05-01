@@ -17,7 +17,6 @@ import com.devcharles.piazzapanic.components.StationComponent;
 import com.devcharles.piazzapanic.components.TintComponent;
 import com.devcharles.piazzapanic.components.CookingComponent;
 import com.devcharles.piazzapanic.components.FoodComponent.FoodType;
-import com.devcharles.piazzapanic.input.KeyboardInput;
 import com.devcharles.piazzapanic.utility.EntityFactory;
 import com.devcharles.piazzapanic.utility.Mappers;
 import com.devcharles.piazzapanic.utility.Station;
@@ -32,16 +31,14 @@ import com.devcharles.piazzapanic.utility.Station.StationType;
  */
 public class StationSystem extends IteratingSystem {
 
-  KeyboardInput input;
 
   EntityFactory factory;
 
   private TintComponent readyTint;
   private float tickAccumulator = 0;
 
-  public StationSystem(KeyboardInput input, EntityFactory factory) {
+  public StationSystem(EntityFactory factory) {
     super(Family.all(StationComponent.class).get());
-    this.input = input;
     this.factory = factory;
   }
 
@@ -231,7 +228,7 @@ public class StationSystem extends IteratingSystem {
    * @param count number of ingredients to combine
    */
   FoodType tryServe(ControllableComponent controllable, int count) {
-    Set<FoodType> ingredients = new HashSet<FoodType>();
+    Set<FoodType> ingredients = new HashSet<>();
     int i = 0;
     for (Entity foodEntity : controllable.currentFood) {
       if (i > count - 1) {

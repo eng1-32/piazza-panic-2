@@ -36,6 +36,7 @@ public class Box2dRadiusProximity extends Box2dSquareAABBProximity {
     super(owner, world, detectionRadius);
   }
 
+  @Override
   protected Steerable<Vector2> getSteerable(Fixture fixture) {
     if (fixture.getBody().getUserData() instanceof Box2dSteeringBody) {
       return (Box2dSteeringBody) fixture.getBody().getUserData();

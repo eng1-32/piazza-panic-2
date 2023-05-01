@@ -8,6 +8,9 @@ import com.devcharles.piazzapanic.GdxTestRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * @author Matthew Fitzpatrick
+ */
 @RunWith(GdxTestRunner.class)
 public class KeyboardInputTest {
   KeyboardInput kbInput = new KeyboardInput();

@@ -16,7 +16,6 @@ import com.devcharles.piazzapanic.PiazzaPanic;
 import com.devcharles.piazzapanic.components.CustomerComponent;
 import com.devcharles.piazzapanic.components.FoodComponent.FoodType;
 import com.devcharles.piazzapanic.components.PlayerComponent;
-import com.devcharles.piazzapanic.input.KeyboardInput;
 import com.devcharles.piazzapanic.scene2d.Hud;
 import com.devcharles.piazzapanic.utility.EntityFactory;
 import com.devcharles.piazzapanic.utility.Mappers;
@@ -130,7 +129,7 @@ public class PowerUpSystemTest {
     Mappers.player.get(cook).putDown = true;
     Mappers.station.get(station).interactingCook = cook;
 
-    StationSystem stationSystem = new StationSystem(new KeyboardInput(), factory);
+    StationSystem stationSystem = new StationSystem(factory);
     engine.addSystem(stationSystem);
     engine.update(0.1f);
     assertEquals("The food cooking component timer should be less than 5000",
@@ -163,7 +162,7 @@ public class PowerUpSystemTest {
     Mappers.player.get(cook).putDown = true;
     Mappers.station.get(station).interactingCook = cook;
 
-    StationSystem stationSystem = new StationSystem(new KeyboardInput(), factory);
+    StationSystem stationSystem = new StationSystem(factory);
     engine.addSystem(stationSystem);
     engine.update(0.1f);
     assertEquals("The food cooking component timer should be less than 5000",

@@ -71,7 +71,7 @@ public class Station {
     ingredient(6),
     serve(7);
 
-    private int value;
+    private final int value;
 
     StationType(int id) {
       this.value = id;
@@ -86,7 +86,7 @@ public class Station {
       return value;
     }
 
-    private static final Map<Integer, StationType> _map = new HashMap<Integer, StationType>();
+    private static final Map<Integer, StationType> _map = new HashMap<>();
 
     static {
       for (StationType stationType : StationType.values()) {

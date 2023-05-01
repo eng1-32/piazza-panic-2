@@ -6,8 +6,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.devcharles.piazzapanic.GdxTestRunner;
+import org.junit.runner.RunWith;
 import org.junit.Test;
 
+/**
+ * @author Alistair Foggin
+ */
+@RunWith(GdxTestRunner.class)
 public class Box2dSteeringBodyTest {
 
   @Test
@@ -48,11 +54,6 @@ public class Box2dSteeringBodyTest {
     steeringBody.angleToVector(resultVector, (float) -Math.PI);
     assertEquals("Expect the vector x to be 0.", 0f, resultVector.x, 0.0001f);
     assertEquals("Expect the vector y to be -1.", -1f, resultVector.y, 0.0001f);
-  }
-
-  @Test
-  public void applySteering() {
-    // TODO: test this. Relies up updating steeringOutput.
   }
 
   @Test(expected = UnsupportedOperationException.class)

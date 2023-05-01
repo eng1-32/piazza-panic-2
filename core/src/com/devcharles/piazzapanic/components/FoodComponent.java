@@ -39,7 +39,7 @@ public class FoodComponent implements Component {
       return value;
     }
 
-    private static final Map<Integer, FoodType> _map = new HashMap<Integer, FoodType>();
+    private static final Map<Integer, FoodType> _map = new HashMap<>();
 
     static {
       for (FoodType stationType : FoodType.values()) {

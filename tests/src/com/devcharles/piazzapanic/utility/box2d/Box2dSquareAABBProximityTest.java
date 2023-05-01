@@ -15,6 +15,9 @@ import com.devcharles.piazzapanic.utility.box2d.Box2dSquareAABBProximity.AABB;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * @author Alistair Foggin
+ */
 @RunWith(GdxTestRunner.class)
 public class Box2dSquareAABBProximityTest {
 

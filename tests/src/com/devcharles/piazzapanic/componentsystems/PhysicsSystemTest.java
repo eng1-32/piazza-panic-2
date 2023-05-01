@@ -16,6 +16,9 @@ import com.devcharles.piazzapanic.GdxTestRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * @author James Wild
+ */
 @RunWith(GdxTestRunner.class)
 
 public class PhysicsSystemTest {

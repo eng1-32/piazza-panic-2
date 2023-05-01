@@ -62,11 +62,6 @@ public class PiazzaPanic extends Game {
     assetManager.load("v2/map.tmx", TiledMap.class);
   }
 
-  public void render() {
-    // Renders the game, important.
-    super.render();
-  }
-
   public void dispose() {
     batch.dispose();
     assetManager.dispose();

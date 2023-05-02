@@ -43,7 +43,7 @@ public class FoodStackTest {
     stack.pushItem(food, cook);
 
     assertEquals("Checks too see if the stack size is one", stack.size(), 1);
-    assertEquals("Sees if the item is pushed onto the stack", stack.getLast(), food);
+    assertEquals("Sees if the item is pushed onto the stack", stack.peek(), food);
     assertEquals("Checks the food's item component has an updated transform",
         Mappers.item.get(food).holderTransform.position, cookTransform.position);
   }

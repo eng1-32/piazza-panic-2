@@ -12,6 +12,7 @@ import com.badlogic.ashley.core.Component;
 public class FoodComponent implements Component {
 
   public FoodType type;
+  Boolean isBurned = false;
 
   public enum FoodType {
     // These ids correspond to the order of the food in the sprite!
@@ -27,7 +28,20 @@ public class FoodComponent implements Component {
     slicedTomato(10),
     onion(11),
     slicedOnion(12),
-    salad(13);
+    salad(13),
+    potato(14),
+    cookedPotato(15),
+    jacketPotato(16),
+    butter(17),
+    unformedDough(18),
+    formedDough(19),
+    doughTomatoBase(20),
+    uncookedPizza(21),
+    pizza(22),
+    tomatoBase(23),
+    cheese(24),
+    slicedCheese(25);
+
 
     private int value;
 
@@ -57,4 +71,13 @@ public class FoodComponent implements Component {
       return _map.get(value);
     }
   }
+
+  public void setBurned(Boolean value) {
+    isBurned = value;
+  }
+
+  public Boolean getIsBurned() {
+    return isBurned;
+  }
+
 }

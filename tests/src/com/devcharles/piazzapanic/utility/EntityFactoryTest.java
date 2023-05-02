@@ -90,7 +90,7 @@ public class EntityFactoryTest {
   @Test
   public void testCreateIngredientStation() {
     Entity station = factory.createStation(0, StationType.ingredient, Vector2.Zero,
-        FoodType.tomato);
+        FoodType.tomato, false);
     ImmutableArray<Entity> entities = engine.getEntitiesFor(
         Family.all(B2dBodyComponent.class, TransformComponent.class,
             TextureComponent.class, StationComponent.class).get());
@@ -116,7 +116,7 @@ public class EntityFactoryTest {
 
   @Test
   public void testCreateOtherStation() {
-    Entity station = factory.createStation(0, StationType.grill, Vector2.Zero, null);
+    Entity station = factory.createStation(0, StationType.grill, Vector2.Zero, null, false);
     ImmutableArray<Entity> entities = engine.getEntitiesFor(
         Family.all(B2dBodyComponent.class, TransformComponent.class,
             TextureComponent.class, StationComponent.class).get());
@@ -143,7 +143,7 @@ public class EntityFactoryTest {
     EntityFactory.foodTextures.clear();
     assertEquals("Ensure no textures are there initially.", 0, EntityFactory.foodTextures.size());
     factory.cutFood(null);
-    assertEquals("Ensure 13 food textures are loaded.", 13, EntityFactory.foodTextures.size());
+    assertEquals("Ensure 25 food textures are loaded.", 25, EntityFactory.foodTextures.size());
   }
 
   @Test
@@ -151,7 +151,7 @@ public class EntityFactoryTest {
     EntityFactory.foodTextures.clear();
     assertEquals("Ensure no textures are there initially.", 0, EntityFactory.foodTextures.size());
     factory.cutFood("v2/food.png");
-    assertEquals("Ensure 13 food textures are loaded.", 13, EntityFactory.foodTextures.size());
+    assertEquals("Ensure 25 food textures are loaded.", 25, EntityFactory.foodTextures.size());
   }
 
   @Test
@@ -168,7 +168,7 @@ public class EntityFactoryTest {
 
   @Test
   public void testCreateCustomer() {
-    Entity customer = factory.createCustomer(Vector2.Zero, null);
+    Entity customer = factory.createCustomer(Vector2.Zero, null, false);
     ImmutableArray<Entity> entities = engine.getEntitiesFor(
         Family.all(B2dBodyComponent.class, TransformComponent.class,
             CustomerComponent.class, TextureComponent.class, AnimationComponent.class,

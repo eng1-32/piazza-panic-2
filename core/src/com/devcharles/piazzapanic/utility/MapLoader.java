@@ -1,6 +1,7 @@
 package com.devcharles.piazzapanic.utility;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,8 +13,6 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
@@ -174,44 +173,52 @@ public class MapLoader {
    * Tile Properties.
    */
   public Map<Integer, Entity> buildStations() {
-    TiledMapTileLayer stations = (TiledMapTileLayer) (map.getLayers().get(stationLayer));
-    TiledMapTileLayer stations_f = (TiledMapTileLayer) (map.getLayers().get(stationLayer + "_f"));
-
-    int columns = stations.getWidth();
-    int rows = stations.getHeight();
-
-    Cell currentCell;
-
+    MapObjects stations = map.getLayers().get("StationObjects").getObjects();
+    MapObjects stations_f = map.getLayers().get("StationObjects_f").getObjects();
     Map<Integer, Entity> stationsMap = new HashMap<>();
 
     int id = 0;
-    for (int i = 0; i < columns; i++) {
-      for (int j = 0; j < rows; j++) {
-        currentCell =
-            stations.getCell(i, j) != null ? stations.getCell(i, j) : stations_f.getCell(i, j);
-        if (currentCell == null) {
-          continue;
-        }
-        Integer object = currentCell.getTile().getProperties()
-            .get(stationIdProperty, Integer.class);
-        if (object == null) {
-          continue;
-        }
-        StationType stationType = StationType.from(object);
 
-        FoodType ingredientType = null;
+    for (MapObject mapObject : stations) {
+      MapProperties tileProperties = mapObject.getProperties();
+      TiledMapTileMapObject stationObject = (TiledMapTileMapObject) mapObject;
 
-        if (stationType == StationType.ingredient) {
-          ingredientType = FoodType.from(
-              (Integer) currentCell.getTile().getProperties().get(ingredientTypeProperty));
-        }
+      Integer object = tileProperties.get(stationIdProperty, Integer.class);
+      if (object == null) {
+        continue;
+      }
+      buildStation(stationsMap, id, tileProperties, stationObject, object);
+      id++;
+    }
+    for (MapObject mapObject : stations_f) {
+      MapProperties tileProperties = mapObject.getProperties();
+      TiledMapTileMapObject stationObject = (TiledMapTileMapObject) mapObject;
 
-        stationsMap.put(id,
-            factory.createStation(id, stationType, new Vector2((i * 2) + 1, (j * 2) + 1),
-                ingredientType));
-        id++;
-      } // Rows Loop
-    } // Columns Loop
+      Integer object = tileProperties.get(stationIdProperty, Integer.class);
+      if (object == null) {
+        continue;
+      }
+      buildStation(stationsMap, id, tileProperties, stationObject, object);
+      id++;
+    }
     return stationsMap;
+  }
+
+  private void buildStation(Map<Integer, Entity> stationsMap, int id, MapProperties tileProperties,
+      TiledMapTileMapObject stationObject, Integer object) {
+    Vector2 pos = new Vector2(stationObject.getX() / ppt + 1, stationObject.getY() / ppt + 1);
+    StationType stationType = StationType.from(object);
+    FoodType ingredientType = null;
+
+    if (stationType == StationType.ingredient) {
+      ingredientType = FoodType.from((Integer) tileProperties.get(ingredientTypeProperty));
+    }
+    Boolean isLocked = stationObject.getProperties().get("locked", Boolean.class);
+    if (tileProperties.get("locked", Boolean.class) == null) {
+      isLocked = false;
+    }
+
+    Entity station = factory.createStation(id, stationType, pos, ingredientType, isLocked);
+    stationsMap.put(id, station);
   }
 }

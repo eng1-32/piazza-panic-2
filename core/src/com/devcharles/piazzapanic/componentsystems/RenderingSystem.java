@@ -112,8 +112,7 @@ public class RenderingSystem extends IteratingSystem {
           }
           // Set the rendering texture to the current frame of the animation.
           toRender = walkAnimator.getFrame(transform.rotation, transform.isMoving,
-              renderingAccumulator,
-              holdingCount);
+              renderingAccumulator, holdingCount);
 
         } else {
           // Other animations can be handled like:
@@ -127,13 +126,6 @@ public class RenderingSystem extends IteratingSystem {
         continue;
       }
 
-      // Rendering logic.
-      float width = toRender.getRegionWidth();
-      float height = toRender.getRegionHeight();
-
-      float originX = width / 2f;
-      float originY = height / 2f;
-
       boolean tint = Mappers.tint.has(entity);
 
       if (tint) {
@@ -141,12 +133,12 @@ public class RenderingSystem extends IteratingSystem {
         sb.setColor(Mappers.tint.get(entity).tint);
       }
 
-      sbDraw(texture, transform, toRender, width, height, originX, originY, 1f, 0);
+      sbDraw(texture, transform, toRender, 1f, 0);
       if (tint) {
         sb.setColor(Color.WHITE);
       }
       if (toRenderOnTop != null) {
-        sbDraw(texture, transform, toRenderOnTop, width, height, originX, originY, 0.5f, 1);
+        sbDraw(texture, transform, toRenderOnTop, 0.5f, 1);
       }
     }
     mapRenderer.renderForeground();
@@ -155,16 +147,17 @@ public class RenderingSystem extends IteratingSystem {
   }
 
   private void sbDraw(TextureComponent texture, TransformComponent transform,
-      TextureRegion toRenderOnTop, float width, float height, float originX, float originY,
-      float scale, float offsetX) {
-    sb.draw(
-        toRenderOnTop,
-        transform.position.x + offsetX - originX,
-        transform.position.y - originY,
-        originX, originY,
-        width, height,
-        transform.scale.x * texture.scale.x * scale,
-        transform.scale.y * texture.scale.y * scale,
+      TextureRegion toRender, float scale, float offsetX) {
+    // Rendering logic.
+    float width = toRender.getRegionWidth();
+    float height = toRender.getRegionHeight();
+
+    float originX = width / 2f;
+    float originY = height / 2f;
+
+    sb.draw(toRender, transform.position.x + offsetX - originX,
+        transform.position.y - originY, originX, originY, width, height,
+        transform.scale.x * texture.scale.x * scale, transform.scale.y * texture.scale.y * scale,
         0.0f);
   }
 
@@ -200,6 +193,7 @@ public class RenderingSystem extends IteratingSystem {
 
       TransformComponent transformFood = Mappers.transform.get(entity);
       transformFood.position.set(foodPos.cpy());
+      transformFood.position.z = 0f;
 
       if (Mappers.station.get(station).type == StationType.cutting_board) {
         transformFood.scale.set(0.4f, 0.4f);

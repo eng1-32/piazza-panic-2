@@ -40,7 +40,7 @@ public class GameStateTest {
     EntityFactory factory = new EntityFactory(engine, world, assetManager);
 
     Entity stationEntity = factory.createStation(0, StationType.grill, Vector2.Zero,
-        FoodType.grilledPatty);
+        FoodType.grilledPatty, false);
     factory.createCook(0, 0);
     engine.addSystem(
         new CustomerAISystem(new HashMap<Integer, Map<Integer, Box2dLocation>>(), world, factory,

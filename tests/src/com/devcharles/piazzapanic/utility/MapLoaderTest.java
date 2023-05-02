@@ -19,67 +19,102 @@ import com.devcharles.piazzapanic.components.WalkingAnimationComponent;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import com.devcharles.piazzapanic.utility.Station.StationType;
 import com.devcharles.piazzapanic.utility.box2d.Box2dLocation;
 import box2dLight.RayHandler;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+
 import com.devcharles.piazzapanic.GdxTestRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
  * @author James Wild
+ * @author Alistair Foggin
  */
 @RunWith(GdxTestRunner.class)
 public class MapLoaderTest {
+
   @Test
-  public void buildFromObjectsTest(){
+  public void buildFromObjectsTest() {
     World world = new World(new Vector2(0, 0), true);
     PooledEngine engine = new PooledEngine();
     AssetManager manager = new AssetManager();
     manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
     PiazzaPanic.loadAssets(manager);
-    manager.load("v2/mapTest.tmx", TiledMap.class);
     manager.finishLoading();
 
     EntityFactory factory = new EntityFactory(engine, world, manager);
     RayHandler rayhandler = new RayHandler(world);
-    MapLoader mapLoader = new MapLoader("v2/mapTest.tmx", null, factory, manager);
+    MapLoader mapLoader = new MapLoader("v2/endlessMap.tmx", null, factory, manager);
     mapLoader.buildFromObjects(rayhandler);
     ImmutableArray<Entity> entities = engine.getEntitiesFor(
         Family.all(B2dBodyComponent.class, TransformComponent.class,
             ControllableComponent.class, TextureComponent.class, AnimationComponent.class,
             WalkingAnimationComponent.class).get());
-    assertEquals("Checks that 2 entities with cook components.",2, entities.size());
+    assertEquals("Checks that 2 entities with cook components.", 2, entities.size());
     Map<Integer, Map<Integer, Box2dLocation>> aiObj = mapLoader.getObjectives();
-    assertTrue("Checks an ai objective with key 0 exists.",aiObj.containsKey(0));
-    assertTrue("Checks an ai objective with key -1 exists.",aiObj.containsKey(-1));
-    assertTrue("Checks an ai objective with key -2 exists.",aiObj.containsKey(-2));
+    assertTrue("Checks an ai objective with key 0 exists.", aiObj.containsKey(0));
+    assertTrue("Checks an ai objective with key -1 exists.", aiObj.containsKey(-1));
+    assertTrue("Checks an ai objective with key -2 exists.", aiObj.containsKey(-2));
+    assertTrue("Checks an ai objective with key 0 has a slot 0 exists.",
+        aiObj.get(0).containsKey(0));
   }
 
   @Test
-  public void buildStationsTest(){
+  public void buildStationsTest() {
     World world = new World(new Vector2(0, 0), true);
     PooledEngine engine = new PooledEngine();
     AssetManager manager = new AssetManager();
     manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
-    manager.load("v2/mapTest.tmx", TiledMap.class);
+    manager.load("v2/endlessMap.tmx", TiledMap.class);
     manager.finishLoading();
     EntityFactory factory = new EntityFactory(engine, world, manager);
-    MapLoader mapLoader = new MapLoader("v2/mapTest.tmx", null, factory, manager);
+    MapLoader mapLoader = new MapLoader("v2/endlessMap.tmx", null, factory, manager);
     mapLoader.buildStations();
     ImmutableArray<Entity> entities = engine.getEntitiesFor(
         Family.all(B2dBodyComponent.class, TransformComponent.class,
             TextureComponent.class, StationComponent.class).get());
-    assertEquals("Check that all 7 stations are built.",7, entities.size());
-    assertEquals("Checks sink station exists.", StationType.sink, Mappers.station.get(entities.get(0)).type);
-    assertEquals("Checks cutting board station exists.", StationType.cutting_board, Mappers.station.get(entities.get(1)).type);
-    assertEquals("Checks grill station exists.", StationType.grill, Mappers.station.get(entities.get(2)).type);
-    assertEquals("Checks serve station exists.", StationType.serve, Mappers.station.get(entities.get(3)).type);
-    assertEquals("Checks oven station exists.", StationType.oven, Mappers.station.get(entities.get(4)).type);
-    assertEquals("Checks bin station exists.", StationType.bin, Mappers.station.get(entities.get(5)).type);
-    assertEquals("Checks ingredient station exists.", StationType.ingredient, Mappers.station.get(entities.get(6)).type);
+    int numSinks = 0;
+    int numCuttingBoards = 0;
+    int numGrills = 0;
+    int numServe = 0;
+    int numOvens = 0;
+    int numIngredients = 0;
+    int numBins = 0;
+    for (Entity entity : entities) {
+      switch (Mappers.station.get(entity).type) {
+        case sink:
+          numSinks++;
+          break;
+        case cutting_board:
+          numCuttingBoards++;
+          break;
+        case grill:
+          numGrills++;
+          break;
+        case serve:
+          numServe++;
+          break;
+        case oven:
+          numOvens++;
+          break;
+        case ingredient:
+          numIngredients++;
+          break;
+        case bin:
+          numBins++;
+          break;
+      }
+    }
+    assertEquals("Check that all 7 stations are built.", 26, entities.size());
+    assertEquals("Checks sink stations exist.", 4, numSinks);
+    assertEquals("Checks cutting boards station exist.", 2, numCuttingBoards);
+    assertEquals("Checks grill stations exist.", 2, numGrills);
+    assertEquals("Checks serve stations exist.", 2, numServe);
+    assertEquals("Checks oven stations exist.", 2, numOvens);
+    assertEquals("Checks bin station exist.", 1, numBins);
+    assertEquals("Checks ingredient stations exist.", 13, numIngredients);
   }
 }

@@ -8,8 +8,10 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 /**
  * Renders a {@link TiledMap} that is loaded using {@link MapLoader}.
+ *
  * @author Andrey Samoilov
  * @author Ross Holmes
+ * @author Matthew Fitzpatrick
  */
 public class WorldTilemapRenderer {
 
@@ -27,11 +29,11 @@ public class WorldTilemapRenderer {
   private final TiledMapTileLayer floor;
   private final TiledMapTileLayer front_wall;
   private final TiledMapTileLayer station;
+  private final TiledMapTileLayer station_f;
   private final TiledMapTileLayer countertop;
   private final TiledMapTileLayer back_wall;
 
   private final TiledMapTileLayer countertop_f;
-  private final TiledMapTileLayer station_f;
 
   /**
    * Create a new renderer with existing {@link TiledMap}, camera and {@link SpriteBatch}. The
@@ -76,8 +78,8 @@ public class WorldTilemapRenderer {
   public void renderForeground() {
     renderer.setView(camera);
     renderer.renderTileLayer(countertop_f);
-    renderer.renderTileLayer(station_f);
     renderer.renderTileLayer(front_wall);
+    renderer.renderTileLayer(station_f);
   }
 
   public void dispose() {

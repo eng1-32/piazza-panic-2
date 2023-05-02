@@ -11,6 +11,7 @@ import com.devcharles.piazzapanic.components.FoodComponent.FoodType;
  * Helper class for storing station recipes and {@link StationType} of the current station.
  *
  * @author Ross Holmes
+ * @author Matthew Fitzpatrick
  */
 public class Station {
 
@@ -29,6 +30,15 @@ public class Station {
       put(FoodType.lettuce, FoodType.slicedLettuce);
       put(FoodType.unformedPatty, FoodType.formedPatty);
       put(FoodType.onion, FoodType.slicedOnion);
+      put(FoodType.cheese, FoodType.slicedCheese);
+      put(FoodType.unformedDough, FoodType.formedDough);
+    }
+  };
+
+  public static HashMap<FoodType, FoodType> ovenRecipes = new HashMap<FoodType, FoodType>() {
+    {
+      put(FoodType.uncookedPizza, FoodType.pizza);
+      put(FoodType.potato, FoodType.cookedPotato);
     }
   };
 
@@ -47,6 +57,19 @@ public class Station {
           add(FoodType.slicedTomato);
         }
       }, FoodType.salad);
+      put(new HashSet<FoodType>() {
+        {
+          add(FoodType.cookedPotato);
+          add(FoodType.slicedCheese);
+        }
+      }, FoodType.jacketPotato);
+      put(new HashSet<FoodType>() {
+        {
+          add(FoodType.formedDough);
+          add(FoodType.tomato);
+          add(FoodType.cheese);
+        }
+      }, FoodType.uncookedPizza);
     }
   };
   /**
@@ -56,6 +79,7 @@ public class Station {
     {
       put(StationType.grill, grillRecipes);
       put(StationType.cutting_board, cuttingBoardRecipes);
+      put(StationType.oven, ovenRecipes);
     }
   };
 

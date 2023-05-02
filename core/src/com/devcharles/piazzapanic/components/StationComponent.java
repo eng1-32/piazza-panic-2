@@ -24,6 +24,7 @@ public class StationComponent implements Component {
   public ArrayList<Entity> food = new ArrayList<>(
       Arrays.asList(new Entity[]{null, null, null, null}));
   public FoodType ingredient = null;
+  public Boolean isLocked;
 
   /**
    * Copy values from another station component into this one

@@ -3,6 +3,7 @@
  <image source="stations_chef_padded.png" width="216" height="252"/>
  <tile id="0">
   <properties>
+   <property name="locked" type="bool" value="false"/>
    <property name="stationID" type="int" value="1"/>
   </properties>
  </tile>
@@ -28,6 +29,7 @@
  </tile>
  <tile id="16">
   <properties>
+   <property name="locked" type="bool" value="false"/>
    <property name="stationID" type="int" value="2"/>
   </properties>
  </tile>
@@ -43,11 +45,13 @@
  </tile>
  <tile id="19">
   <properties>
+   <property name="locked" type="bool" value="false"/>
    <property name="stationID" type="int" value="3"/>
   </properties>
  </tile>
  <tile id="20">
   <properties>
+   <property name="locked" type="bool" value="false"/>
    <property name="stationID" type="int" value="4"/>
   </properties>
  </tile>
@@ -68,6 +72,7 @@
  </tile>
  <tile id="24">
   <properties>
+   <property name="locked" type="bool" value="false"/>
    <property name="stationID" type="int" value="5"/>
   </properties>
  </tile>
@@ -104,6 +109,30 @@
  <tile id="33">
   <properties>
    <property name="stationID" type="int" value="7"/>
+  </properties>
+ </tile>
+ <tile id="36">
+  <properties>
+   <property name="ingredientType" type="int" value="14"/>
+   <property name="stationID" type="int" value="6"/>
+  </properties>
+ </tile>
+ <tile id="37">
+  <properties>
+   <property name="ingredientType" type="int" value="17"/>
+   <property name="stationID" type="int" value="6"/>
+  </properties>
+ </tile>
+ <tile id="39">
+  <properties>
+   <property name="ingredientType" type="int" value="24"/>
+   <property name="stationID" type="int" value="6"/>
+  </properties>
+ </tile>
+ <tile id="40">
+  <properties>
+   <property name="ingredientType" type="int" value="18"/>
+   <property name="stationID" type="int" value="6"/>
   </properties>
  </tile>
 </tileset>

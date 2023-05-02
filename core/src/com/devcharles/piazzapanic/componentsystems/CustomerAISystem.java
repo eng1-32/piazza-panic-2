@@ -221,7 +221,7 @@ public class CustomerAISystem extends IteratingSystem {
   private void spawnCustomerGroup() {
     ArrayList<Entity> group = new ArrayList<>();
     for (int i = 0; i < MathUtils.random(1, maxGroupSize); i++) {
-      Entity newCustomer = factory.createCustomer(objectives.get(-2).get(0).getPosition(), null);
+      Entity newCustomer = factory.createCustomer(objectives.get(-2).get(0).getPosition(), null, isEndless);
       Mappers.aiAgent.get(newCustomer).slot = i;
       group.add(newCustomer);
       GdxTimer timer = Mappers.customer.get(newCustomer).timer;

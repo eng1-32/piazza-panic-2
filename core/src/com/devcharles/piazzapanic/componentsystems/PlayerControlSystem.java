@@ -64,6 +64,11 @@ public class PlayerControlSystem extends IteratingSystem {
       input.interact = false;
       Mappers.player.get(entity).interact = true;
     }
+    if(input.swap){
+      input.swap = false;
+      Mappers.controllable.get(entity).currentFood.move(input.swapNum);
+      input.swapNum = 0;
+    }
 
     B2dBodyComponent b2body = Mappers.b2body.get(entity);
 

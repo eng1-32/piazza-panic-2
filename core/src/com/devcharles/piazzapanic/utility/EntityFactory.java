@@ -1,6 +1,7 @@
 package com.devcharles.piazzapanic.utility;
 
 import com.badlogic.gdx.assets.AssetManager;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.HashMap;
@@ -201,7 +202,7 @@ public class EntityFactory {
    *                       spawn.
    */
   public Entity createStation(int id, Station.StationType type, Vector2 position,
-      FoodType ingredientType) {
+      FoodType ingredientType, Boolean isLocked) {
     Entity entity = engine.createEntity();
 
     float[] size = {1f, 1f};
@@ -215,6 +216,7 @@ public class EntityFactory {
     StationComponent station = engine.createComponent(StationComponent.class);
     station.id = id;
     station.type = type;
+    station.isLocked = isLocked;
 
     if (type == Station.StationType.ingredient) {
       station.ingredient = ingredientType;
@@ -275,7 +277,7 @@ public class EntityFactory {
       System.arraycopy(tmp[i], 0, frames, i * cols, cols);
     }
 
-    for (int i = 1; i < 14; i++) {
+    for (int i = 1; i < 26; i++) {
       foodTextures.put(FoodType.from(i), frames[i]);
     }
   }
@@ -297,7 +299,7 @@ public class EntityFactory {
    * @param foodType the type of food that the customer wants
    * @return reference to the entity.
    */
-  public Entity createCustomer(Vector2 position, FoodType foodType) {
+  public Entity createCustomer(Vector2 position, FoodType foodType, Boolean isEndless) {
     Entity entity = engine.createEntity();
 
     B2dBodyComponent b2dBody = engine.createComponent(B2dBodyComponent.class);
@@ -329,9 +331,12 @@ public class EntityFactory {
 
     // Create a steering body with no behaviour (to be set later)
     aiAgent.steeringBody = new Box2dSteeringBody(b2dBody.body, true, 0.5f);
-
-    FoodType[] s = new FoodType[Station.serveRecipes.values().size()];
-    s = Station.serveRecipes.values().toArray(s);
+    FoodType[] s;
+    if(!isEndless){
+      s = new FoodType[]{FoodType.burger, FoodType.salad};
+    }else{
+      s = new FoodType[]{FoodType.burger, FoodType.salad, FoodType.pizza, FoodType.jacketPotato};
+    }
 
     int orderIndex = ThreadLocalRandom.current().nextInt(0, s.length);
 

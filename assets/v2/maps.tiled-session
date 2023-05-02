@@ -15,10 +15,10 @@
         },
         "endlessMap.tmx": {
             "scale": 2,
-            "selectedLayer": 2,
+            "selectedLayer": 7,
             "viewCenter": {
-                "x": 982.25,
-                "y": 720.5
+                "x": 946.75,
+                "y": 828
             }
         },
         "endlessMapTest.tmx": {
@@ -53,8 +53,8 @@
             "scale": 3.0717,
             "selectedLayer": 7,
             "viewCenter": {
-                "x": 1007.422599863268,
-                "y": 879.6431943223622
+                "x": 959.7291402155158,
+                "y": 559.6249633753297
             }
         },
         "objects.tsx": {

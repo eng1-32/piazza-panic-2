@@ -129,7 +129,7 @@ public class PowerUpSystemTest {
     Mappers.player.get(cook).putDown = true;
     Mappers.station.get(station).interactingCook = cook;
 
-    StationSystem stationSystem = new StationSystem(factory, reputationPoints);
+    StationSystem stationSystem = new StationSystem(factory, reputationPoints, mock(Hud.class));
     engine.addSystem(stationSystem);
     engine.update(0.1f);
     assertEquals("The food cooking component timer should be less than 5000",
@@ -162,7 +162,7 @@ public class PowerUpSystemTest {
     Mappers.player.get(cook).putDown = true;
     Mappers.station.get(station).interactingCook = cook;
 
-    StationSystem stationSystem = new StationSystem(factory, reputationPoints);
+    StationSystem stationSystem = new StationSystem(factory, reputationPoints, mock(Hud.class));
     engine.addSystem(stationSystem);
     engine.update(0.1f);
     assertEquals("The food cooking component timer should be less than 5000",

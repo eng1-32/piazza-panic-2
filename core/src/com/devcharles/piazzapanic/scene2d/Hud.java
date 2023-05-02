@@ -64,7 +64,7 @@ public class Hud extends ApplicationAdapter {
   private Image photo;
 
   private final PiazzaPanic game;
-  private Table tableBottom, tableRight, shopTable, tablePause, tableBottomLabel;
+  private Table tableBottom, tableRight, tableLeft, shopTable, tablePause, tableBottomLabel;
   private Label shopSpeedUpLabel, shopPrepSpeedLabel, shopChopSpeedLabel, shopSalePriceLabel, shopPatienceLabel, shopCooksLabel;
 
   private boolean pauseToggled = false;
@@ -111,7 +111,7 @@ public class Hud extends ApplicationAdapter {
     chopSpeedBtn = new TextButton("$20 - Chopping Speed", game.skin);
     salePriceBtn = new TextButton("$20 - Order Income", game.skin);
     customerPatienceBtn = new TextButton("$20 - Customer Patience", game.skin);
-    newCookBtn = new TextButton("$50 - New Cook", game.skin);
+    newCookBtn = new TextButton("$30 - New Cook", game.skin);
 
     stage.addListener(new InputListener() {
       @Override
@@ -228,7 +228,7 @@ public class Hud extends ApplicationAdapter {
     tableTop.add(reputationLabel).expandX();
     tableTop.add().width(120).padRight(10);
 
-    Table tableLeft = new Table();
+    tableLeft = new Table();
     tableLeft.left();
     tableLeft.bottom();
     tableLeft.setFillParent(true);
@@ -403,10 +403,16 @@ public class Hud extends ApplicationAdapter {
     newCookBtn.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
-        // TODO: add new cook!
+        if (reputationAndMoney[1] < 30) {
+          return;
+        }
+        reputationAndMoney[1] -= 30;
+        ((EndlessGameScreen) gameScreen).spawnCook();
+        updateShop();
       }
     });
 
+    Label stationPriceLabel = new Label("$30 - Unlock Station", hudLabelStyle);
     resumeButton.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
@@ -414,30 +420,45 @@ public class Hud extends ApplicationAdapter {
       }
     });
 
-    shopTable.add(shopMainLabel).padBottom(60);
+    Table innerTable = new Table();
+    addShopItem(innerTable, movementSpeedBtn, shopSpeedUpLabel, true);
+    addShopItem(innerTable, prepSpeedBtn, shopPrepSpeedLabel, false);
+    innerTable.row();
+    addShopItem(innerTable, chopSpeedBtn, shopChopSpeedLabel, true);
+    addShopItem(innerTable, salePriceBtn, shopSalePriceLabel, false);
+    innerTable.row();
+    addShopItem(innerTable, customerPatienceBtn, shopPatienceLabel, true);
+    addShopItem(innerTable, newCookBtn, shopCooksLabel, false);
+
+    shopTable.add(shopMainLabel).padBottom(20);
     shopTable.row();
-    addShopItem(movementSpeedBtn, shopSpeedUpLabel);
-    addShopItem(prepSpeedBtn, shopPrepSpeedLabel);
-    addShopItem(chopSpeedBtn, shopChopSpeedLabel);
-    addShopItem(salePriceBtn, shopSalePriceLabel);
-    addShopItem(customerPatienceBtn, shopPatienceLabel);
-    addShopItem(newCookBtn, shopCooksLabel);
+    shopTable.add(stationPriceLabel).padBottom(10);
+    shopTable.row();
+    shopTable.add(innerTable);
+    shopTable.row();
     shopTable.add(resumeButton).width(500);
   }
 
-  private void addShopItem(TextButton shopButton, Label shopLabel) {
-    shopTable.add(shopButton).width(500).padBottom(30);
-    shopTable.add(shopLabel).height(50).padLeft(20).padBottom(30);
-    shopTable.row();
+  private void addShopItem(Table innerTable, TextButton shopButton, Label shopLabel,
+      boolean isLeft) {
+    if (isLeft) {
+      innerTable.add(shopLabel).height(50).padRight(20).padBottom(20);
+      innerTable.add(shopButton).padRight(10).width(500).padBottom(20);
+    } else {
+      innerTable.add(shopButton).padLeft(10).width(500).padBottom(20);
+      innerTable.add(shopLabel).height(50).padLeft(20).padBottom(20);
+    }
   }
 
-  private void updateShop() {
+  public void updateShop() {
     boolean hasInsufficientFunds = reputationAndMoney[1] < 20;
     movementSpeedBtn.setDisabled(hasInsufficientFunds);
     prepSpeedBtn.setDisabled(hasInsufficientFunds);
     chopSpeedBtn.setDisabled(hasInsufficientFunds);
     salePriceBtn.setDisabled(hasInsufficientFunds);
     customerPatienceBtn.setDisabled(hasInsufficientFunds);
+    newCookBtn.setDisabled(
+        reputationAndMoney[1] < 30 || !((EndlessGameScreen) gameScreen).canSpawnCook());
 
     if (!moneyLabel.getText().toString().equals(String.format("$%d", reputationAndMoney[1]))) {
       moneyLabel.setText(String.format("$%d", reputationAndMoney[1]));
@@ -537,9 +558,9 @@ public class Hud extends ApplicationAdapter {
     if (timeCounter >= 1) {
       customerTimer++;
       timerLabel.setText(String.format("%03d", customerTimer));
-      reputationLabel.setText(reputationAndMoney[0]);
       timeCounter -= 1;
     }
+    reputationLabel.setText(reputationAndMoney[0]);
 
     if (triggerWin && !won) {
       triggerWin = false;
@@ -552,7 +573,6 @@ public class Hud extends ApplicationAdapter {
 
     stage.act();
     stage.draw();
-
   }
 
   @Override
@@ -563,6 +583,7 @@ public class Hud extends ApplicationAdapter {
     // Hide the normal hud
     tableBottom.setVisible(false);
     tableRight.setVisible(false);
+    tableLeft.setVisible(false);
     pauseButton.setVisible(false);
     shopButton.setVisible(false);
     tableBottomLabel.setVisible(false);
@@ -601,6 +622,7 @@ public class Hud extends ApplicationAdapter {
     // Show the normal hud
     tableBottom.setVisible(true);
     tableRight.setVisible(true);
+    tableLeft.setVisible(true);
     pauseButton.setVisible(true);
     if (isEndless) {
       shopButton.setVisible(true);
@@ -632,6 +654,11 @@ public class Hud extends ApplicationAdapter {
     Label congratsSubtitle;
     if (isEndless) {
       congrats = new Label("The End!", titleLabelStyle);
+      congratsSubtitle = new Label(
+          String.format("You served %d customers and lasted %03d seconds!", numCustomersServed,
+              customerTimer), hudLabelStyle);
+    } else if (reputationAndMoney[0] == 0) {
+      congrats = new Label("Sorry, you lost!", titleLabelStyle);
       congratsSubtitle = new Label(
           String.format("You served %d customers and lasted %03d seconds!", numCustomersServed,
               customerTimer), hudLabelStyle);

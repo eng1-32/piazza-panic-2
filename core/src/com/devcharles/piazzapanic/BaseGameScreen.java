@@ -71,6 +71,7 @@ public abstract class BaseGameScreen implements Screen {
 
     factory = new EntityFactory(engine, world, assetManager);
     factory.cutFood(null);
+    factory.cutOvenTextures();
 
     hud = new Hud(game.batch, this, game, reputationPointsAndMoney);
 

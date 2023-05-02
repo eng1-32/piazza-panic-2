@@ -21,19 +21,19 @@ public class Difficulty {
     Difficulty difficulty = new Difficulty();
     switch (difficultyLevel) {
       case EASY:
-        difficulty.initialChefs = 3;
+        difficulty.initialCooks = 3;
         difficulty.maxGroupSize = 1;
         difficulty.customerDelay = 35000;
         difficulty.customerPatience = 110000;
         break;
       case MEDIUM:
-        difficulty.initialChefs = 2;
+        difficulty.initialCooks = 2;
         difficulty.maxGroupSize = 2;
         difficulty.customerDelay = 30000;
         difficulty.customerPatience = 90000;
         break;
       case HARD:
-        difficulty.initialChefs = 1;
+        difficulty.initialCooks = 1;
         difficulty.maxGroupSize = 3;
         difficulty.customerDelay = 25000;
         difficulty.customerPatience = 70000;
@@ -43,7 +43,7 @@ public class Difficulty {
   }
 
   // TODO: manage initial number of chefs
-  public int initialChefs;
+  public int initialCooks;
   public int maxGroupSize;
   public int customerDelay;
   public int customerPatience;

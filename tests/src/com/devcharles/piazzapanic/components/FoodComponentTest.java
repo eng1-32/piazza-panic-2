@@ -45,11 +45,24 @@ public class FoodComponentTest {
     assertEquals(FoodType.onion, FoodType.from(11));
     assertEquals(FoodType.slicedOnion, FoodType.from(12));
     assertEquals(FoodType.salad, FoodType.from(13));
+    assertEquals(FoodType.potato, FoodType.from(14));
+    assertEquals(FoodType.cookedPotato, FoodType.from(15));
+    assertEquals(FoodType.jacketPotato, FoodType.from(16));
+    assertEquals(FoodType.butter, FoodType.from(17));
+    assertEquals(FoodType.unformedDough, FoodType.from(18));
+    assertEquals(FoodType.formedDough, FoodType.from(19));
+    assertEquals(FoodType.doughTomatoBase, FoodType.from(20));
+    assertEquals(FoodType.uncookedPizza, FoodType.from(21));
+    assertEquals(FoodType.pizza, FoodType.from(22));
+    assertEquals(FoodType.tomatoBase, FoodType.from(23));
+    assertEquals(FoodType.cheese, FoodType.from(24));
+    assertEquals(FoodType.slicedCheese, FoodType.from(25));
+    assertEquals(FoodType.burnt, FoodType.from(26));
   }
 
   @Test
   public void getFoodTypeFromIDInvalid() {
-    assertNull(FoodType.from(26));
+    assertNull(FoodType.from(27));
     assertNull(FoodType.from(0));
     assertNull(FoodType.from(-1));
   }

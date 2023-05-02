@@ -9,13 +9,10 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.devcharles.piazzapanic.PiazzaPanic;
-import com.devcharles.piazzapanic.components.AnimationComponent;
 import com.devcharles.piazzapanic.components.B2dBodyComponent;
-import com.devcharles.piazzapanic.components.ControllableComponent;
 import com.devcharles.piazzapanic.components.StationComponent;
 import com.devcharles.piazzapanic.components.TextureComponent;
 import com.devcharles.piazzapanic.components.TransformComponent;
-import com.devcharles.piazzapanic.components.WalkingAnimationComponent;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -49,11 +46,7 @@ public class MapLoaderTest {
     RayHandler rayhandler = new RayHandler(world);
     MapLoader mapLoader = new MapLoader("v2/endlessMap.tmx", null, factory, manager);
     mapLoader.buildFromObjects(rayhandler);
-    ImmutableArray<Entity> entities = engine.getEntitiesFor(
-        Family.all(B2dBodyComponent.class, TransformComponent.class,
-            ControllableComponent.class, TextureComponent.class, AnimationComponent.class,
-            WalkingAnimationComponent.class).get());
-    assertEquals("Checks that 2 entities with cook components.", 2, entities.size());
+    assertEquals("Checks that 3 cook spawn points.", 3, mapLoader.getCookSpawns().size());
     Map<Integer, Map<Integer, Box2dLocation>> aiObj = mapLoader.getObjectives();
     assertTrue("Checks an ai objective with key 0 exists.", aiObj.containsKey(0));
     assertTrue("Checks an ai objective with key -1 exists.", aiObj.containsKey(-1));
@@ -108,13 +101,13 @@ public class MapLoaderTest {
           break;
       }
     }
-    assertEquals("Check that all 7 stations are built.", 26, entities.size());
+    assertEquals("Check that all 7 stations are built.", 25, entities.size());
     assertEquals("Checks sink stations exist.", 4, numSinks);
     assertEquals("Checks cutting boards station exist.", 2, numCuttingBoards);
     assertEquals("Checks grill stations exist.", 2, numGrills);
     assertEquals("Checks serve stations exist.", 2, numServe);
     assertEquals("Checks oven stations exist.", 2, numOvens);
     assertEquals("Checks bin station exist.", 1, numBins);
-    assertEquals("Checks ingredient stations exist.", 13, numIngredients);
+    assertEquals("Checks ingredient stations exist.", 12, numIngredients);
   }
 }

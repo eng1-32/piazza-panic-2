@@ -1,5 +1,6 @@
 package com.devcharles.piazzapanic.componentsystems;
 
+import com.devcharles.piazzapanic.scene2d.Hud;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,13 +38,15 @@ public class StationSystem extends IteratingSystem {
 
   private TintComponent readyTint;
   private TintComponent burnedTint;
+  private final Hud hud;
   private float tickAccumulator = 0;
   private final Integer[] reputationAndMoney;
 
-  public StationSystem(EntityFactory factory, Integer[] reputationAndMoney) {
+  public StationSystem(EntityFactory factory, Integer[] reputationAndMoney, Hud hud) {
     super(Family.all(StationComponent.class).get());
     this.factory = factory;
     this.reputationAndMoney = reputationAndMoney;
+    this.hud = hud;
   }
 
   @Override
@@ -112,6 +115,8 @@ public class StationSystem extends IteratingSystem {
         player.interact = false;
         if (station.isLocked) {
           tryStationUnlock(station);
+          player.pickUp = false;
+          player.putDown = false;
         } else {
           interactStation(station);
         }
@@ -282,14 +287,16 @@ public class StationSystem extends IteratingSystem {
   /**
    * Pick up ready food from a station
    */
-  void stationPickup(StationComponent station, ControllableComponent controllable) {
-    for (Entity foodEntity : station.food) {
+  void stationPickup(StationComponent stationComponent,
+      ControllableComponent controllable) {
+    for (Entity foodEntity : stationComponent.food) {
       if (foodEntity != null) {
         FoodComponent foodComponent = Mappers.food.get(foodEntity);
-        FoodType[] compare = Station.recipeMap.get(station.type).values().toArray(new FoodType[0]);
+        FoodType[] compare = Station.recipeMap.get(stationComponent.type).values()
+            .toArray(new FoodType[0]);
         if (Arrays.asList(compare).contains(foodComponent.type) || foodComponent.getIsBurned()) {
-          if (controllable.currentFood.pushItem(foodEntity, station.interactingCook)) {
-            station.food.set(station.food.indexOf(foodEntity), null);
+          if (controllable.currentFood.pushItem(foodEntity, stationComponent.interactingCook)) {
+            stationComponent.food.set(stationComponent.food.indexOf(foodEntity), null);
             foodEntity.remove(CookingComponent.class);
             Mappers.transform.get(foodEntity).scale.set(1, 1);
             Gdx.app.log("Picked up", Mappers.food.get(foodEntity).type.toString());
@@ -314,11 +321,14 @@ public class StationSystem extends IteratingSystem {
       return;
     }
 
+    boolean stationHasToggledTint = false;
+    boolean hasFood = false;
     for (Entity foodEntity : stationComponent.food) {
 
       if (foodEntity == null || !Mappers.cooking.has(foodEntity)) {
         continue;
       }
+      hasFood = true;
 
       CookingComponent cooking = Mappers.cooking.get(foodEntity);
       FoodComponent foodComponent = Mappers.food.get(foodEntity);
@@ -327,6 +337,19 @@ public class StationSystem extends IteratingSystem {
 
       boolean ready = cooking.timer.tick(deltaTime);
 
+      if (ready && cooking.processed && stationComponent.type == StationType.oven) {
+        if (tickAccumulator > 0.5f) {
+          if (!stationHasToggledTint) {
+            stationHasToggledTint = true;
+            System.out.println("tint toggled");
+            if (!Mappers.tint.has(station)) {
+              station.add(readyTint);
+            } else {
+              station.remove(TintComponent.class);
+            }
+          }
+        }
+      }
       if (ready && cooking.processed && !Arrays.asList(compare).contains(foodComponent.type)) {
         // Process the food into it's next form
         foodComponent.type = Station.recipeMap.get(stationComponent.type).get(foodComponent.type);
@@ -341,20 +364,15 @@ public class StationSystem extends IteratingSystem {
           } else {
             foodEntity.remove(TintComponent.class);
           }
-          //TODO: Find out why the tint is not visible on the oven
-          if (stationComponent.type == StationType.oven) {
-            if (!Mappers.tint.has(station)) {
-              station.add(readyTint);
-            } else {
-              station.remove(TintComponent.class);
-            }
-          }
         }
 
       }
       if (stationComponent.type != StationType.cutting_board) {
         hasBurned(foodEntity, cooking, foodComponent);
       }
+    }
+    if (!hasFood && stationComponent.type == StationType.oven && Mappers.tint.has(station)) {
+      station.remove(TintComponent.class);
     }
   }
 
@@ -369,9 +387,10 @@ public class StationSystem extends IteratingSystem {
   }
 
   void tryStationUnlock(StationComponent stationComponent) {
-    if (reputationAndMoney[1] >= 50) {
+    if (reputationAndMoney[1] >= 30) {
       stationComponent.isLocked = false;
-      reputationAndMoney[1] -= 50;
+      reputationAndMoney[1] -= 30;
+      hud.updateShop();
     }
   }
 

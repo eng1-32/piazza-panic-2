@@ -1,30 +1,27 @@
 package com.devcharles.piazzapanic.utility;
 
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
-import java.util.HashMap;
-import java.util.Map;
-
+import box2dLight.RayHandler;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.devcharles.piazzapanic.components.PlayerComponent;
 import com.devcharles.piazzapanic.components.FoodComponent.FoodType;
 import com.devcharles.piazzapanic.utility.Station.StationType;
 import com.devcharles.piazzapanic.utility.box2d.Box2dLocation;
 import com.devcharles.piazzapanic.utility.box2d.LightBuilder;
 import com.devcharles.piazzapanic.utility.box2d.MapBodyBuilder;
-
-import box2dLight.RayHandler;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Loads and owns the {@link TiledMap} object. Creates entities from map metadata.
@@ -58,6 +55,8 @@ public class MapLoader {
   static final String ingredientTypeProperty = "ingredientType";
 
   private Map<Integer, Map<Integer, Box2dLocation>> aiObjectives;
+
+  private Map<Integer, Vector2> cookSpawns;
 
   /**
    * Load the {@link TiledMap} from a {@code .tmx} file.
@@ -95,6 +94,7 @@ public class MapLoader {
     MapObjects objects = map.getLayers().get(objectLayer).getObjects();
 
     aiObjectives = new HashMap<>();
+    cookSpawns = new HashMap<>();
 
     for (MapObject mapObject : objects) {
 
@@ -131,11 +131,7 @@ public class MapLoader {
           int cookID = (int) properties.get(cookSpawnPoint);
           Gdx.app.log("map parsing",
               String.format("Cook spawn point at x:%.2f y:%.2f", pos.x, pos.y));
-          Entity cook = factory.createCook((int) pos.x, (int) pos.y);
-          if (cookID == 0) {
-            cook.add(new PlayerComponent());
-          }
-
+          cookSpawns.put(cookID, pos);
         } else if (properties.containsKey(aiSpawnPoint)) {
           Gdx.app.log("map parsing",
               String.format("Ai spawn point at x:%.2f y:%.2f", pos.x, pos.y));
@@ -219,6 +215,13 @@ public class MapLoader {
     }
 
     Entity station = factory.createStation(id, stationType, pos, ingredientType, isLocked);
+    Mappers.texture.get(station).region = stationObject.getTextureRegion();
+    Mappers.texture.get(station).scale.set(1f / ppt, 1f / ppt);
     stationsMap.put(id, station);
   }
+
+  public Map<Integer, Vector2> getCookSpawns() {
+    return cookSpawns;
+  }
+
 }

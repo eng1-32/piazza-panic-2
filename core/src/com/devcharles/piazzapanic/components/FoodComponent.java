@@ -40,10 +40,11 @@ public class FoodComponent implements Component {
     pizza(22),
     tomatoBase(23),
     cheese(24),
-    slicedCheese(25);
+    slicedCheese(25),
+    burnt(26);
 
 
-    private int value;
+    private final int value;
 
     FoodType(int id) {
       this.value = id;

@@ -58,7 +58,9 @@ public class PiazzaPanic extends Game {
     assetManager.load("v2/chef/2_crate.png", Texture.class);
     assetManager.load("v2/chef/2_holding.png", Texture.class);
 
+    assetManager.load("v2/stations_chef.png", Texture.class);
     assetManager.load("v2/food.png", Texture.class);
+    assetManager.load("v2/burnt_food.png", Texture.class);
     assetManager.load("v2/map.tmx", TiledMap.class);
     assetManager.load("v2/endlessMap.tmx", TiledMap.class);
   }

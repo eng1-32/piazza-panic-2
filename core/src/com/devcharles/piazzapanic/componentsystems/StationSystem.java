@@ -108,7 +108,7 @@ public class StationSystem extends IteratingSystem {
           case serve:
             break;
           default:
-            stationPickup(entity, station, controllable);
+            stationPickup(station, controllable);
             break;
         }
       } else if (player.interact) {
@@ -287,7 +287,7 @@ public class StationSystem extends IteratingSystem {
   /**
    * Pick up ready food from a station
    */
-  void stationPickup(Entity station, StationComponent stationComponent,
+  void stationPickup(StationComponent stationComponent,
       ControllableComponent controllable) {
     for (Entity foodEntity : stationComponent.food) {
       if (foodEntity != null) {

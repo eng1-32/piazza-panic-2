@@ -1,5 +1,6 @@
 package com.devcharles.piazzapanic.componentsystems;
 
+import com.devcharles.piazzapanic.scene2d.Hud;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,13 +38,15 @@ public class StationSystem extends IteratingSystem {
 
   private TintComponent readyTint;
   private TintComponent burnedTint;
+  private Hud hud;
   private float tickAccumulator = 0;
   private final Integer[] reputationAndMoney;
 
-  public StationSystem(EntityFactory factory, Integer[] reputationAndMoney) {
+  public StationSystem(EntityFactory factory, Integer[] reputationAndMoney, Hud hud) {
     super(Family.all(StationComponent.class).get());
     this.factory = factory;
     this.reputationAndMoney = reputationAndMoney;
+    this.hud = hud;
   }
 
   @Override
@@ -112,6 +115,8 @@ public class StationSystem extends IteratingSystem {
         player.interact = false;
         if (station.isLocked) {
           tryStationUnlock(station);
+          player.pickUp = false;
+          player.putDown = false;
         } else {
           interactStation(station);
         }
@@ -372,6 +377,7 @@ public class StationSystem extends IteratingSystem {
     if (reputationAndMoney[1] >= 50) {
       stationComponent.isLocked = false;
       reputationAndMoney[1] -= 50;
+      hud.updateShop();
     }
   }
 

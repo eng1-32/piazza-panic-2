@@ -431,7 +431,7 @@ public class Hud extends ApplicationAdapter {
     shopTable.row();
   }
 
-  private void updateShop() {
+  public void updateShop() {
     boolean hasInsufficientFunds = reputationAndMoney[1] < 20;
     movementSpeedBtn.setDisabled(hasInsufficientFunds);
     prepSpeedBtn.setDisabled(hasInsufficientFunds);

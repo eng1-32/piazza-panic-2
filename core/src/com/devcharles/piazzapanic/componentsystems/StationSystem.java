@@ -247,7 +247,7 @@ public class StationSystem extends IteratingSystem {
         FoodType.slicedOnion, FoodType.formedDough, FoodType.tomato, FoodType.cheese};
     int i = 0;
     for (Entity foodEntity : controllable.currentFood) {
-      if (i > count - 1) {
+      if (i >= count) {
         break;
       }
       FoodComponent check = Mappers.food.get(foodEntity);

@@ -43,7 +43,7 @@ public class SavableCustomerTest {
 
   @Test
   public void testFrom() {
-    Entity customer = factory.createCustomer(Vector2.Zero, FoodType.burger);
+    Entity customer = factory.createCustomer(Vector2.Zero, FoodType.burger, false);
     Mappers.customer.get(customer).food = factory.createFood(FoodType.burger);
     Mappers.aiAgent.get(customer).slot = 1;
     Mappers.aiAgent.get(customer).currentObjective = 3;

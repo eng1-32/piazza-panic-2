@@ -143,7 +143,7 @@ public class EntityFactoryTest {
     EntityFactory.foodTextures.clear();
     assertEquals("Ensure no textures are there initially.", 0, EntityFactory.foodTextures.size());
     factory.cutFood(null);
-    assertEquals("Ensure 13 food textures are loaded.", 13, EntityFactory.foodTextures.size());
+    assertEquals("Ensure 25 food textures are loaded.", 25, EntityFactory.foodTextures.size());
   }
 
   @Test
@@ -151,7 +151,7 @@ public class EntityFactoryTest {
     EntityFactory.foodTextures.clear();
     assertEquals("Ensure no textures are there initially.", 0, EntityFactory.foodTextures.size());
     factory.cutFood("v2/food.png");
-    assertEquals("Ensure 13 food textures are loaded.", 13, EntityFactory.foodTextures.size());
+    assertEquals("Ensure 25 food textures are loaded.", 25, EntityFactory.foodTextures.size());
   }
 
   @Test

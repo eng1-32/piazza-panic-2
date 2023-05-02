@@ -105,7 +105,7 @@ public class PowerUpSystemTest {
 
   @Test
   public void testAddPrepSpeed() {
-    Entity station = factory.createStation(0, StationType.cutting_board, Vector2.Zero, null);
+    Entity station = factory.createStation(0, StationType.cutting_board, Vector2.Zero, null, false);
 
     assertEquals("The station should have a prep speed modifier of 1", 1,
         Mappers.station.get(station).prepModifier, 0.001f);
@@ -129,7 +129,7 @@ public class PowerUpSystemTest {
     Mappers.player.get(cook).putDown = true;
     Mappers.station.get(station).interactingCook = cook;
 
-    StationSystem stationSystem = new StationSystem(factory);
+    StationSystem stationSystem = new StationSystem(factory, reputationPoints);
     engine.addSystem(stationSystem);
     engine.update(0.1f);
     assertEquals("The food cooking component timer should be less than 5000",
@@ -138,7 +138,7 @@ public class PowerUpSystemTest {
 
   @Test
   public void testAddChopSpeed() {
-    Entity station = factory.createStation(0, StationType.cutting_board, Vector2.Zero, null);
+    Entity station = factory.createStation(0, StationType.cutting_board, Vector2.Zero, null, false);
 
     assertEquals("The station should have a chop speed modifier of 1", 1,
         Mappers.station.get(station).chopModifier, 0.001f);
@@ -162,7 +162,7 @@ public class PowerUpSystemTest {
     Mappers.player.get(cook).putDown = true;
     Mappers.station.get(station).interactingCook = cook;
 
-    StationSystem stationSystem = new StationSystem(factory);
+    StationSystem stationSystem = new StationSystem(factory, reputationPoints);
     engine.addSystem(stationSystem);
     engine.update(0.1f);
     assertEquals("The food cooking component timer should be less than 5000",

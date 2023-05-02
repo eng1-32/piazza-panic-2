@@ -225,7 +225,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,70,70,70,70,70,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,75,83,80,82,79,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,75,83,82,79,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,74,72,73,71,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -364,19 +364,13 @@
     <property name="stationID" type="int" value="6"/>
    </properties>
   </object>
-  <object id="129" gid="80" x="1056" y="864" width="32" height="32">
-   <properties>
-    <property name="ingredientType" type="int" value="17"/>
-    <property name="stationID" type="int" value="6"/>
-   </properties>
-  </object>
-  <object id="130" gid="82" x="1088" y="864" width="32" height="32">
+  <object id="130" gid="82" x="1056" y="864" width="32" height="32">
    <properties>
     <property name="ingredientType" type="int" value="24"/>
     <property name="stationID" type="int" value="6"/>
    </properties>
   </object>
-  <object id="131" gid="79" x="1120" y="864" width="32" height="32">
+  <object id="131" gid="79" x="1088" y="864" width="32" height="32">
    <properties>
     <property name="ingredientType" type="int" value="14"/>
     <property name="stationID" type="int" value="6"/>
@@ -508,7 +502,7 @@
    <polyline points="0,0 -0.0625,-14.25"/>
   </object>
   <object id="83" x="994.21" y="897.573" width="125.227" height="56.8636"/>
-  <object id="86" x="992" y="832" width="160.042" height="28.75"/>
+  <object id="86" x="992" y="832" width="128.04" height="28.75"/>
  </objectgroup>
  <objectgroup id="7" name="MapObjects" locked="1">
   <object id="52" x="1440" y="704">
@@ -679,12 +673,6 @@
    <properties>
     <property name="aiobjective" type="int" value="4"/>
     <property name="aislot" type="int" value="0"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="111" x="1136" y="840">
-   <properties>
-    <property name="lightID" type="int" value="1"/>
    </properties>
    <point/>
   </object>

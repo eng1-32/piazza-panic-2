@@ -1,9 +1,5 @@
 package com.devcharles.piazzapanic.componentsystems;
 
-import com.devcharles.piazzapanic.utility.EntityFactory;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
@@ -13,14 +9,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector3;
+import com.devcharles.piazzapanic.components.StationComponent;
 import com.devcharles.piazzapanic.components.TextureComponent;
 import com.devcharles.piazzapanic.components.TransformComponent;
+import com.devcharles.piazzapanic.utility.EntityFactory;
 import com.devcharles.piazzapanic.utility.Mappers;
+import com.devcharles.piazzapanic.utility.Station.StationType;
 import com.devcharles.piazzapanic.utility.WalkAnimator;
 import com.devcharles.piazzapanic.utility.WorldTilemapRenderer;
 import com.devcharles.piazzapanic.utility.YComparator;
 import com.devcharles.piazzapanic.utility.ZComparator;
-import com.devcharles.piazzapanic.utility.Station.StationType;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Andrey Samoilov
@@ -128,17 +129,45 @@ public class RenderingSystem extends IteratingSystem {
 
       boolean tint = Mappers.tint.has(entity);
 
-      if (tint) {
-        // Apply a tint for this draw call.
-        sb.setColor(Mappers.tint.get(entity).tint);
-      }
+      StationComponent stationComponent = Mappers.station.get(entity);
+      if (stationComponent != null) {
+        if (stationComponent.type != StationType.oven && !stationComponent.isLocked) {
+          continue;
+        }
 
-      sbDraw(texture, transform, toRender, 1f, 0);
-      if (tint) {
-        sb.setColor(Color.WHITE);
-      }
-      if (toRenderOnTop != null) {
-        sbDraw(texture, transform, toRenderOnTop, 0.5f, 1);
+        // Indicator to show that oven has food
+        if (stationComponent.type == StationType.oven) {
+          for (Entity food : stationComponent.food) {
+            if (food != null) {
+              toRender = EntityFactory.getOvenTexture();
+              break;
+            }
+          }
+        }
+
+        if (stationComponent.isLocked) {
+          // Indicate that station is locked
+          sb.setColor(new Color(0, 0, 0, 0.5f));
+        } else if (tint) {
+          // Apply a tint for this draw call.
+          sb.setColor(Mappers.tint.get(entity).tint);
+        }
+        sbDraw(texture, transform, toRender, 1f, 0);
+        if (tint || stationComponent.isLocked) {
+          sb.setColor(Color.WHITE);
+        }
+      } else {
+        if (tint) {
+          // Apply a tint for this draw call.
+          sb.setColor(Mappers.tint.get(entity).tint);
+        }
+        sbDraw(texture, transform, toRender, 1f, 0);
+        if (tint) {
+          sb.setColor(Color.WHITE);
+        }
+        if (toRenderOnTop != null) {
+          sbDraw(texture, transform, toRenderOnTop, 0.5f, 1);
+        }
       }
     }
     mapRenderer.renderForeground();

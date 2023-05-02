@@ -1,7 +1,6 @@
 package com.devcharles.piazzapanic.utility;
 
 import com.badlogic.gdx.assets.AssetManager;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.HashMap;
@@ -56,6 +55,7 @@ public class EntityFactory {
   }
 
   protected static final Map<FoodType, TextureRegion> foodTextures = new HashMap<>();
+  protected static TextureRegion ovenTexture;
 
   /**
    * Create reusable definitions for bodies and fixtures. These can be then be used while creating
@@ -255,6 +255,15 @@ public class EntityFactory {
   }
 
   /**
+   * Cut the oven station texture, run at game initialisation.
+   */
+  public void cutOvenTextures() {
+    String path = "v2/stations_chef.png";
+    Texture foodSheet = assetManager.get(path, Texture.class);
+    ovenTexture = new TextureRegion(foodSheet, 74, 2, 32, 32); // Full
+  }
+
+  /**
    * Cut the food textures, run at game initialisation.
    *
    * @param path (optional) custom path for food textures.
@@ -289,6 +298,15 @@ public class EntityFactory {
    */
   public static TextureRegion getFoodTexture(FoodType type) {
     return foodTextures.get(type);
+  }
+
+  /**
+   * Get the texture associated with a certain food.
+   *
+   * @return {@link TextureRegion} of the food.
+   */
+  public static TextureRegion getOvenTexture() {
+    return ovenTexture;
   }
 
   /**

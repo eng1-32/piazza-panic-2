@@ -215,6 +215,8 @@ public class MapLoader {
     }
 
     Entity station = factory.createStation(id, stationType, pos, ingredientType, isLocked);
+    Mappers.texture.get(station).region = stationObject.getTextureRegion();
+    Mappers.texture.get(station).scale.set(1f / ppt, 1f / ppt);
     stationsMap.put(id, station);
   }
 

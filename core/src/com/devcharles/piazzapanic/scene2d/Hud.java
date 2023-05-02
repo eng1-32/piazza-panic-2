@@ -570,7 +570,6 @@ public class Hud extends ApplicationAdapter {
 
     stage.act();
     stage.draw();
-
   }
 
   @Override

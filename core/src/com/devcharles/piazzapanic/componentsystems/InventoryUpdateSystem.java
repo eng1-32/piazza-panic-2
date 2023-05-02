@@ -16,7 +16,7 @@ import com.devcharles.piazzapanic.utility.Mappers;
  */
 public class InventoryUpdateSystem extends IteratingSystem {
 
-  private Hud hud;
+  private final Hud hud;
   FoodType[] foods;
 
   public InventoryUpdateSystem(Hud hud) {
@@ -33,7 +33,11 @@ public class InventoryUpdateSystem extends IteratingSystem {
     int i = 0;
     for (Entity food : cook.currentFood) {
       if (Mappers.food.get(food).type != null) {
-        foods[i] = Mappers.food.get(food).type;
+        if (Mappers.food.get(food).getIsBurned()) {
+          foods[i] = FoodType.burnt;
+        } else {
+          foods[i] = Mappers.food.get(food).type;
+        }
         i++;
       }
     }

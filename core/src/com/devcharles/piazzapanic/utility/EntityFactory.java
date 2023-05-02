@@ -289,6 +289,8 @@ public class EntityFactory {
     for (int i = 1; i < 26; i++) {
       foodTextures.put(FoodType.from(i), frames[i]);
     }
+    TextureRegion burnt = new TextureRegion(assetManager.get("v2/burnt_food.png", Texture.class));
+    foodTextures.put(FoodType.burnt, burnt);
   }
 
   /**

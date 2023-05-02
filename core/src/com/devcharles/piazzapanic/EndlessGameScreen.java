@@ -1,7 +1,6 @@
 package com.devcharles.piazzapanic;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
@@ -9,7 +8,6 @@ import com.badlogic.gdx.utils.Json;
 import com.devcharles.piazzapanic.components.ControllableComponent;
 import com.devcharles.piazzapanic.components.ItemComponent;
 import com.devcharles.piazzapanic.components.PlayerComponent;
-import com.devcharles.piazzapanic.components.TransformComponent;
 import com.devcharles.piazzapanic.componentsystems.CarryItemsSystem;
 import com.devcharles.piazzapanic.componentsystems.CustomerAISystem;
 import com.devcharles.piazzapanic.componentsystems.InventoryUpdateSystem;
@@ -69,9 +67,8 @@ public class EndlessGameScreen extends BaseGameScreen {
       }
 
       // Load cooks
-      engine.removeAllEntities(
-          Family.all(TransformComponent.class, ControllableComponent.class).get());
       for (int i = 0; i < gameSave.getCooks().size(); i++) {
+        mapLoader.getCookSpawns().remove(i);
         SavableCook savedCook = gameSave.getCooks().get(i);
         Entity cook = factory.createCook((int) savedCook.transformComponent.position.x,
             (int) savedCook.transformComponent.position.y);
@@ -111,13 +108,15 @@ public class EndlessGameScreen extends BaseGameScreen {
     }
     aiSystem.setDifficulty(this.difficulty);
 
-    for (int i = 0; i < this.difficulty.initialCooks; i++) {
-      Vector2 position = mapLoader.getCookSpawns().get(i);
-      Entity cook = factory.createCook((int) position.x, (int) position.y);
-      if (i == 0) {
-        cook.add(getEngine().createComponent(PlayerComponent.class));
+    if (!loadSave) {
+      for (int i = 0; i < this.difficulty.initialCooks; i++) {
+        Vector2 position = mapLoader.getCookSpawns().get(i);
+        Entity cook = factory.createCook((int) position.x, (int) position.y);
+        if (i == 0) {
+          cook.add(getEngine().createComponent(PlayerComponent.class));
+        }
+        mapLoader.getCookSpawns().remove(i);
       }
-      mapLoader.getCookSpawns().remove(i);
     }
   }
 

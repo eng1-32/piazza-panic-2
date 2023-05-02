@@ -23,9 +23,11 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.devcharles.piazzapanic.scene2d.Slideshow;
 import com.devcharles.piazzapanic.utility.Difficulty;
 import com.devcharles.piazzapanic.utility.Difficulty.Level;
+import com.devcharles.piazzapanic.utility.saving.GameState;
 
 /**
  * Main menu of the game, transitions the player to the Tutorial {@link Slideshow} on button press
+ *
  * @author Alistair Foggin
  * @author Andrey Samoilov
  */
@@ -150,6 +152,8 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
     TextButton loadEndlessModeBtn = new TextButton("Load endless mode", game.skin);
     TextButton exitBtn = new TextButton("Exit game", game.skin);
 
+    loadEndlessModeBtn.setDisabled(!Gdx.files.local(GameState.SAVE_LOCATION).exists());
+
     // Checks if button is clicked and if clicked goes onto the tutorial
     startScenarioModeBtn.addListener(new ClickListener() {
       @Override
@@ -170,6 +174,9 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
     loadEndlessModeBtn.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
+        if (!Gdx.files.local(GameState.SAVE_LOCATION).exists()) {
+          return;
+        }
         game.setScreen(new Slideshow(game, Slideshow.Type.tutorial,
             new EndlessGameScreen(game, "v2/endlessMap.tmx", true, null)));
         dispose();
@@ -197,7 +204,8 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
 
   public void startEndless(Difficulty.Level difficultyLevel) {
     game.setScreen(new Slideshow(game, Slideshow.Type.tutorial,
-        new EndlessGameScreen(game, "v2/endlessMap.tmx", false, Difficulty.createDifficulty(difficultyLevel))));
+        new EndlessGameScreen(game, "v2/endlessMap.tmx", false,
+            Difficulty.createDifficulty(difficultyLevel))));
     dispose();
   }
 

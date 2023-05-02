@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="right-down" width="60" height="35" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="111">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="60" height="35" tilewidth="32" tileheight="32" infinite="0" nextlayerid="14" nextobjectid="138">
  <tileset firstgid="1" source="tileset_32.tsx"/>
  <tileset firstgid="43" source="objects.tsx"/>
  <layer id="1" name="floor" width="60" height="35">
@@ -275,6 +275,148 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="12" name="StationObjects">
+  <object id="111" gid="75" x="992" y="864" width="32" height="32">
+   <properties>
+    <property name="ingredientType" type="int" value="1"/>
+    <property name="stationID" type="int" value="6"/>
+   </properties>
+  </object>
+  <object id="112" gid="75" x="1024" y="864" width="32" height="32">
+   <properties>
+    <property name="ingredientType" type="int" value="1"/>
+    <property name="stationID" type="int" value="6"/>
+   </properties>
+  </object>
+  <object id="113" gid="75" x="1056" y="864" width="32" height="32">
+   <properties>
+    <property name="ingredientType" type="int" value="1"/>
+    <property name="stationID" type="int" value="6"/>
+   </properties>
+  </object>
+  <object id="114" gid="75" x="1088" y="864" width="32" height="32">
+   <properties>
+    <property name="ingredientType" type="int" value="1"/>
+    <property name="stationID" type="int" value="6"/>
+   </properties>
+  </object>
+  <object id="115" gid="71" x="1088" y="960" width="32" height="32">
+   <properties>
+    <property name="ingredientType" type="int" value="9"/>
+    <property name="stationID" type="int" value="6"/>
+   </properties>
+  </object>
+  <object id="116" gid="72" x="1024" y="960" width="32" height="32">
+   <properties>
+    <property name="ingredientType" type="int" value="7"/>
+    <property name="stationID" type="int" value="6"/>
+   </properties>
+  </object>
+  <object id="117" gid="73" x="1056" y="960" width="32" height="32">
+   <properties>
+    <property name="ingredientType" type="int" value="11"/>
+    <property name="stationID" type="int" value="6"/>
+   </properties>
+  </object>
+  <object id="118" gid="74" x="992" y="960" width="32" height="32">
+   <properties>
+    <property name="ingredientType" type="int" value="4"/>
+    <property name="stationID" type="int" value="6"/>
+   </properties>
+  </object>
+  <object id="119" gid="43" x="832" y="736" width="32" height="32">
+   <properties>
+    <property name="stationID" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="120" gid="43" x="832" y="640" width="32" height="32">
+   <properties>
+    <property name="stationID" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="121" gid="63" x="800" y="736" width="32" height="32">
+   <properties>
+    <property name="stationID" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="122" gid="63" x="672" y="736" width="32" height="32">
+   <properties>
+    <property name="stationID" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="123" gid="63" x="864" y="640" width="32" height="32">
+   <properties>
+    <property name="stationID" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="124" gid="63" x="640" y="640" width="32" height="32">
+   <properties>
+    <property name="stationID" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="125" gid="59" x="736" y="640" width="32" height="32">
+   <properties>
+    <property name="stationID" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="126" gid="59" x="672" y="640" width="32" height="32">
+   <properties>
+    <property name="stationID" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="127" gid="62" x="768" y="736" width="32" height="32">
+   <properties>
+    <property name="stationID" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="128" gid="62" x="704" y="736" width="32" height="32">
+   <properties>
+    <property name="stationID" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="133" gid="67" x="960" y="640" width="32" height="32">
+   <properties>
+    <property name="locked" type="bool" value="false"/>
+    <property name="stationID" type="int" value="5"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="13" name="StationObjects_f">
+  <object id="131" gid="1073741900" x="832" y="704" width="32" height="32">
+   <properties>
+    <property name="stationID" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="132" gid="1073741900" x="672" y="704" width="32" height="32">
+   <properties>
+    <property name="stationID" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="134" gid="73" x="992" y="928" width="32" height="32">
+   <properties>
+    <property name="ingredientType" type="int" value="11"/>
+    <property name="stationID" type="int" value="6"/>
+   </properties>
+  </object>
+  <object id="135" gid="74" x="1056" y="928" width="32" height="32">
+   <properties>
+    <property name="ingredientType" type="int" value="4"/>
+    <property name="stationID" type="int" value="6"/>
+   </properties>
+  </object>
+  <object id="136" gid="71" x="1024" y="928" width="32" height="32">
+   <properties>
+    <property name="ingredientType" type="int" value="9"/>
+    <property name="stationID" type="int" value="6"/>
+   </properties>
+  </object>
+  <object id="137" gid="72" x="1088" y="928" width="32" height="32">
+   <properties>
+    <property name="ingredientType" type="int" value="7"/>
+    <property name="stationID" type="int" value="6"/>
+   </properties>
+  </object>
+ </objectgroup>
  <objectgroup id="3" name="Obstacles">
   <object id="16" x="928" y="800">
    <polyline points="0,0 -326.625,0"/>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="60" height="35" tilewidth="32" tileheight="32" infinite="0" nextlayerid="16" nextobjectid="144">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="60" height="35" tilewidth="32" tileheight="32" infinite="0" nextlayerid="16" nextobjectid="150">
  <tileset firstgid="1" source="tileset_32.tsx"/>
  <tileset firstgid="43" source="objects.tsx"/>
  <layer id="1" name="floor" width="60" height="35" locked="1">
@@ -607,13 +607,13 @@
    </properties>
    <point/>
   </object>
-  <object id="56" x="960" y="672">
+  <object id="56" name="CookSpawn 1" x="960" y="672">
    <properties>
     <property name="cookspawnpoint" type="int" value="0"/>
    </properties>
    <point/>
   </object>
-  <object id="57" x="960" y="736">
+  <object id="57" name="CookSpawn 2" x="960" y="736">
    <properties>
     <property name="cookspawnpoint" type="int" value="1"/>
    </properties>
@@ -685,6 +685,12 @@
   <object id="111" x="1136" y="840">
    <properties>
     <property name="lightID" type="int" value="1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="149" name="CookSpawn 3" x="960" y="800">
+   <properties>
+    <property name="cookspawnpoint" type="int" value="2"/>
    </properties>
    <point/>
   </object>

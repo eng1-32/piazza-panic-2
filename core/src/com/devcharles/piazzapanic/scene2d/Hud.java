@@ -64,7 +64,7 @@ public class Hud extends ApplicationAdapter {
   private Image photo;
 
   private final PiazzaPanic game;
-  private Table tableBottom, tableRight, shopTable, tablePause, tableBottomLabel;
+  private Table tableBottom, tableRight, tableLeft, shopTable, tablePause, tableBottomLabel;
   private Label shopSpeedUpLabel, shopPrepSpeedLabel, shopChopSpeedLabel, shopSalePriceLabel, shopPatienceLabel, shopCooksLabel;
 
   private boolean pauseToggled = false;
@@ -228,7 +228,7 @@ public class Hud extends ApplicationAdapter {
     tableTop.add(reputationLabel).expandX();
     tableTop.add().width(120).padRight(10);
 
-    Table tableLeft = new Table();
+    tableLeft = new Table();
     tableLeft.left();
     tableLeft.bottom();
     tableLeft.setFillParent(true);
@@ -403,7 +403,12 @@ public class Hud extends ApplicationAdapter {
     newCookBtn.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
-        // TODO: add new cook!
+        if (reputationAndMoney[1] < 50) {
+          return;
+        }
+        reputationAndMoney[1] -= 50;
+        ((EndlessGameScreen) gameScreen).spawnCook();
+        updateShop();
       }
     });
 
@@ -414,21 +419,32 @@ public class Hud extends ApplicationAdapter {
       }
     });
 
-    shopTable.add(shopMainLabel).padBottom(60);
+    Table innerTable = new Table();
+    addShopItem(innerTable, movementSpeedBtn, shopSpeedUpLabel, true);
+    addShopItem(innerTable, prepSpeedBtn, shopPrepSpeedLabel, false);
+    innerTable.row();
+    addShopItem(innerTable, chopSpeedBtn, shopChopSpeedLabel, true);
+    addShopItem(innerTable, salePriceBtn, shopSalePriceLabel, false);
+    innerTable.row();
+    addShopItem(innerTable, customerPatienceBtn, shopPatienceLabel, true);
+    addShopItem(innerTable, newCookBtn, shopCooksLabel, false);
+
+    shopTable.add(shopMainLabel).padBottom(40);
     shopTable.row();
-    addShopItem(movementSpeedBtn, shopSpeedUpLabel);
-    addShopItem(prepSpeedBtn, shopPrepSpeedLabel);
-    addShopItem(chopSpeedBtn, shopChopSpeedLabel);
-    addShopItem(salePriceBtn, shopSalePriceLabel);
-    addShopItem(customerPatienceBtn, shopPatienceLabel);
-    addShopItem(newCookBtn, shopCooksLabel);
+    shopTable.add(innerTable);
+    shopTable.row();
     shopTable.add(resumeButton).width(500);
   }
 
-  private void addShopItem(TextButton shopButton, Label shopLabel) {
-    shopTable.add(shopButton).width(500).padBottom(30);
-    shopTable.add(shopLabel).height(50).padLeft(20).padBottom(30);
-    shopTable.row();
+  private void addShopItem(Table innerTable, TextButton shopButton, Label shopLabel,
+      boolean isLeft) {
+    if (isLeft) {
+      innerTable.add(shopLabel).height(50).padRight(20).padBottom(20);
+      innerTable.add(shopButton).padRight(10).width(500).padBottom(20);
+    } else {
+      innerTable.add(shopButton).padLeft(10).width(500).padBottom(20);
+      innerTable.add(shopLabel).height(50).padLeft(20).padBottom(20);
+    }
   }
 
   private void updateShop() {
@@ -438,6 +454,8 @@ public class Hud extends ApplicationAdapter {
     chopSpeedBtn.setDisabled(hasInsufficientFunds);
     salePriceBtn.setDisabled(hasInsufficientFunds);
     customerPatienceBtn.setDisabled(hasInsufficientFunds);
+    newCookBtn.setDisabled(
+        reputationAndMoney[1] < 50 || !((EndlessGameScreen) gameScreen).canSpawnCook());
 
     if (!moneyLabel.getText().toString().equals(String.format("$%d", reputationAndMoney[1]))) {
       moneyLabel.setText(String.format("$%d", reputationAndMoney[1]));
@@ -563,6 +581,7 @@ public class Hud extends ApplicationAdapter {
     // Hide the normal hud
     tableBottom.setVisible(false);
     tableRight.setVisible(false);
+    tableLeft.setVisible(false);
     pauseButton.setVisible(false);
     shopButton.setVisible(false);
     tableBottomLabel.setVisible(false);
@@ -601,6 +620,7 @@ public class Hud extends ApplicationAdapter {
     // Show the normal hud
     tableBottom.setVisible(true);
     tableRight.setVisible(true);
+    tableLeft.setVisible(true);
     pauseButton.setVisible(true);
     if (isEndless) {
       shopButton.setVisible(true);

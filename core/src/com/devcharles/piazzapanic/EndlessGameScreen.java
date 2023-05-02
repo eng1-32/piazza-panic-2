@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Json;
 import com.devcharles.piazzapanic.components.ControllableComponent;
 import com.devcharles.piazzapanic.components.ItemComponent;
@@ -109,6 +110,30 @@ public class EndlessGameScreen extends BaseGameScreen {
       this.difficulty = Difficulty.createDifficulty(Level.MEDIUM);
     }
     aiSystem.setDifficulty(this.difficulty);
+
+    for (int i = 0; i < this.difficulty.initialCooks; i++) {
+      Vector2 position = mapLoader.getCookSpawns().get(i);
+      Entity cook = factory.createCook((int) position.x, (int) position.y);
+      if (i == 0) {
+        cook.add(getEngine().createComponent(PlayerComponent.class));
+      }
+      mapLoader.getCookSpawns().remove(i);
+    }
+  }
+
+  public void spawnCook() {
+    int id = -1;
+    for (Integer i : mapLoader.getCookSpawns().keySet()) {
+      id = i;
+      Vector2 position = mapLoader.getCookSpawns().get(i);
+      factory.createCook((int) position.x, (int) position.y);
+      break;
+    }
+    mapLoader.getCookSpawns().remove(id);
+  }
+
+  public boolean canSpawnCook() {
+    return mapLoader.getCookSpawns().size() > 0;
   }
 
   public Difficulty getDifficulty() {

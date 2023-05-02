@@ -1,5 +1,8 @@
 package com.devcharles.piazzapanic;
 
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.math.Vector2;
+import com.devcharles.piazzapanic.components.PlayerComponent;
 import com.devcharles.piazzapanic.componentsystems.StationSystem;
 import com.devcharles.piazzapanic.componentsystems.CarryItemsSystem;
 import com.devcharles.piazzapanic.componentsystems.CustomerAISystem;
@@ -29,5 +32,13 @@ public class ScenarioGameScreen extends BaseGameScreen {
     engine.addSystem(aiSystem);
     engine.addSystem(new CarryItemsSystem());
     engine.addSystem(new InventoryUpdateSystem(hud));
+
+    for (Integer id : mapLoader.getCookSpawns().keySet()) {
+      Vector2 position = mapLoader.getCookSpawns().get(id);
+      Entity cook = factory.createCook((int)position.x, (int)position.y);
+      if (id == 0) {
+        cook.add(getEngine().createComponent(PlayerComponent.class));
+      }
+    }
   }
 }

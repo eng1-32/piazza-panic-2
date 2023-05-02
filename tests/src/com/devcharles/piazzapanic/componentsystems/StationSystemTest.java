@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
@@ -21,6 +22,7 @@ import com.devcharles.piazzapanic.components.FoodComponent;
 import com.devcharles.piazzapanic.components.FoodComponent.FoodType;
 import com.devcharles.piazzapanic.components.PlayerComponent;
 import com.devcharles.piazzapanic.components.StationComponent;
+import com.devcharles.piazzapanic.scene2d.Hud;
 import com.devcharles.piazzapanic.utility.EntityFactory;
 import com.devcharles.piazzapanic.utility.FoodStack;
 import com.devcharles.piazzapanic.utility.Mappers;
@@ -55,7 +57,7 @@ public class StationSystemTest {
 
   @Test
   public void testProcessStation() {
-    StationSystem system = new StationSystem(factory, reputationPointsAndMoney);
+    StationSystem system = new StationSystem(factory, reputationPointsAndMoney, mock(Hud.class));
     engine.addSystem(system);
 
     //creating grill station
@@ -122,7 +124,7 @@ public class StationSystemTest {
 
   @Test
   public void testInteractStation() {
-    StationSystem system = new StationSystem(factory, reputationPointsAndMoney);
+    StationSystem system = new StationSystem(factory, reputationPointsAndMoney, mock(Hud.class));
     engine.addSystem(system);
     engine.update(1f);
 
@@ -199,7 +201,7 @@ public class StationSystemTest {
   @Test
   public void testProcessServe() {
     //Creating necessary variables
-    StationSystem system = new StationSystem(factory, reputationPointsAndMoney);
+    StationSystem system = new StationSystem(factory, reputationPointsAndMoney, mock(Hud.class));
     engine.addSystem(system);
     Entity cook = factory.createCook(0, 0);
     ControllableComponent controllable = Mappers.controllable.get(cook);
@@ -285,7 +287,7 @@ public class StationSystemTest {
   @Test
   public void testTryServe() {
     //Create test variables
-    StationSystem system = new StationSystem(factory, reputationPointsAndMoney);
+    StationSystem system = new StationSystem(factory, reputationPointsAndMoney, mock(Hud.class));
     engine.addSystem(system);
     Entity cook = factory.createCook(0, 0);
     ControllableComponent controllable = Mappers.controllable.get(cook);
@@ -375,7 +377,7 @@ public class StationSystemTest {
   @Test
   public void processBinTest() {
     //Create test variables
-    StationSystem system = new StationSystem(factory, reputationPointsAndMoney);
+    StationSystem system = new StationSystem(factory, reputationPointsAndMoney, mock(Hud.class));
     engine.addSystem(system);
     Entity cook = factory.createCook(0, 0);
     ControllableComponent controllable = Mappers.controllable.get(cook);
@@ -404,7 +406,7 @@ public class StationSystemTest {
   @Test
   public void stationPickupTest() {
     //Create test variables
-    StationSystem system = new StationSystem(factory, reputationPointsAndMoney);
+    StationSystem system = new StationSystem(factory, reputationPointsAndMoney, mock(Hud.class));
     engine.addSystem(system);
     Entity cook = factory.createCook(0, 0);
     ControllableComponent controllable = Mappers.controllable.get(cook);
@@ -498,7 +500,7 @@ public class StationSystemTest {
   @Test
   public void stationTickTest() {
     //Creating test variables
-    StationSystem system = new StationSystem(factory, reputationPointsAndMoney);
+    StationSystem system = new StationSystem(factory, reputationPointsAndMoney, mock(Hud.class));
     engine.addSystem(system);
     Entity cook = factory.createCook(0, 0);
     ControllableComponent controllable = Mappers.controllable.get(cook);
@@ -603,7 +605,7 @@ public class StationSystemTest {
     //covered by the previous tests
 
     //Creating test variables
-    StationSystem system = new StationSystem(factory, reputationPointsAndMoney);
+    StationSystem system = new StationSystem(factory, reputationPointsAndMoney, mock(Hud.class));
     engine.addSystem(system);
     Entity cook = factory.createCook(0, 0);
     ControllableComponent controllable = Mappers.controllable.get(cook);

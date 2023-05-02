@@ -354,9 +354,9 @@ public class StationSystemTest {
     controllable.currentFood.pushItem(toastedBuns, cook);
     controllable.currentFood.pushItem(grilledPatty, cook);
     result = system.tryServe(controllable, 4);
-    assertEquals(
-        "Even though the count is greater than 2, a burger should still be made as the rest of the stack is null",
-        FoodType.burger, result);
+    assertNull(
+        "As the ingredients to make the burger are not at the top of the stack, result should be null",
+        result);
 
     controllable.currentFood = new FoodStack();
     controllable.currentFood.init(engine);
@@ -365,9 +365,10 @@ public class StationSystemTest {
     controllable.currentFood.pushItem(slicedOnion, cook);
     controllable.currentFood.pushItem(slicedTomato, cook);
     result = system.tryServe(controllable, 50);
-    assertEquals(
-        "Even though the count is greater than 3, a salad should still be made as the rest of the stack is null",
-        FoodType.salad, result);
+    assertNull(
+        "As the count is greater than the number of ingredients needed to make as salad, "
+            + "result should be null",
+        result);
 
   }
 
@@ -426,24 +427,33 @@ public class StationSystemTest {
     system.processStation(controllable, chopComponent);
 
     system.stationPickup(grillComponent, controllable);
-    assertEquals("As there is a cooking timer attached to the patty, it should not be picked up", 0,
+    assertEquals("As the patty is not burned and isn't finished cooking, it should not be removed", 0,
         controllable.currentFood.size());
+
     assertEquals("The patty should still be on the food stack", FoodType.formedPatty,
         Mappers.food.get(grillComponent.food.get(0)).type);
+
     system.stationPickup(chopComponent, controllable);
     assertEquals("The same should be true for the lettuce", 0, controllable.currentFood.size());
 
-    grillComponent.food.get(0).remove(CookingComponent.class);
-    chopComponent.food.get(0).remove(CookingComponent.class);
+    //process the ingredients
+    engine.update(5.001f);
+    system.interactStation(grillComponent);
+    system.interactStation(chopComponent);
+    engine.update(5.001f);
+
     system.stationPickup(grillComponent, controllable);
-    assertEquals("As the cooking component is removed, the patty should be picked up",
-        FoodType.formedPatty, Mappers.food.get(controllable.currentFood.pop()).type);
-    assertNull("The patty in the station component should be removed", grillComponent.food.get(0));
+    assertEquals("As the patty has now become a grilled patty, it should be added to the player's stack",
+        1, controllable.currentFood.size());
+
+    assertEquals("The food type should be a grilled patty",
+        FoodType.grilledPatty, Mappers.food.get(controllable.currentFood.pop()).type);
+    assertNull("The grilled patty in the station component should be removed", grillComponent.food.get(0));
 
     system.stationPickup(chopComponent, controllable);
-    assertEquals("As the cooking component is removed, the lettuce should be picked up",
-        FoodType.lettuce, Mappers.food.get(controllable.currentFood.pop()).type);
-    assertNull("The lettuce in the station component should be removed", chopComponent.food.get(0));
+    assertEquals("As the lettuce has become sliced lettuce, it should be added to the player's stack",
+        FoodType.slicedLettuce, Mappers.food.get(controllable.currentFood.pop()).type);
+    assertNull("The sliced lettuce in the station component should be removed", chopComponent.food.get(0));
 
     system.stationPickup(grillComponent, controllable);
     assertEquals("All null values should be ignored and therefore nothing should be picked up", 0,
@@ -451,16 +461,37 @@ public class StationSystemTest {
     assertNull("The value of the first item in the station food array should still be null",
         grillComponent.food.get(0));
 
-    chopComponent.food.add(1, lettuce);
-    chopComponent.food.add(3, lettuce);
+    //recreate lettuce
+    lettuce = factory.createFood(FoodType.lettuce);
+    Entity secondLettuce = factory.createFood(FoodType.lettuce);
+
+    controllable.currentFood.pushItem(lettuce, cook);
+    controllable.currentFood.pushItem(secondLettuce, cook);
+    system.processStation(controllable, chopComponent);
+    system.processStation(controllable, chopComponent);
+
+    //process the ingredients
+    engine.update(5.001f);
+    system.interactStation(chopComponent);
+    engine.update(5.001f);
+
     system.stationPickup(chopComponent, controllable);
     assertEquals("Only one ingredient should be picked up", 1, controllable.currentFood.size());
-    assertEquals("And that ingredient should be lettuce", FoodType.lettuce,
+    assertEquals("And that ingredient should be sliced lettuce", FoodType.slicedLettuce,
         Mappers.food.get(controllable.currentFood.pop()).type);
     assertNull("The closest lettuce in the food array should now be null",
-        chopComponent.food.get(1));
+        chopComponent.food.get(0));
     assertEquals("The second lettuce entity should still be in the array", FoodType.lettuce,
-        Mappers.food.get(chopComponent.food.get(3)).type);
+        Mappers.food.get(chopComponent.food.get(1)).type);
+
+    //Burn tests
+    patty = factory.createFood(FoodType.formedPatty);
+    controllable.currentFood.pushItem(patty, cook);
+    system.processStation(controllable, grillComponent);
+    engine.update(50f);
+    system.stationPickup(grillComponent, controllable);
+
+    assertEquals("If an ingredient is burnt, it should be picked up", 1, controllable.currentFood.size());
 
   }
 
@@ -524,13 +555,9 @@ public class StationSystemTest {
     engine.update(5.001f);
     assertEquals("The buns should now be turned into toasted buns as it has been processed",
         FoodType.toastedBuns, Mappers.food.get(grillComponent.food.get(0)).type);
-    assertFalse("The cooking component should be removed",
-        Mappers.cooking.has(grillComponent.food.get(0)));
 
     assertEquals("The tomato should now be turned into sliced tomato as it has been processed",
         FoodType.slicedTomato, Mappers.food.get(chopComponent.food.get(0)).type);
-    assertFalse("The cooking component should be removed",
-        Mappers.cooking.has(chopComponent.food.get(0)));
 
     //Tests for multiple ingredients on the same station
     Entity formedPatty = factory.createFood(FoodType.formedPatty);

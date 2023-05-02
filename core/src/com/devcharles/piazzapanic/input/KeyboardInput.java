@@ -153,6 +153,18 @@ public class KeyboardInput implements InputProcessor {
       case Keys.H:
         disableHud = false;
         break;
+      case Keys.NUM_1:
+      case Keys.NUM_2:
+      case Keys.NUM_3:
+      case Keys.NUM_4:
+      case Keys.NUM_5:
+      case Keys.NUM_6:
+      case Keys.NUM_7:
+      case Keys.NUM_8:
+      case Keys.NUM_9:
+        swap = false;
+        swapNum = 0;
+        break;
       default:
         processed = false;
     }

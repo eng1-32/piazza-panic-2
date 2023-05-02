@@ -16,7 +16,7 @@ public class FoodStack extends ArrayList<Entity> {
     engine = e;
   }
 
-  public final int capacity = 12;
+  public final int capacity = 10;
 
   /**
    * Put a new food into inventory, use this instead of {@code FoodStack.push(Entity food)} as it

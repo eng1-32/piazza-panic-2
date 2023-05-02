@@ -19,6 +19,13 @@ public class ScenarioGameScreen extends BaseGameScreen {
 
   public ScenarioGameScreen(PiazzaPanic game, String mapPath, int maxCustomers) {
     super(game, mapPath);
+
+    if (maxCustomers < 3) {
+      reputationPointsAndMoney[0] = 1;
+    } else if (maxCustomers < 5) {
+      reputationPointsAndMoney[0] = 2;
+    }
+
     engine.addSystem(new PhysicsSystem(world));
     engine.addSystem(new RenderingSystem(mapLoader.map, game.batch, camera));
     engine.addSystem(new LightingSystem(rayhandler, camera));

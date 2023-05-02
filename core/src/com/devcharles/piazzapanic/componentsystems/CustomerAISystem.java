@@ -207,10 +207,12 @@ public class CustomerAISystem extends IteratingSystem {
       }
     }
 
-    if (!isEndless && !hud.won && customers.size() == 0 && totalCustomers == maxScenarioCustomers) {
-      hud.triggerWin = true;
-    } else if (isEndless && !hud.won && reputationPointsAndMoney[0] == 0) {
-      hud.triggerWin = true;
+    if (!hud.won) {
+      if (!isEndless && customers.size() == 0 && totalCustomers == maxScenarioCustomers) {
+        hud.triggerWin = true;
+      } else if (reputationPointsAndMoney[0] == 0) {
+        hud.triggerWin = true;
+      }
     }
 
     super.update(deltaTime);

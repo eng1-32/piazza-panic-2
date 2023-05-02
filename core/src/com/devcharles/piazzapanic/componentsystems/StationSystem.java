@@ -171,7 +171,7 @@ public class StationSystem extends IteratingSystem {
     }
 
     if (station.type == StationType.oven) {
-      cooking.timer.setDelay(15000);
+      cooking.timer.setDelay(10000);
       cooking.processed = true;
     }
     cooking.timer.start();
@@ -303,10 +303,6 @@ public class StationSystem extends IteratingSystem {
           }
           return;
         }
-
-        if (Mappers.tint.has(station)) {
-          station.remove(TintComponent.class);
-        }
       }
     }
   }
@@ -326,11 +322,13 @@ public class StationSystem extends IteratingSystem {
     }
 
     boolean stationHasToggledTint = false;
+    boolean hasFood = false;
     for (Entity foodEntity : stationComponent.food) {
 
       if (foodEntity == null || !Mappers.cooking.has(foodEntity)) {
         continue;
       }
+      hasFood = true;
 
       CookingComponent cooking = Mappers.cooking.get(foodEntity);
       FoodComponent foodComponent = Mappers.food.get(foodEntity);
@@ -373,6 +371,9 @@ public class StationSystem extends IteratingSystem {
         hasBurned(foodEntity, cooking, foodComponent);
       }
     }
+    if (!hasFood && stationComponent.type == StationType.oven && Mappers.tint.has(station)) {
+      station.remove(TintComponent.class);
+    }
   }
 
   void hasBurned(Entity foodEntity, CookingComponent cooking, FoodComponent food) {
@@ -386,9 +387,9 @@ public class StationSystem extends IteratingSystem {
   }
 
   void tryStationUnlock(StationComponent stationComponent) {
-    if (reputationAndMoney[1] >= 50) {
+    if (reputationAndMoney[1] >= 30) {
       stationComponent.isLocked = false;
-      reputationAndMoney[1] -= 50;
+      reputationAndMoney[1] -= 30;
       hud.updateShop();
     }
   }

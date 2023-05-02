@@ -111,7 +111,7 @@ public class Hud extends ApplicationAdapter {
     chopSpeedBtn = new TextButton("$20 - Chopping Speed", game.skin);
     salePriceBtn = new TextButton("$20 - Order Income", game.skin);
     customerPatienceBtn = new TextButton("$20 - Customer Patience", game.skin);
-    newCookBtn = new TextButton("$50 - New Cook", game.skin);
+    newCookBtn = new TextButton("$30 - New Cook", game.skin);
 
     stage.addListener(new InputListener() {
       @Override
@@ -403,15 +403,16 @@ public class Hud extends ApplicationAdapter {
     newCookBtn.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
-        if (reputationAndMoney[1] < 50) {
+        if (reputationAndMoney[1] < 30) {
           return;
         }
-        reputationAndMoney[1] -= 50;
+        reputationAndMoney[1] -= 30;
         ((EndlessGameScreen) gameScreen).spawnCook();
         updateShop();
       }
     });
 
+    Label stationPriceLabel = new Label("$30 - Unlock Station", hudLabelStyle);
     resumeButton.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
@@ -429,7 +430,9 @@ public class Hud extends ApplicationAdapter {
     addShopItem(innerTable, customerPatienceBtn, shopPatienceLabel, true);
     addShopItem(innerTable, newCookBtn, shopCooksLabel, false);
 
-    shopTable.add(shopMainLabel).padBottom(40);
+    shopTable.add(shopMainLabel).padBottom(20);
+    shopTable.row();
+    shopTable.add(stationPriceLabel).padBottom(10);
     shopTable.row();
     shopTable.add(innerTable);
     shopTable.row();
@@ -455,7 +458,7 @@ public class Hud extends ApplicationAdapter {
     salePriceBtn.setDisabled(hasInsufficientFunds);
     customerPatienceBtn.setDisabled(hasInsufficientFunds);
     newCookBtn.setDisabled(
-        reputationAndMoney[1] < 50 || !((EndlessGameScreen) gameScreen).canSpawnCook());
+        reputationAndMoney[1] < 30 || !((EndlessGameScreen) gameScreen).canSpawnCook());
 
     if (!moneyLabel.getText().toString().equals(String.format("$%d", reputationAndMoney[1]))) {
       moneyLabel.setText(String.format("$%d", reputationAndMoney[1]));
@@ -555,9 +558,9 @@ public class Hud extends ApplicationAdapter {
     if (timeCounter >= 1) {
       customerTimer++;
       timerLabel.setText(String.format("%03d", customerTimer));
-      reputationLabel.setText(reputationAndMoney[0]);
       timeCounter -= 1;
     }
+    reputationLabel.setText(reputationAndMoney[0]);
 
     if (triggerWin && !won) {
       triggerWin = false;
@@ -651,6 +654,11 @@ public class Hud extends ApplicationAdapter {
     Label congratsSubtitle;
     if (isEndless) {
       congrats = new Label("The End!", titleLabelStyle);
+      congratsSubtitle = new Label(
+          String.format("You served %d customers and lasted %03d seconds!", numCustomersServed,
+              customerTimer), hudLabelStyle);
+    } else if (reputationAndMoney[0] == 0) {
+      congrats = new Label("Sorry, you lost!", titleLabelStyle);
       congratsSubtitle = new Label(
           String.format("You served %d customers and lasted %03d seconds!", numCustomersServed,
               customerTimer), hudLabelStyle);

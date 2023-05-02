@@ -299,6 +299,7 @@
   </object>
   <object id="116" gid="62" x="704" y="736" width="32" height="32">
    <properties>
+    <property name="locked" type="bool" value="true"/>
     <property name="stationID" type="int" value="3"/>
    </properties>
   </object>
@@ -315,6 +316,7 @@
   </object>
   <object id="119" gid="59" x="672.091" y="640" width="32" height="32">
    <properties>
+    <property name="locked" type="bool" value="true"/>
     <property name="stationID" type="int" value="2"/>
    </properties>
   </object>

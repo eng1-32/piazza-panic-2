@@ -131,7 +131,7 @@ public class FoodStackTest {
   }
 
   @Test
-  public void moveTest(){
+  public void moveTest() {
     PooledEngine engine = new PooledEngine();
     World world = new World(new Vector2(0, 0), true);
     AssetManager assetManager = new AssetManager();
@@ -141,7 +141,7 @@ public class FoodStackTest {
     EntityFactory factory = new EntityFactory(engine, world, assetManager);
     FoodStack stack = new FoodStack();
     stack.init(engine);
-    Entity cook = factory.createCook(0,0);
+    Entity cook = factory.createCook(0, 0);
     Entity burger = factory.createFood(FoodComponent.FoodType.burger);
     Entity salad = factory.createFood(FoodComponent.FoodType.salad);
     Entity cheese = factory.createFood(FoodComponent.FoodType.cheese);
@@ -150,13 +150,13 @@ public class FoodStackTest {
     stack.pushItem(salad, cook);
     stack.pushItem(cheese, cook);
     assertEquals("The item at the top of the stack should be cheese",
-            FoodComponent.FoodType.cheese ,Mappers.food.get(stack.peek()).type);
+        FoodComponent.FoodType.cheese, Mappers.food.get(stack.peek()).type);
     stack.move(2);
 
     assertEquals("The item at the top of the stack should now be a burger",
-            FoodComponent.FoodType.burger ,Mappers.food.get(stack.peek()).type);
+        FoodComponent.FoodType.burger, Mappers.food.get(stack.peek()).type);
 
     assertEquals("The  second item on the stack should now be cheese",
-            FoodComponent.FoodType.cheese ,Mappers.food.get(stack.get(1)).type);
+        FoodComponent.FoodType.cheese, Mappers.food.get(stack.get(1)).type);
   }
 }

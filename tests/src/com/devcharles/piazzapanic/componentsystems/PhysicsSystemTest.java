@@ -12,6 +12,7 @@ import com.devcharles.piazzapanic.components.B2dBodyComponent;
 import com.devcharles.piazzapanic.components.TransformComponent;
 
 import static org.junit.Assert.*;
+
 import com.devcharles.piazzapanic.GdxTestRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +25,7 @@ import org.junit.runner.RunWith;
 public class PhysicsSystemTest {
 
   @Test
-  public void updatePositiveXTest(){
+  public void updatePositiveXTest() {
     World world = new World(new Vector2(0, 0), true);
     PooledEngine engine = new PooledEngine();
     Entity entity = engine.createEntity();
@@ -35,11 +36,11 @@ public class PhysicsSystemTest {
     B2dBodyComponent bodyC = engine.createComponent(B2dBodyComponent.class);
     BodyDef bodyDef = new BodyDef();
     bodyDef.type = BodyType.DynamicBody;
-    bodyDef.position.set(0,0);
+    bodyDef.position.set(0, 0);
     bodyC.body = world.createBody(bodyDef);
     entity.add(transform);
     entity.add(bodyC);
-    transform.position.set(new Vector3 (0,0,0));
+    transform.position.set(new Vector3(0, 0, 0));
     assertFalse("Checks transform is not moving before force applied.", transform.isMoving);
     bodyC.body.applyForceToCenter(100.0f, 0.0f, true);
     engine.update(0.25f);
@@ -47,14 +48,16 @@ public class PhysicsSystemTest {
     float newBodyX = bodyC.body.getPosition().x;
     float newTransY = transform.position.y;
     float newBodyY = bodyC.body.getPosition().y;
-    assertTrue("Checks X value has changed from starting position and is positive.",newBodyX>0);
-    assertEquals("Checks X of body and transform are equal is +X force",newBodyX,newTransX,0.01f);
-    assertEquals("Checks Y of body and transform are equal is +X force",newBodyY,newTransY,0.01f);
+    assertTrue("Checks X value has changed from starting position and is positive.", newBodyX > 0);
+    assertEquals("Checks X of body and transform are equal is +X force", newBodyX, newTransX,
+        0.01f);
+    assertEquals("Checks Y of body and transform are equal is +X force", newBodyY, newTransY,
+        0.01f);
     assertTrue("Checks transform is moving after force applied.", transform.isMoving);
   }
 
   @Test
-  public void updateNegativeXTest(){
+  public void updateNegativeXTest() {
     World world = new World(new Vector2(0, 0), true);
     PooledEngine engine = new PooledEngine();
     Entity entity = engine.createEntity();
@@ -65,11 +68,11 @@ public class PhysicsSystemTest {
     B2dBodyComponent bodyC = engine.createComponent(B2dBodyComponent.class);
     BodyDef bodyDef = new BodyDef();
     bodyDef.type = BodyType.DynamicBody;
-    bodyDef.position.set(0,0);
+    bodyDef.position.set(0, 0);
     bodyC.body = world.createBody(bodyDef);
     entity.add(transform);
     entity.add(bodyC);
-    transform.position.set(new Vector3 (0,0,0));
+    transform.position.set(new Vector3(0, 0, 0));
     assertFalse("Checks transform is not moving before force applied.", transform.isMoving);
     bodyC.body.applyForceToCenter(-350.0f, 0.0f, true);
     engine.update(0.25f);
@@ -77,14 +80,16 @@ public class PhysicsSystemTest {
     float newBodyX = bodyC.body.getPosition().x;
     float newTransY = transform.position.y;
     float newBodyY = bodyC.body.getPosition().y;
-    assertTrue("Checks X value has changed from starting position and is negative.",newBodyX<0);
-    assertEquals("Checks X of body and transform are equal is -X force",newBodyX,newTransX,0.01f);
-    assertEquals("Checks Y of body and transform are equal is -X force",newBodyY,newTransY,0.01f);
+    assertTrue("Checks X value has changed from starting position and is negative.", newBodyX < 0);
+    assertEquals("Checks X of body and transform are equal is -X force", newBodyX, newTransX,
+        0.01f);
+    assertEquals("Checks Y of body and transform are equal is -X force", newBodyY, newTransY,
+        0.01f);
     assertTrue("Checks transform is moving after force applied.", transform.isMoving);
   }
 
   @Test
-  public void updatePositiveYTest(){
+  public void updatePositiveYTest() {
     World world = new World(new Vector2(0, 0), true);
     PooledEngine engine = new PooledEngine();
     Entity entity = engine.createEntity();
@@ -95,11 +100,11 @@ public class PhysicsSystemTest {
     B2dBodyComponent bodyC = engine.createComponent(B2dBodyComponent.class);
     BodyDef bodyDef = new BodyDef();
     bodyDef.type = BodyType.DynamicBody;
-    bodyDef.position.set(0,0);
+    bodyDef.position.set(0, 0);
     bodyC.body = world.createBody(bodyDef);
     entity.add(transform);
     entity.add(bodyC);
-    transform.position.set(new Vector3 (0,0,0));
+    transform.position.set(new Vector3(0, 0, 0));
     assertFalse("Checks transform is not moving before force applied.", transform.isMoving);
     bodyC.body.applyForceToCenter(0.0f, 900.0f, true);
     engine.update(0.25f);
@@ -107,14 +112,16 @@ public class PhysicsSystemTest {
     float newBodyX = bodyC.body.getPosition().x;
     float newTransY = transform.position.y;
     float newBodyY = bodyC.body.getPosition().y;
-    assertTrue("Checks Y value has changed from starting position and is positive.",newBodyY>0);
-    assertEquals("Checks X of body and transform are equal is +Y force",newBodyX,newTransX,0.01f);
-    assertEquals("Checks Y of body and transform are equal is +Y force",newBodyY,newTransY,0.01f);
+    assertTrue("Checks Y value has changed from starting position and is positive.", newBodyY > 0);
+    assertEquals("Checks X of body and transform are equal is +Y force", newBodyX, newTransX,
+        0.01f);
+    assertEquals("Checks Y of body and transform are equal is +Y force", newBodyY, newTransY,
+        0.01f);
     assertTrue("Checks transform is moving after force applied.", transform.isMoving);
   }
 
   @Test
-  public void updateNegativeYTest(){
+  public void updateNegativeYTest() {
     World world = new World(new Vector2(0, 0), true);
     PooledEngine engine = new PooledEngine();
     Entity entity = engine.createEntity();
@@ -125,21 +132,23 @@ public class PhysicsSystemTest {
     B2dBodyComponent bodyC = engine.createComponent(B2dBodyComponent.class);
     BodyDef bodyDef = new BodyDef();
     bodyDef.type = BodyType.DynamicBody;
-    bodyDef.position.set(0,0);
+    bodyDef.position.set(0, 0);
     bodyC.body = world.createBody(bodyDef);
     entity.add(transform);
     entity.add(bodyC);
-    transform.position.set(new Vector3 (0,0,0));
-    assertFalse("Checks transform is not moving before force applied.",  transform.isMoving);
+    transform.position.set(new Vector3(0, 0, 0));
+    assertFalse("Checks transform is not moving before force applied.", transform.isMoving);
     bodyC.body.applyForceToCenter(0.0f, -700.0f, true);
     engine.update(0.25f);
     float newTransX = transform.position.x;
     float newBodyX = bodyC.body.getPosition().x;
     float newTransY = transform.position.y;
     float newBodyY = bodyC.body.getPosition().y;
-    assertTrue("Checks X value has changed from starting position and is negative.",newBodyY<0);
-    assertEquals("Checks X of body and transform are equal is -Y force",newBodyX,newTransX,0.01f);
-    assertEquals("Checks Y of body and transform are equal is -Y force",newBodyY,newTransY,0.01f);
+    assertTrue("Checks X value has changed from starting position and is negative.", newBodyY < 0);
+    assertEquals("Checks X of body and transform are equal is -Y force", newBodyX, newTransX,
+        0.01f);
+    assertEquals("Checks Y of body and transform are equal is -Y force", newBodyY, newTransY,
+        0.01f);
     assertTrue("Checks transform is moving after force applied.", transform.isMoving);
   }
 }

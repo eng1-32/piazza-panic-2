@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
 public class CookingComponentTest {
 
   @Test
-  public void testReset(){
+  public void testReset() {
     CookingComponent test = new CookingComponent();
     test.timer.start();
     test.timer.setElapsed(5743);

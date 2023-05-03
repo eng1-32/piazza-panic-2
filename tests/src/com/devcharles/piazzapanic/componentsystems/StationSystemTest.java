@@ -652,4 +652,76 @@ public class StationSystemTest {
     engine.update(1f);
     assertEquals("The stack should be empty", 0, controllable.currentFood.size());
   }
+
+  @Test
+  public void hasBurnedTest(){
+    StationSystem system = new StationSystem(factory, reputationPointsAndMoney, mock(Hud.class));
+    engine.addSystem(system);
+    Entity cook = factory.createCook(0, 0);
+    ControllableComponent controllable = Mappers.controllable.get(cook);
+    PlayerComponent player = engine.createComponent(PlayerComponent.class);
+    cook.add(player);
+
+    Entity grillStation = factory.createStation(0, StationType.grill, new Vector2(0, 0), null,
+            false);
+    StationComponent grillComponent = Mappers.station.get(grillStation);
+
+    Entity formedPatty = factory.createFood(FoodType.formedPatty);
+    controllable.currentFood.pushItem(formedPatty, cook);
+
+    system.processStation(controllable, grillComponent);
+    engine.update(15f);
+    assertTrue("If enough time has passed, the patty should be burnt",
+            Mappers.food.get(grillComponent.food.get(0)).getIsBurned());
+
+    Entity cuttingStation = factory.createStation(1, StationType.cutting_board, new Vector2(0, 0), null,
+            false);
+
+    StationComponent cuttingComponent = Mappers.station.get(cuttingStation);
+    Entity lettuce = factory.createFood(FoodType.lettuce);
+    controllable.currentFood.pushItem(lettuce, cook);
+    system.processStation(controllable, cuttingComponent);
+    engine.update(15f);
+
+    assertFalse("Ingredients on the cutting board should not get burnt",
+            Mappers.food.get(cuttingComponent.food.get(0)).getIsBurned());
+  }
+
+  @Test
+  public void tryStationUnlockTest(){
+    StationSystem system = new StationSystem(factory, reputationPointsAndMoney, mock(Hud.class));
+    engine.addSystem(system);
+    Entity cook = factory.createCook(0, 0);
+    ControllableComponent controllable = Mappers.controllable.get(cook);
+    PlayerComponent player = engine.createComponent(PlayerComponent.class);
+    player.putDown = true;
+    cook.add(player);
+
+    Entity grillStation = factory.createStation(0, StationType.grill, new Vector2(0, 0), null,
+            true);
+    StationComponent grillComponent = Mappers.station.get(grillStation);
+
+    grillComponent.interactingCook = cook;
+    Entity formedPatty = factory.createFood(FoodType.formedPatty);
+    controllable.currentFood.pushItem(formedPatty, cook);
+
+    engine.update(1f);
+    assertNull("As the station is locked, nothing should be added to the station",
+            grillComponent.food.get(0));
+
+    player.interact = true;
+    engine.update(1f);
+    assertTrue("The station should still be locked as the player does not have enough money",
+            grillComponent.isLocked);
+
+    reputationPointsAndMoney[1] = 90;
+    player.interact = true;
+    engine.update(1f);
+    assertFalse("The station should now be unlocked as the player has enough money",
+            grillComponent.isLocked);
+
+    assertEquals("30 should be subtracted from the money count",
+            60, (int) reputationPointsAndMoney[1]);
+
+  }
 }

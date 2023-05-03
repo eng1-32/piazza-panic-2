@@ -42,7 +42,6 @@ public class Difficulty {
     return difficulty;
   }
 
-  // TODO: manage initial number of chefs
   public int initialCooks;
   public int maxGroupSize;
   public int customerDelay;

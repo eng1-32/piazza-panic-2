@@ -3,10 +3,16 @@ package com.devcharles.piazzapanic.utility;
 import static org.junit.Assert.*;
 
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.devcharles.piazzapanic.GdxTestRunner;
 import com.badlogic.ashley.core.*;
+import com.devcharles.piazzapanic.PiazzaPanic;
+import com.devcharles.piazzapanic.components.FoodComponent;
 import com.devcharles.piazzapanic.components.TransformComponent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -122,5 +128,35 @@ public class FoodStackTest {
     Entity entity = stack.pop();
     assertFalse("When an entity is popped its isHidden attribute should be set to false",
         Mappers.transform.get(entity).isHidden);
+  }
+
+  @Test
+  public void moveTest() {
+    PooledEngine engine = new PooledEngine();
+    World world = new World(new Vector2(0, 0), true);
+    AssetManager assetManager = new AssetManager();
+    assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+    PiazzaPanic.loadAssets(assetManager);
+    assetManager.finishLoading();
+    EntityFactory factory = new EntityFactory(engine, world, assetManager);
+    FoodStack stack = new FoodStack();
+    stack.init(engine);
+    Entity cook = factory.createCook(0, 0);
+    Entity burger = factory.createFood(FoodComponent.FoodType.burger);
+    Entity salad = factory.createFood(FoodComponent.FoodType.salad);
+    Entity cheese = factory.createFood(FoodComponent.FoodType.cheese);
+
+    stack.pushItem(burger, cook);
+    stack.pushItem(salad, cook);
+    stack.pushItem(cheese, cook);
+    assertEquals("The item at the top of the stack should be cheese",
+        FoodComponent.FoodType.cheese, Mappers.food.get(stack.peek()).type);
+    stack.move(2);
+
+    assertEquals("The item at the top of the stack should now be a burger",
+        FoodComponent.FoodType.burger, Mappers.food.get(stack.peek()).type);
+
+    assertEquals("The  second item on the stack should now be cheese",
+        FoodComponent.FoodType.cheese, Mappers.food.get(stack.get(1)).type);
   }
 }

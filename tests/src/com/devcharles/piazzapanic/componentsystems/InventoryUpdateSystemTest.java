@@ -36,7 +36,7 @@ public class InventoryUpdateSystemTest {
 
   @Before
   public void setup() {
-    world  = new World(new Vector2(0, 0), true);
+    world = new World(new Vector2(0, 0), true);
     engine = new PooledEngine();
     AssetManager manager = new AssetManager();
     manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 /**
  * @author Andrey Samoilov
+ * @author Matthew Fitzpatrick
  */
 public class FoodStack extends ArrayList<Entity> {
 

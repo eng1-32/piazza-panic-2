@@ -1,5 +1,6 @@
 package com.devcharles.piazzapanic.input;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -13,9 +14,11 @@ import org.junit.runner.RunWith;
  */
 @RunWith(GdxTestRunner.class)
 public class KeyboardInputTest {
+
   KeyboardInput kbInput = new KeyboardInput();
+
   @Test
-  public void testKeyDown(){
+  public void testKeyDown() {
     kbInput.keyDown(Keys.LEFT);
     assertTrue("If the left key is pressed, left should be set to true",
         kbInput.left);
@@ -71,12 +74,39 @@ public class KeyboardInputTest {
     assertTrue("If a correct key is pressed, the function will return true",
         kbInput.keyDown(Keys.H));
     kbInput.clearInputs();
+    assertTrue("If a correct key is pressed, the function will return true",
+        kbInput.keyDown(Keys.NUM_1));
+    kbInput.clearInputs();
+    assertTrue("If a correct key is pressed, the function will return true",
+        kbInput.keyDown(Keys.NUM_2));
+    kbInput.clearInputs();
+    assertTrue("If a correct key is pressed, the function will return true",
+        kbInput.keyDown(Keys.NUM_3));
+    kbInput.clearInputs();
+    assertTrue("If a correct key is pressed, the function will return true",
+        kbInput.keyDown(Keys.NUM_4));
+    kbInput.clearInputs();
+    assertTrue("If a correct key is pressed, the function will return true",
+        kbInput.keyDown(Keys.NUM_5));
+    kbInput.clearInputs();
+    assertTrue("If a correct key is pressed, the function will return true",
+        kbInput.keyDown(Keys.NUM_6));
+    kbInput.clearInputs();
+    assertTrue("If a correct key is pressed, the function will return true",
+        kbInput.keyDown(Keys.NUM_7));
+    kbInput.clearInputs();
+    assertTrue("If a correct key is pressed, the function will return true",
+        kbInput.keyDown(Keys.NUM_8));
+    kbInput.clearInputs();
+    assertTrue("If a correct key is pressed, the function will return true",
+        kbInput.keyDown(Keys.NUM_9));
+    kbInput.clearInputs();
     assertFalse("If an incorrect key is pressed, the function will return false",
         kbInput.keyDown(Keys.Z));
   }
 
   @Test
-  public void testKeyUp(){
+  public void testKeyUp() {
     kbInput.left = true;
     kbInput.keyUp(Keys.LEFT);
     assertFalse("left should be set to false when the left key is not being pressed",
@@ -129,6 +159,42 @@ public class KeyboardInputTest {
     kbInput.keyUp(Keys.H);
     assertFalse("disableHud should be set to false when the h key is not being pressed",
         kbInput.disableHud);
+    kbInput.swapNum = 1;
+    kbInput.keyUp(Keys.NUM_1);
+    assertEquals("interact should be set to false when the 1 key is not being pressed",
+        0, kbInput.swapNum);
+    kbInput.swapNum = 2;
+    kbInput.keyUp(Keys.NUM_1);
+    assertEquals("interact should be set to false when the 2 key is not being pressed",
+        0, kbInput.swapNum);
+    kbInput.swapNum = 3;
+    kbInput.keyUp(Keys.NUM_1);
+    assertEquals("interact should be set to false when the 3 key is not being pressed",
+        0, kbInput.swapNum);
+    kbInput.swapNum = 4;
+    kbInput.keyUp(Keys.NUM_1);
+    assertEquals("interact should be set to false when the 4 key is not being pressed",
+        0, kbInput.swapNum);
+    kbInput.swapNum = 5;
+    kbInput.keyUp(Keys.NUM_1);
+    assertEquals("interact should be set to false when the 5 key is not being pressed",
+        0, kbInput.swapNum);
+    kbInput.swapNum = 6;
+    kbInput.keyUp(Keys.NUM_1);
+    assertEquals("interact should be set to false when the 6 key is not being pressed",
+        0, kbInput.swapNum);
+    kbInput.swapNum = 7;
+    kbInput.keyUp(Keys.NUM_1);
+    assertEquals("interact should be set to false when the 7 key is not being pressed",
+        0, kbInput.swapNum);
+    kbInput.swapNum = 8;
+    kbInput.keyUp(Keys.NUM_1);
+    assertEquals("interact should be set to false when the 8 key is not being pressed",
+        0, kbInput.swapNum);
+    kbInput.swapNum = 9;
+    kbInput.keyUp(Keys.NUM_1);
+    assertEquals("interact should be set to false when the 9 key is not being pressed",
+        0, kbInput.swapNum);
     assertTrue("If a valid key is passed into the function, it should return true",
         kbInput.keyUp(Keys.Q));
     assertFalse("If an invalid key is passed into the function, it should return false",

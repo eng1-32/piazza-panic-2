@@ -59,6 +59,7 @@ public class Hud extends ApplicationAdapter {
   Label pausedNameLabel;
   TextButton exitButton, shopButton, pauseButton;
   final TextButton movementSpeedBtn, prepSpeedBtn, chopSpeedBtn, customerPatienceBtn, salePriceBtn, newCookBtn;
+  TextButton tutorialButton;
   BitmapFont uiFont, uiTitleFont;
   // an image used as the background of recipe book and tutorial
   private Image photo;
@@ -241,6 +242,8 @@ public class Hud extends ApplicationAdapter {
     interactLabel.setFontScale(0.8f);
     Label pickUpLabel = new Label("R: Pick Up Item", hudLabelStyle);
     pickUpLabel.setFontScale(0.8f);
+    Label switchCookLabel = new Label("E: Switch cooks", hudLabelStyle);
+    switchCookLabel.setFontScale(0.8f);
     Label itemLabel = new Label("1-9: Move Item to Top", hudLabelStyle);
     itemLabel.setFontScale(0.8f);
 
@@ -251,6 +254,8 @@ public class Hud extends ApplicationAdapter {
     tableLeft.add(interactLabel).padBottom(30).left().padLeft(20);
     tableLeft.row();
     tableLeft.add(pickUpLabel).padBottom(30).left().padLeft(20);
+    tableLeft.row();
+    tableLeft.add(switchCookLabel).padBottom(30).left().padLeft(20);
     tableLeft.row();
     tableLeft.add(itemLabel).padBottom(30).left().padLeft(20);
 
@@ -273,7 +278,7 @@ public class Hud extends ApplicationAdapter {
     // checks if resume button is clicked
     TextButton resumeButton = new TextButton("Resume", game.skin);
     TextButton recipeBookButton = new TextButton("Recipe Book", game.skin);
-    TextButton tutorialButton = new TextButton("Tutorial", game.skin);
+    tutorialButton = new TextButton("Tutorial", game.skin);
     exitButton = new TextButton("Exit", game.skin);
 
     resumeButton.addListener(new ClickListener() {
@@ -283,8 +288,6 @@ public class Hud extends ApplicationAdapter {
     });
     recipeBookButton.addListener(
         createListener(new Slideshow(game, Slideshow.Type.recipe, gameScreen)));
-    tutorialButton.addListener(
-        createListener(new Slideshow(game, Slideshow.Type.tutorial, gameScreen)));
     exitButton.addListener(new ClickListener() {
       public void clicked(InputEvent event, float x, float y) {
         game.setScreen(new MainMenuScreen(game));
@@ -717,19 +720,29 @@ public class Hud extends ApplicationAdapter {
     moneyLabel.setVisible(isEndless);
     shopButton.setVisible(isEndless);
 
-    TextButton saveButton = new TextButton("Save and Exit", game.skin);
-    saveButton.addListener(new ClickListener() {
-      @Override
-      public void clicked(InputEvent event, float x, float y) {
-        if (isEndless) {
-          saveGame();
+    if (isEndless) {
+      TextButton saveButton = new TextButton("Save and Exit", game.skin);
+      saveButton.addListener(new ClickListener() {
+        @Override
+        public void clicked(InputEvent event, float x, float y) {
+          if (isEndless) {
+            saveGame();
+          }
+          Gdx.app.log("save", "Game is saved!");
+          game.setScreen(new MainMenuScreen(game));
+          dispose();
+          gameScreen.dispose();
         }
-        Gdx.app.log("save", "Game is saved!");
-        game.setScreen(new MainMenuScreen(game));
-        dispose();
-        gameScreen.dispose();
-      }
-    });
-    tablePause.add(saveButton).width(260).height(70);
+      });
+      tablePause.add(saveButton).width(260).height(70);
+    }
+
+  if (isEndless) {
+      tutorialButton.addListener(
+          createListener(new Slideshow(game, Slideshow.Type.endlessTutorial, gameScreen)));
+    } else {
+      tutorialButton.addListener(
+          createListener(new Slideshow(game, Slideshow.Type.scenarioTutorial, gameScreen)));
+    }
   }
 }

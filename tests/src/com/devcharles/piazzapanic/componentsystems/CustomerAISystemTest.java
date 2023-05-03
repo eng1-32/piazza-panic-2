@@ -68,7 +68,7 @@ public class CustomerAISystemTest {
     objectives.put(1, queueMid);
     objectives.put(2, queueEnd);
 
-    reputationPoints = new Integer[] {3, 0};
+    reputationPoints = new Integer[]{3, 0};
 
     world = new World(Vector2.Zero, true);
     engine = new PooledEngine();
@@ -359,7 +359,8 @@ public class CustomerAISystemTest {
         Mappers.aiAgent.get(aiSystem.customers.get(1).get(0)).currentObjective);
 
     assertEquals("The timer should be 25 seconds", 25000, aiSystem.getSpawnTimer().getDelay());
-    assertEquals("The timer should have 5 elapsed seconds", 5000, aiSystem.getSpawnTimer().getElapsed());
+    assertEquals("The timer should have 5 elapsed seconds", 5000,
+        aiSystem.getSpawnTimer().getElapsed());
 
     assertTrue("The first objective should be taken",
         aiSystem.getObjectiveTaken().get(0));

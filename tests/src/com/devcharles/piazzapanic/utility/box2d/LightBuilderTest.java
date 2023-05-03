@@ -31,7 +31,6 @@ public class LightBuilderTest {
     assertEquals("The light should be red.", light.getColor(), Color.RED);
     assertEquals("The light distance should be approximately 5.", light.getDistance(), 5f, 0.001f);
     assertTrue("The light should be soft.", light.isSoft());
-    // TODO: check for null RayHandler
   }
 
   @Test

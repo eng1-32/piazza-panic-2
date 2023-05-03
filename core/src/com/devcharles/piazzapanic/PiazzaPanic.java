@@ -38,11 +38,15 @@ public class PiazzaPanic extends Game {
     assetManager.load("craftacular/raw/font-export.fnt", BitmapFont.class);
     assetManager.load("craftacular/raw/font-title-export.fnt", BitmapFont.class);
 
-    for (int i = 0; i <= 10; i++) {
-      assetManager.load("tutorial" + i + ".png", Texture.class);
+    for (int i = 0; i < 10; i++) {
+      assetManager.load("Tutorials/endlessTutorial" + i + ".PNG", Texture.class);
     }
-    assetManager.load("recipe0.png", Texture.class);
-    assetManager.load("recipe1.png", Texture.class);
+    for (int i = 0; i < 8; i++) {
+      assetManager.load("Tutorials/scenarioTutorial" + i + ".PNG", Texture.class);
+    }
+    for (int i = 0; i < 7; i++) {
+      assetManager.load("Tutorials/recipe" + i + ".PNG", Texture.class);
+    }
     assetManager.finishLoading();
 
     assetManager.load("droplet.png", Texture.class);

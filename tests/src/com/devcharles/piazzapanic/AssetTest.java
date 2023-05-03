@@ -21,14 +21,18 @@ public class AssetTest {
     assertTrue("This test will only pass when font-title-export.fnt exists",
         Gdx.files.internal("craftacular/raw/font-title-export.fnt").exists());
 
-    for (int i = 0; i <= 10; i++) {
-      assertTrue("This test will only pass when tutorial" + i + ".png exists",
-          Gdx.files.internal("tutorial" + i + ".png").exists());
+    for (int i = 0; i < 10; i++) {
+      assertTrue("This test will only pass when endlessTutorial" + i + ".png exists",
+          Gdx.files.internal("Tutorials/endlessTutorial" + i + ".PNG").exists());
     }
-    assertTrue("This test will only pass when recipe0.png exists",
-        Gdx.files.internal("recipe0.png").exists());
-    assertTrue("This test will only pass when recipe1.png exists",
-        Gdx.files.internal("recipe1.png").exists());
+    for (int i = 0; i < 8; i++) {
+      assertTrue("This test will only pass when scenarioTutorial" + i + ".png exists",
+          Gdx.files.internal("Tutorials/scenarioTutorial" + i + ".PNG").exists());
+    }
+    for (int i = 0; i < 7; i++) {
+      assertTrue("This test will only pass when recipe" + i + ".png exists",
+          Gdx.files.internal("Tutorials/recipe" + i + ".PNG").exists());
+    }
 
     assertTrue("This test will only pass when droplet.png exists",
         Gdx.files.internal("droplet.png").exists());
@@ -53,8 +57,14 @@ public class AssetTest {
         Gdx.files.internal("v2/chef/2_holding.png").exists());
 
     assertTrue("This test will only pass when food.png exists",
+        Gdx.files.internal("v2/stations_chef.png").exists());
+    assertTrue("This test will only pass when food.png exists",
         Gdx.files.internal("v2/food.png").exists());
+    assertTrue("This test will only pass when food.png exists",
+        Gdx.files.internal("v2/burnt_food.png").exists());
     assertTrue("This test will only pass when map.tmx exists",
         Gdx.files.internal("v2/map.tmx").exists());
+    assertTrue("This test will only pass when map.tmx exists",
+        Gdx.files.internal("v2/endlessMap.tmx").exists());
   }
 }

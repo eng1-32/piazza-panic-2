@@ -114,7 +114,6 @@ public class EntityFactory {
     TextureRegion[][] tempRegions = TextureRegion.split(tempTexture, 32, 32);
 
     texture.region = tempRegions[0][0];
-    // TODO: Set size in viewport units instead of scale
     texture.scale.set(0.1f, 0.1f);
 
     // Box2D body
@@ -176,7 +175,6 @@ public class EntityFactory {
 
     // Texture
     texture.region = getFoodTexture(foodType);
-    // TODO: Set size in viewport units instead of scale
     texture.scale.set(0.05f, 0.05f);
 
     // food creation

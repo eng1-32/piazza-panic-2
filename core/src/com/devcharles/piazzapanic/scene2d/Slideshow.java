@@ -33,7 +33,7 @@ public class Slideshow extends ApplicationAdapter implements Screen {
   private Sprite sprite;
 
   /**
-   * Slideshow type enumeration. To screate new slideshows, add their pages to the assets folder in
+   * Slideshow type enumeration. To create new slideshows, add their pages to the assets folder in
    * the format {@code [type][PageNumber].png} and add a type to this enum.
    */
   public enum Type {

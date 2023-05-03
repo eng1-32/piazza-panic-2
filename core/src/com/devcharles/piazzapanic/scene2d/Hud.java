@@ -241,6 +241,8 @@ public class Hud extends ApplicationAdapter {
     interactLabel.setFontScale(0.8f);
     Label pickUpLabel = new Label("R: Pick Up Item", hudLabelStyle);
     pickUpLabel.setFontScale(0.8f);
+    Label switchCookLabel = new Label("E: Switch cooks", hudLabelStyle);
+    switchCookLabel.setFontScale(0.8f);
     Label itemLabel = new Label("1-9: Move Item to Top", hudLabelStyle);
     itemLabel.setFontScale(0.8f);
 
@@ -251,6 +253,8 @@ public class Hud extends ApplicationAdapter {
     tableLeft.add(interactLabel).padBottom(30).left().padLeft(20);
     tableLeft.row();
     tableLeft.add(pickUpLabel).padBottom(30).left().padLeft(20);
+    tableLeft.row();
+    tableLeft.add(switchCookLabel).padBottom(30).left().padLeft(20);
     tableLeft.row();
     tableLeft.add(itemLabel).padBottom(30).left().padLeft(20);
 

@@ -276,7 +276,7 @@ public class CustomerAISystem extends IteratingSystem {
 
       Entity food = cook.currentFood.pop();
 
-      if (Mappers.food.get(food).type == customer.order) {
+      if (Mappers.food.get(food).type == customer.order && !Mappers.food.get(food).getIsBurned()) {
         // Fulfill order
         Gdx.app.log("Order success", customer.order.name());
         fulfillOrder(entity, customer, food);

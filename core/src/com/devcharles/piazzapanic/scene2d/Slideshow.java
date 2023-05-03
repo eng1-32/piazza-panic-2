@@ -38,7 +38,8 @@ public class Slideshow extends ApplicationAdapter implements Screen {
    */
   public enum Type {
     recipe,
-    tutorial
+    endlessTutorial,
+    scenarioTutorial
   }
 
   private final Texture[] textures;
@@ -51,6 +52,8 @@ public class Slideshow extends ApplicationAdapter implements Screen {
    * Create a new slideshow screen.
    *
    * @param type {@link Type} of slideshow to create.
+   * @author Andrey Samoilov
+   * @author Alistair Foggin
    */
   private Slideshow(final PiazzaPanic game, Type type) {
 
@@ -60,17 +63,19 @@ public class Slideshow extends ApplicationAdapter implements Screen {
     viewport.apply();
     batch = new SpriteBatch();
 
-    int fileCount = 0;
+    int fileCount;
     if (type == Type.recipe) {
-      fileCount = 2;
-    } else if (type == Type.tutorial) {
-      fileCount = 11;
+      fileCount = 7;
+    } else if (type == Type.endlessTutorial) {
+      fileCount = 10;
+    } else {
+      fileCount = 8;
     }
 
     textures = new Texture[fileCount];
 
     for (int i = 0; i < fileCount; i++) {
-      textures[i] = game.assetManager.get(type.name() + i + ".png", Texture.class);
+      textures[i] = game.assetManager.get("Tutorials/" + type.name() + i + ".PNG", Texture.class);
     }
 
     stage = new Stage(viewport);

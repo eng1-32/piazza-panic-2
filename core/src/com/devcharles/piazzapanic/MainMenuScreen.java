@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.devcharles.piazzapanic.scene2d.Slideshow;
+import com.devcharles.piazzapanic.scene2d.Slideshow.Type;
 import com.devcharles.piazzapanic.utility.Difficulty;
 import com.devcharles.piazzapanic.utility.Difficulty.Level;
 import com.devcharles.piazzapanic.utility.saving.GameState;
@@ -79,7 +80,7 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
     startScenarioButton.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
-        game.setScreen(new Slideshow(game, Slideshow.Type.tutorial,
+        game.setScreen(new Slideshow(game, Type.scenarioTutorial,
             new ScenarioGameScreen(game, null, (int) customerSlider.getValue())));
         dispose();
       }
@@ -177,7 +178,7 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
         if (!Gdx.files.local(GameState.SAVE_LOCATION).exists()) {
           return;
         }
-        game.setScreen(new Slideshow(game, Slideshow.Type.tutorial,
+        game.setScreen(new Slideshow(game, Type.endlessTutorial,
             new EndlessGameScreen(game, "v2/endlessMap.tmx", true, null)));
         dispose();
       }
@@ -203,7 +204,7 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
   }
 
   public void startEndless(Difficulty.Level difficultyLevel) {
-    game.setScreen(new Slideshow(game, Slideshow.Type.tutorial,
+    game.setScreen(new Slideshow(game, Type.endlessTutorial,
         new EndlessGameScreen(game, "v2/endlessMap.tmx", false,
             Difficulty.createDifficulty(difficultyLevel))));
     dispose();

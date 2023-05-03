@@ -26,6 +26,7 @@ public class ScenarioGameScreen extends BaseGameScreen {
       reputationPointsAndMoney[0] = 2;
     }
 
+    hud.setEndless(false);
     engine.addSystem(new PhysicsSystem(world));
     engine.addSystem(new RenderingSystem(mapLoader.map, game.batch, camera));
     engine.addSystem(new LightingSystem(rayhandler, camera));
